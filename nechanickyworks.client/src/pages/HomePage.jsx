@@ -2,6 +2,12 @@ import React from 'react';
 import { Container, Grid, Typography, Box, Button, Link, Paper, Stack } from '@mui/material';
 import { styled } from '@mui/system';
 import InfoGraphic from '../components/Display/InfoGraphic';
+import GaussImage from "../assets/imgs/gauss.jpg";
+import CapstoneImage from "../assets/imgs/Capstone.jpg";
+import DdsImage from "../assets/imgs/dds.jpg";
+import RequestImage from "../assets/imgs/requestform.jpg";
+import RecruitmentImage from "../assets/imgs/recruitment.jpg";
+import MyFridgeImage from "../assets/imgs/Myfridge.jpg";
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -27,22 +33,22 @@ const HomePage = () => {
               Dive in and explore the various applications of technology and innovation.
         </Typography>
           <Stack direction="column" spacing={4}>
-              <InfoGraphic title="Gaussian Quadrature" image="public/gauss.jpg" href="Projects/GaussQuad">
+                    <InfoGraphic title="Gaussian Quadrature" image={ GaussImage } href="Projects/GaussQuad">
                   This is the simple description of Gaussian Quadrature and what to expect.
               </InfoGraphic>
-              <InfoGraphic title="OSU Capstone Project" image="public/Capstone.jpg" href="/Capstone" rightJustify={true} >
+                    <InfoGraphic title="OSU Capstone Project" image={ CapstoneImage} href="/Capstone" rightJustify={true} >
                   This is the simple description of my capstone project and what to expect.
               </InfoGraphic>
-              <InfoGraphic title="Diffusion Denoised Robustification" image="public/dds.jpg" href="/DiffusionDenoised">
+                    <InfoGraphic title="Diffusion Denoised Robustification" image={ DdsImage} href="/DiffusionDenoised">
                   This is the simple description of my Diffusion Denoised robustification method on attention based neural networks and what to expect.
               </InfoGraphic>
-                    <InfoGraphic title="Warehouse Order Form" image="public/blank.jpg" href="/RequestForm" rightJustify={true}>
+                    <InfoGraphic title="Warehouse Order Form" image={ RequestImage } href="/RequestForm" rightJustify={true}>
                   This is the simple description of blazor based web form for warehouse orders and what to expect.
               </InfoGraphic>
-                    <InfoGraphic title="New Hire Requests Form" image="public/recruitment.jpg" href="/HRForm">
+                    <InfoGraphic title="New Hire Requests Form" image={ RecruitmentImage } href="/HRForm">
                   This is the simple description of Blazor based web form for new hire requests and what to expect.
               </InfoGraphic>
-                    <InfoGraphic title="MyFridge Android App" image="public/Myfridge.jpg" href="/MyFridge" rightJustify={true}>
+                    <InfoGraphic title="MyFridge Android App" image={ MyFridgeImage } href="/MyFridge" rightJustify={true}>
                   This is the simple description of the My Fridge android app developed with pure Kotlin and what to expect.
               </InfoGraphic>
           </Stack>    

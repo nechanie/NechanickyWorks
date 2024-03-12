@@ -6,6 +6,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import DaneLogo from "../../assets/imgs/DaneLogo.svg"
 
 const CustomAppBar = ({ onThemeToggle }) => {
 
@@ -46,7 +47,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
             <AppBar position="relative">
                 <Toolbar sx={{display: "flex", justifyContent:"space-between"} }>
                         {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
-                    <img src="public/DaneLogo.svg" />
+                    <img src={ DaneLogo } />
 
                     {/* Projects button that opens a sub-menu */}
                     <Button sx={{height:'100%', marginLeft:"1%"}} color="inherit" component={Link} variant="text" onClick={handleMenu}>
