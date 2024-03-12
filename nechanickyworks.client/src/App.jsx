@@ -5,8 +5,10 @@ import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, styled} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { Box } from '@mui/material';
+import GaussQuad from './pages/GaussQuadPage';
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -82,8 +84,8 @@ const getDesignTokens = (mode) => ({
                     divider: 'rgba(0, 0, 0, 0.12)', // Standard divider color
                 },
                 background: {
-                    paper: '#fff', // Background for components, such as cards
-                    default: '#fff', // Default page background
+                    paper: '#e0e0e0', // Background for components, such as cards
+                    default: 'linear-gradient(to right, #909590 0%, #9AE19D 100%)', // Default page background
                 },
                 action: {
                     active: 'rgba(0, 0, 0, 0.54)',
@@ -169,8 +171,8 @@ const getDesignTokens = (mode) => ({
                     divider: 'rgba(255, 255, 255, 0.12)', // Divider adjusted for dark mode
                 },
                 background: {
-                    paper: '#424242', // Dark grey for components background
-                    default: '#303030', // Slightly lighter grey for default background
+                    paper: '#4f5552', // Dark grey for components background
+                    default: 'linear-gradient(to right, #3b5744 0%, #6cbf7b 100%)', // Slightly lighter grey for default background
                 },
                 action: {
                     active: 'rgba(255, 255, 255, 0.7)',
@@ -189,6 +191,11 @@ const getDesignTokens = (mode) => ({
     },
 });
 
+const GradientBox = styled(Box)(({ theme }) => ({
+    background: theme.palette.background.default,
+    color: theme.palette.primary.contrastText,
+}));
+
 function App() {
 
     const [mode, setMode] = React.useState('light');
@@ -206,16 +213,20 @@ function App() {
 
     return (
         <ThemeProvider theme={theme}>
-            <CssBaseline/>
-            <BrowserRouter>
-                <CustomAppBar onThemeToggle={ colorMode.toggleColorMode } />
-                <Routes>
-                    <Route path="/" element={<HomePage />} />
-                    <Route path="/about-me" element={<AboutMePage />} />
-                    <Route path="/projects" element={<ProjectPage />} />
-                    {/* Add more routes as needed */}
-                </Routes>
-            </BrowserRouter>
+            <CssBaseline />
+            <GradientBox>
+                <BrowserRouter>
+                    <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
+                    <Routes>
+                        <Route path="/" element={<HomePage />} />
+                        <Route path="/about-me" element={<AboutMePage />} />
+                        <Route path="/projects" element={<ProjectPage />} />
+                        <Route path="/GaussQuadPage" element={<GaussQuad />} />
+
+                        {/* Add more routes as needed */}
+                    </Routes>
+                </BrowserRouter>
+            </GradientBox>
         </ThemeProvider>
     );
 }

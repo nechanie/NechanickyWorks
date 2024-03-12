@@ -1,14 +1,14 @@
- import React from 'react';
+import React from 'react';
 import PageTitle from '../components/Shared/PageTitle';
 
-const AboutMePage = () => {
+const GaussQuad = () => {
     return (
         <div>
             <PageTitle pageTitle="Nechanicky Works" />
-            <h1>Welcome to the About Me Page</h1>
+            <h1>Welcome to the Gauss Quad Page</h1>
             {/* Additional content here */}
         </div>
     );
 }
 
-export default AboutMePage;
+export default GaussQuad;

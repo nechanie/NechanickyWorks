@@ -1,65 +1,69 @@
 import React from 'react';
-import { Container, Grid, Typography, Box, Button, Link, Paper } from '@mui/material';
+import { Container, Grid, Typography, Box, Button, Link, Paper, Stack } from '@mui/material';
 import { styled } from '@mui/system';
+import InfoGraphic from '../components/Display/InfoGraphic';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
   padding: theme.spacing(3),
-  marginTop: 'auto',
-  backgroundColor: theme.palette.background.paper,
+  marginTop: '2%',
+  background: theme.palette.background.paper,
 }));
 
 const HomePage = () => {
-  return (
-    <Container maxWidth="lg">
-      <Box my={4} sx={{ textAlign: 'center' }}>
+    return (
+      <React.Fragment>
+      <Container maxWidth="xl" sx={{ marginTop: "2%" } }>
         {/* Title Section */}
-        <Typography variant="h2" component="h1" gutterBottom>
-          Welcome to Our Site
+        <Typography variant="h2" align="center" component="h1" gutterBottom>
+              Welcome to Nechanicky Works!
         </Typography>
         
         {/* Synthesis Section */}
-        <Typography variant="h5" component="p" sx={{ margin: '20px 0' }}>
-          Discover what we offer, from innovative products to insightful articles. Dive into our world.
+        <Typography variant="h5" align="center" component="p" sx={{ margin: '20px 0' }}>
+              Welcome to Nechanicky Works, the digital showcase of my journey in computer science.
+              I'm Ethan, a computer science graduate of Oregon State University. My work spans academic challenges, professional achievements, and personal projects.
+              This platform not only presents my accomplishments, but invites you to interact with live demos that provide the opportunity to truly engage with my work.
+              Dive in and explore the various applications of technology and innovation.
         </Typography>
-        
-        {/* Product Sections - Example for 2 products */}
-        <Grid container spacing={4}>
-          {/* Product 1 */}
-          <Grid item xs={12} md={6}>
-            <Typography variant="h6">Product 1</Typography>
-            <Typography>Simplified Description for Product 1.</Typography>
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <img src="/path-to-screenshot-1.jpg" alt="Product 1" style={{ maxWidth: '100%', height: 'auto' }} />
-            <Button component={Link} href="/product-1-page">Learn More</Button>
-          </Grid>
-          
-          {/* Product 2 - Order Reversed */}
-          <Grid item xs={12} md={6} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', order: { md: 2 } }}>
-            <img src="/path-to-screenshot-2.jpg" alt="Product 2" style={{ maxWidth: '100%', height: 'auto' }} />
-            <Button component={Link} href="/product-2-page">Learn More</Button>
-          </Grid>
-          <Grid item xs={12} md={6} sx={{ order: { md: 1 } }}>
-            <Typography variant="h6">Product 2</Typography>
-            <Typography>Simplified Description for Product 2.</Typography>
-          </Grid>
-        </Grid>
-        
-        {/* Footer Section */}
-        <StyledFooter>
-          <Typography variant="h6">Quick Links</Typography>
-          {/* Links to sections */}
-          <Button component={Link} href="#title">Title</Button>
-          <Button component={Link} href="#product1">Product 1</Button>
-          {/* Add more as needed */}
-          
-          {/* Other common footer content */}
-          <Typography>Contact Us | About Us</Typography>
-        </StyledFooter>
-      </Box>
+          <Stack direction="column" spacing={4}>
+              <InfoGraphic title="Gaussian Quadrature" image="public/gauss.jpg" href="Projects/GaussQuad">
+                  This is the simple description of Gaussian Quadrature and what to expect.
+              </InfoGraphic>
+              <InfoGraphic title="OSU Capstone Project" image="public/Capstone.jpg" href="/Capstone" rightJustify={true} >
+                  This is the simple description of my capstone project and what to expect.
+              </InfoGraphic>
+              <InfoGraphic title="Diffusion Denoised Robustification" image="public/dds.jpg" href="/DiffusionDenoised">
+                  This is the simple description of my Diffusion Denoised robustification method on attention based neural networks and what to expect.
+              </InfoGraphic>
+                    <InfoGraphic title="Warehouse Order Form" image="public/blank.jpg" href="/RequestForm" rightJustify={true}>
+                  This is the simple description of blazor based web form for warehouse orders and what to expect.
+              </InfoGraphic>
+                    <InfoGraphic title="New Hire Requests Form" image="public/recruitment.jpg" href="/HRForm">
+                  This is the simple description of Blazor based web form for new hire requests and what to expect.
+              </InfoGraphic>
+                    <InfoGraphic title="MyFridge Android App" image="public/Myfridge.jpg" href="/MyFridge" rightJustify={true}>
+                  This is the simple description of the My Fridge android app developed with pure Kotlin and what to expect.
+              </InfoGraphic>
+          </Stack>    
     </Container>
-  );
+    {/* Footer Section */ }
+    <StyledFooter sx={{ width: "100%" }}>
+        <Typography align="center" variant="h6">Quick Links</Typography>
+        {/* Links to sections */}
+        <Typography align="center" variant="h6">
+            <Stack direction="column">
+                <Button component={Link} href="#title">Title</Button>
+                <Button component={Link} href="#product1">Product 1</Button>
+            </Stack>
+        </Typography>
+        {/* Add more as needed */}
+
+        {/* Other common footer content */}
+        <Typography align="center">Contact Me | About Me</Typography>
+    </StyledFooter>
+    </React.Fragment>
+    );
 };
 
 export default HomePage;
