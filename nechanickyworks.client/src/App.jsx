@@ -8,7 +8,15 @@ import CustomAppBar from './components/Shared/AppBar';
 import { ThemeProvider, createTheme, styled} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box } from '@mui/material';
-import GaussQuad from './pages/GaussQuadPage';
+import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
+import OSUCapstoneProjectPage from './pages/OSUCapstoneProjectPage';
+import DiffusionDenoisedRobustificationProjectPage from './pages/DiffusionDenoisedRobustificationPage';
+import WarehouseRequestFormProjectPage from './pages/WarehouseRequestFormPage';
+import RecruitmentRequestFormProjectPage from './pages/RecruitmentRequestFormPage';
+import MyFridgeAndroidAppProjectPage from './pages/MyFridgeAndroidAppPage';
+import ContactPage from './pages/ContactPage';
+import AboutThisSitePage from './pages/AboutThisSitePage';
+import TrustWorthyMLProjectPage from './pages/TrustworthyMLPage';
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -220,8 +228,15 @@ function App() {
                     <Routes>
                         <Route path="/" element={<HomePage />} />
                         <Route path="/about-me" element={<AboutMePage />} />
-                        <Route path="/projects" element={<ProjectPage />} />
-                        <Route path="/GaussQuadPage" element={<GaussQuad />} />
+                        <Route path="/about-this-site" element={<AboutThisSitePage />} />
+                        <Route path="/Contact" element={<ContactPage />} />
+                        <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
+                        <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
+                        <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
+                        <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
+                        <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
+                        <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
+                        <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
 
                         {/* Add more routes as needed */}
                     </Routes>

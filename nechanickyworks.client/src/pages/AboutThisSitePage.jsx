@@ -1,14 +1,14 @@
 import React from 'react';
 import PageTitle from '../components/Shared/PageTitle';
 
-const ProjectPage = () => {
+const AboutThisSitePage = () => {
     return (
         <div>
             <PageTitle pageTitle="Nechanicky Works" />
-            <h1>Welcome to the Projects Page</h1>
+            <h1>Welcome to the About This Site Page</h1>
             {/* Additional content here */}
         </div>
     );
 }
 
-export default ProjectPage;
+export default AboutThisSitePage;

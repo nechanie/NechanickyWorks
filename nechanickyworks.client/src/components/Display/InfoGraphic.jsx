@@ -1,5 +1,6 @@
 import React from 'react';
 import { Paper, Card, CardHeader, CardContent, Typography, Box, Button, CardActions, useTheme } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 const InfoGraphic = ({ title, image, href, rightJustify = false, bdColor = "#373737", children }) => {
     const theme = useTheme();
@@ -24,7 +25,7 @@ const InfoGraphic = ({ title, image, href, rightJustify = false, bdColor = "#373
                 <Typography>{children}</Typography>
             </CardContent>
             <CardActions>
-                <Button variant="outlined" href={href} sx={{ mt: 2 }}>Learn More</Button>
+                <Button color="inherit" variant="outlined" component={Link} to={href} sx={{ mt: 2 }}>Learn More</Button>
             </CardActions>
         </Card>
     );
