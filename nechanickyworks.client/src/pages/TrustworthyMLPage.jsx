@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack } from '@mui/material';
 import { styled } from '@mui/system';
-import useWebSocket from 'react-use-websocket';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
+import { useWebSocket } from '../components/Shared/WebsocketContext';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -18,36 +18,35 @@ const TrustWorthyMLProjectPage = () => {
     const [logMessages, setLogMessages] = useState("");
     const [showLog, setShowLog] = useState(false);
 
-    // Use the `useWebSocket` hook to create the WebSocket connection
-    const { sendMessage, lastMessage, readyState } = useWebSocket('wss://access.nechanickyworks.com/ws/train_and_attack', {
-        onOpen: () => console.log("> WebSocket Connected"),
-        onClose: () => console.log("WebSocket Disconnected"),
-        shouldReconnect: (closeEvent) => true, // Could use a more sophisticated reconnect strategy here
-        reconnectAttempts: 10,
-        reconnectInterval: 3000,
-    });
+    // Use the `useWebSocket` hook to use shared websocket connection
+    const { webSocketManager, queue } = useWebSocket();
 
     // Effect to handle received messages
     useEffect(() => {
-        if (lastMessage !== null) {
-            const messageData = lastMessage.data;
-            console.log("< Received:", messageData);
-            setLogMessages(prev => prev + messageData + '\n');
 
-            if (messageData.startsWith("Accuracy")) {
-                const accuracyValue = messageData.slice(-5);
+        webSocketManager.onLogMessage = (message) => {
+            console.log("< Received: ", message);
+            setLogMessages(prev => prev + message + "\n");
+
+            if (message.startsWith("Accuracy")) {
+                const accuracyValue = message.slice(-10);
                 setAccuracy(accuracyValue);
             }
-        }
-    }, [lastMessage]);
+        };
+        return () => {
+            webSocketManager.onLogMessage = null;
+        };
+    }, [webSocketManager]);
 
     const handleFormSubmit = useCallback((formData) => {
         setIsFormDisabled(true);
         setShowLog(true);
         setLogMessages("");
 
-        if (readyState === WebSocket.OPEN) {
-            const trainAndAttackRequest = {
+        webSocketManager.connect({
+            name: "Trustworthy ML",
+            url: "wss://access.nechanickyworks.com/ws/capstoneV1",
+            data: {
                 model: "LeNet",
                 dataset: "MNIST",
                 epochs: "1",
@@ -62,16 +61,11 @@ const TrustWorthyMLProjectPage = () => {
                 alpha: "0.007843",
                 niter: "40",
                 randomstart: "True"
-            };
-
-            sendMessage(JSON.stringify(trainAndAttackRequest));
-            console.log("> Request sent");
-        } else {
-            console.error("WebSocket is not open. ReadyState:", readyState);
-            setIsFormDisabled(false);
-            setShowLog(false);
-        }
-    }, [readyState, sendMessage]);
+            },
+            status: "waiting"
+        });
+        console.log("> Request queued");
+    }, [webSocketManager]);
 
     return (
         <React.Fragment>
