@@ -5,6 +5,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
     const [formData, setFormData] = useState({
         model: 'LeNet',
         dataset: 'MNIST',
+        epochs: 1,
         learningRate: 0.002,
         batchSize: 100,
         includeDropout: false,
@@ -79,7 +80,18 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                         onChange={handleInputChange}
                             inputProps={{ step: 0.001, min: 0, maxLength: 6 }}
                             disabled={isDisabled}
-                    />
+                        />
+                        <TextField
+                            fullWidth
+                            name="Epochs"
+                            label="Epochs"
+                            type="number"
+                            margin="normal"
+                            value={formData.epochs}
+                            onChange={handleInputChange}
+                            inputProps={{ step: 1, min: 1, max: 30 }}
+                            disabled={isDisabled}
+                        />
                     <TextField
                         fullWidth
                         name="batchSize"

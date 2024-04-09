@@ -1,4 +1,13 @@
-export class WebSocketQueue {
+import { LogBuffer } from "./Data/LogBuffer";
+
+export const TaskStatus = {
+    QUEUED: 'Queued',
+    RUNNING: 'Running',
+    COMPLETED: 'Completed',
+    ERROR: 'Error',
+    CANCELLED: 'Cancelled'
+};
+class WebSocketQueue {
     constructor() {
         this.queue = [];
     }
@@ -19,12 +28,22 @@ export class WebSocketQueue {
             item.queuePosition = index;
         });
     }
-}
 
+    CrossCheckRef(CheckRef) {
+        return this.queue.some(task => task.PageRef() === CheckRef);
+    }
+}
 class WebSocketManager {
     constructor() {
         this.queue = new WebSocketQueue();
+        this.webSocketLogs = {
+            "TML": new LogBuffer(25),
+            "GQ": new LogBuffer(25),
+            "CAPSTONE": new LogBuffer(25),
+            "DDR": new LogBuffer(25)
+        }
         this.currentWebSocket = null;
+        this.currentTask = null;
         this.onQueueUpdate = null;
         this.onLogMessage = null;
         this.onClose = null;
@@ -44,6 +63,7 @@ class WebSocketManager {
             console.log("Queue full, cannot add more requests.");
             return;
         }
+        task.taskStatus = TaskStatus.QUEUED;
         let position = this.queue.push(task);
         task.queuePosition = position;
         this.updateQueueSubscribers();
@@ -56,11 +76,12 @@ class WebSocketManager {
     processNextRequest() {
         if (!this.queue.queue.length || this.currentWebSocket) return;
 
-        const requestDetails = this.queue.queue[0]; // Take the first request from the queue
-        this.currentWebSocket = new WebSocket(requestDetails.url);
+        this.currentTask = this.queue.queue[0];
+        this.currentTask.taskStatus = TaskStatus.RUNNING;
+        this.currentWebSocket = new WebSocket(this.currentTask.taskUrl);
 
         this.currentWebSocket.onopen = () => {
-            this.currentWebSocket.send(JSON.stringify(requestDetails.data)); // Send data if needed
+            this.currentWebSocket.send(JSON.stringify(this.currentTask.taskInitData)); // Send data if needed
         };
 
         this.currentWebSocket.onmessage = (event) => {
@@ -70,6 +91,8 @@ class WebSocketManager {
         this.currentWebSocket.onclose = () => {
             if (this.onClose) this.onClose();
             this.currentWebSocket = null;
+            this.currentTask.taskStatus = TaskStatus.COMPLETED;
+            this.currentTask = null;
             this.queue.shift(); // Remove the completed request from the queue
             this.updateQueueSubscribers();
             this.processNextRequest(); // Proceed with the next request if any
@@ -77,11 +100,13 @@ class WebSocketManager {
 
         this.currentWebSocket.onerror = (error) => {
             console.log("WebSocket error: ", error);
+            this.currentTask.taskStatus = TaskStatus.ERROR;
             this.currentWebSocket = null;
+            this.currentTask = null;
             this.processNextRequest(); // Attempt to continue with the next request
         };
 
-        requestDetails.status = 'running';
+        this.currentTask.status = TaskStatus.RUNNING;
         this.updateQueueSubscribers();
     }
 
@@ -91,13 +116,14 @@ class WebSocketManager {
         if (index === 0) { // Currently running request
             this.currentWebSocket.close();
         } else { // Waiting in the queue
+            this.currentTask.taskStatus = TaskStatus.CANCELLED;
             this.queue.queue.splice(index, 1);
             this.updateQueueSubscribers();
         }
     }
 
     updateQueueSubscribers() {
-        if (this.onQueueUpdate) this.onQueueUpdate(this.queue);
+        if (this.onQueueUpdate) this.onQueueUpdate(this.queue.queue);
     }
 }
 

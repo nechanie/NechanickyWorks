@@ -48,10 +48,11 @@ const TaskWindow = () => {
                 id={id}
                 slotProps={{
                     paper: {
+                        style: { width: "35vw", minHeight: "20vh"},
                         square: false
                     }
                 }}
-                sx={{ width: '100%', maxWidth: '50vw', maxHeight: '30vh' }}
+                sx={{ width: '100%'}}
             >
                 <TaskList/>
             </Popover>

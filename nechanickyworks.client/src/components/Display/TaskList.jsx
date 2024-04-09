@@ -1,35 +1,26 @@
 import * as React from 'react';
-import { List, ListItemButton, ListItem, Stack, IconButton, ListItemAvatar, ListItemText, Avatar } from '@mui/material';
+import { List, ListItemButton, ListSubheader, ListItem, Stack, IconButton, ListItemAvatar, ListItemText, Typography, Avatar, Divider } from '@mui/material';
 import { useWebSocket } from '../Shared/WebsocketContext';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { WebSocketQueue } from '../Shared/WebSocketManager';
-import WebSocketTask from '../Shared/WebSocketTask';
+import WebSocketTask from '../Shared/Data/WebSocketTask';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CancelIcon from '@mui/icons-material/Cancel';
+import { useEffect, useState } from 'react';
+import { TaskStatus } from '../Shared/WebSocketManager';
 
 const TaskList = () => {
 
-    const [selectedIndex, setSelectedIndex] = React.useState(null);
-    const [showLogs, setShowLogs] = React.useState(false);
+    const [selectedIndex, setSelectedIndex] = useState(null);
+    const [showLogs, setShowLogs] = useState(false);
 
-    const blurRef = React.useRef([]);
+    const { queue } = useWebSocket();
+    const [queueItems, setQueueItems] = useState([]);
 
-    //const { queue } = useWebSocket();
-    const queue = new WebSocketQueue();
+    useEffect(() => {
+        setQueueItems(queue());
+    }, [queue]);
 
-    for (var i = 0; i <= 4; i++) {
-        const task = new WebSocketTask(
-            'FakeUrl${i}',
-            'FakeName${i}',
-            'FakePageLink${i}',
-            { fakeKey: 'fakeKey${i}' }
-        );
-        if (i === 0) {
-            task.taskStatus = "Running";
-        }
-        queue.push(task);
-    }
 
     const handleListItemClick = (event, index) => {
         setSelectedIndex(index);
@@ -60,11 +51,12 @@ const TaskList = () => {
         }
         return null;
     }
-
+    console.log(queueItems.values());
     return (
         <React.Fragment>
-            <List component='nav' sx={{width: '100%', bgcolor: 'background.paper'}}>
-                {queue.queue.map((item, index) => (
+            <List component='nav' dense={true} sx={{ bgcolor: 'background.paper' }} subheader={<ListSubheader>Job Queue</ListSubheader>}>
+                <Divider flexItem/>
+                {queueItems.map((item, index) => (
                     <ListItem
                         key={index}
                         disablePadding
@@ -78,14 +70,17 @@ const TaskList = () => {
                                     {index}
                                 </Avatar>
                             </ListItemAvatar>
-                            <ListItemText>{item.taskName}</ListItemText>
-                            <Stack direction="row" spacing={1}>
-                                <LogVisibility hidden={item.taskStatus !== "Running"} isVisible={showLogs} onVisibilityClick={(event) => handleVisibilityClick(event)} />
-                                <IconButton edge="end" aria-label="Cancel Task" onClick={(event) => handleCancelClick(event, item)}>
-                                    <CancelIcon />
-                                </IconButton>
-                            </Stack>
+                            <ListItemText disableTypography={true}>
+                                <Typography sx={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.taskName}</Typography>
+                            </ListItemText>
                         </ListItemButton>
+                        <Divider orientation="vertical" variant="middle" flexItem sx={{ marginLeft: "2%", marginRight: "2%" }} flexItem/>
+                        <Stack direction="row" spacing={1}>
+                            <LogVisibility hidden={item.taskStatus !== TaskStatus.RUNNING} isVisible={showLogs} onVisibilityClick={(event) => handleVisibilityClick(event)} />
+                            <IconButton edge="end" aria-label="Cancel Task" onClick={(event) => handleCancelClick(event, item)}>
+                                <CancelIcon />
+                            </IconButton>
+                        </Stack>
                     </ListItem>
                 ))}
             </List>

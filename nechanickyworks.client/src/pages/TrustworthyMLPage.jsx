@@ -3,6 +3,9 @@ import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack
 import { styled } from '@mui/system';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
 import { useWebSocket } from '../components/Shared/WebsocketContext';
+import PageRef from '../components/Shared/Data/PageRefs';
+import WebSocketTask, { TaskPage } from '../components/Shared/Data/WebSocketTask';
+import { useLocation } from 'react-router-dom';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -12,7 +15,8 @@ const StyledFooter = styled('footer')(({ theme }) => ({
 }));
 
 const TrustWorthyMLProjectPage = () => {
-
+    const currentPath = useLocation();
+    const socketPageRef = PageRef.TML;
     const [accuracy, setAccuracy] = useState(null);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [logMessages, setLogMessages] = useState("");
@@ -21,10 +25,34 @@ const TrustWorthyMLProjectPage = () => {
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
 
+    let j = 1;
+    useEffect(() => {
+        if (webSocketManager.currentTask &&
+            webSocketManager.currentTask.PageRef() === socketPageRef &&
+            Array.isArray(webSocketManager.webSocketLogs[socketPageRef])) {
+
+            webSocketManager.webSocketLogs[socketPageRef].forEach((message) => {
+                setLogMessages(prev => `${prev}${message}\n`);
+            });
+        }
+    }, [webSocketManager, socketPageRef]);
+
+    useEffect(() => {
+        const checkRefAndDisableForm = () => {
+            const isDisabled = webSocketManager.queue.CrossCheckRef(socketPageRef);
+            setIsFormDisabled(isDisabled);
+        };
+
+        checkRefAndDisableForm();
+
+        const intervalId = setInterval(checkRefAndDisableForm, 1000);
+
+        return () => clearInterval(intervalId);
+    }, [webSocketManager.queue, socketPageRef]);
+
     // Effect to handle received messages
     useEffect(() => {
-
-        webSocketManager.onLogMessage = (message) => {
+        const handleMessage = (message) => {
             console.log("< Received: ", message);
             setLogMessages(prev => prev + message + "\n");
 
@@ -33,39 +61,45 @@ const TrustWorthyMLProjectPage = () => {
                 setAccuracy(accuracyValue);
             }
         };
+
+        const originalOnLogMessage = webSocketManager.onLogMessage;
+
+        webSocketManager.onLogMessage = (message) => {
+            if (webSocketManager.currentTask && webSocketManager.currentTask.PageRef() === socketPageRef) {
+                handleMessage(message);
+                webSocketManager.webSocketLogs[socketPageRef].push(message);
+            }
+        }
         return () => {
-            webSocketManager.onLogMessage = null;
+            webSocketManager.onLogMessage = originalOnLogMessage;
         };
-    }, [webSocketManager]);
+    }, [webSocketManager, socketPageRef]);
 
     const handleFormSubmit = useCallback((formData) => {
         setIsFormDisabled(true);
         setShowLog(true);
-        setLogMessages("");
+        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/capstoneV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
 
-        webSocketManager.connect({
-            name: "Trustworthy ML",
-            url: "wss://access.nechanickyworks.com/ws/capstoneV1",
-            data: {
-                model: "LeNet",
-                dataset: "MNIST",
-                epochs: "1",
-                batchsize: "200",
-                optimizer: "Adam",
-                learningrate: "0.002",
-                dropout: "0.25",
-                rotations: "False",
-                flips: "False",
-                attack: "False",
-                epsilon: "0.3",
-                alpha: "0.007843",
-                niter: "40",
-                randomstart: "True"
-            },
-            status: "waiting"
-        });
+        newTask.taskInitData = {
+            model: formData.model,
+            dataset: formData.dataset,
+            epochs: formData.epochs,
+            batchsize: formData.batchsize,
+            optimizer: "Adam",
+            learningrate: formData.learningRate,
+            dropout: formData.dropoutRate,
+            rotations: formData.randomRotations,
+            flips: formData.randomFlips,
+            attack: formData.attackEvaluation,
+            epsilon: formData.epsilonValue,
+            alpha: formData.alphaValue,
+            niter: formData.numberOfIterations,
+            randomstart: formData.randomInitializer
+        };
+        newTask.taskStatus = "waiting";
+        webSocketManager.newTask(newTask);
         console.log("> Request queued");
-    }, [webSocketManager]);
+    }, [webSocketManager, currentPath]);
 
     return (
         <React.Fragment>
