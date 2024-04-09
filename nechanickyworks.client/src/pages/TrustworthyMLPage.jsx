@@ -69,7 +69,7 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
-            <Container maxWidth="xl" align='center' sx={{ marginTop: "2%" }}>
+            <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%" }}>
                 {/* Title Section */}
                 <Typography variant="h3" align="center" component="h1" gutterBottom>
                     Welcome to the Trustworthy Machine Learning Project Page.

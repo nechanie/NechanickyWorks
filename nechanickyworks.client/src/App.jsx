@@ -18,6 +18,8 @@ import ContactPage from './pages/ContactPage';
 import AboutThisSitePage from './pages/AboutThisSitePage';
 import TrustWorthyMLProjectPage from './pages/TrustworthyMLPage';
 import { WebSocketProvider } from './components/Shared/WebsocketContext';
+import TaskWindow from './components/Display/TaskWindow';
+import { GlobalStyles } from '@mui/material';
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -218,13 +220,32 @@ function App() {
     );
 
     const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-    
+
+    const globalThemeStyles = (
+        <GlobalStyles
+            styles={{
+                '*::-webkit-scrollbar': {
+                    width: '8px',
+                },
+                '*::-webkit-scrollbar-track': {
+                    borderRadius: '10px',
+                    WebkitBoxShadow: `inset 0 0 6px ${theme.palette.mode === 'dark' ? theme.palette.grey[900] : theme.palette.grey[300]}`,
+                },
+                '*::-webkit-scrollbar-thumb': {
+                    borderRadius: '10px',
+                    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.grey[700] : theme.palette.grey[500],
+                    outline: `1px solid ${theme.palette.mode === 'dark' ? theme.palette.grey[800] : theme.palette.grey[400]}`,
+                },
+            }}
+        />
+    );
 
     return (
         <ThemeProvider theme={theme}>
+            {globalThemeStyles}
             <CssBaseline />
             <WebSocketProvider>
-                <GradientBox>
+                <GradientBox sx={{ paddingTop: "64px" }}>
                     <BrowserRouter>
                         <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                         <Routes>
@@ -242,6 +263,7 @@ function App() {
 
                             {/* Add more routes as needed */}
                         </Routes>
+                        <TaskWindow/>
                     </BrowserRouter>
                 </GradientBox>
             </WebSocketProvider>

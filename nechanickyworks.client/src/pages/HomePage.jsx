@@ -33,7 +33,7 @@ const HomePage = () => {
               Dive in and explore the various applications of technology and innovation.
         </Typography>
             <Stack direction="column" spacing={4}>
-                    <InfoGraphic title="Trustworthy Machine Learning" image={DdsImage} href="projects/TrustworthyMachineLearning">
+                    <InfoGraphic title="Trustworthy Machine Learning" image={DdsImage} href="projects/TrustworthyMachineLearning" rightJustify={true}>
                         Explore the impact of hyperparameters on AI robustness with our interactive demo. Train neural networks, face adversarial attacks, and discover the balance of AI resilience.
                     </InfoGraphic>  
                     <InfoGraphic title="Gaussian Quadrature" image={ GaussImage } href="projects/GaussianQuadrature">

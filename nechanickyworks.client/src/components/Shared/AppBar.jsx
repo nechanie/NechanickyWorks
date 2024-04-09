@@ -34,7 +34,6 @@ const CustomAppBar = ({ onThemeToggle }) => {
     // Handle opening the settings menu
     const handleSettingsClick = (event) => {
         setSettingsAnchorEl(event.currentTarget);
-        event.currentTarget.blur();
     };
 
 
@@ -50,13 +49,12 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     const handleAboutClick = (event) => {
         setAboutAnchorEl(event.currentTarget);
-        event.currentTarget.blur();
     }
 
 
     return (
         <React.Fragment>
-            <AppBar position="relative">
+            <AppBar position="fixed">
                 <Toolbar sx={{display: "flex", justifyContent:"space-between"} }>
                         {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
                     <img src={ DaneLogo } />
