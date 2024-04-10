@@ -83,13 +83,13 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                         />
                         <TextField
                             fullWidth
-                            name="Epochs"
+                            name="epochs"
                             label="Epochs"
                             type="number"
                             margin="normal"
                             value={formData.epochs}
                             onChange={handleInputChange}
-                            inputProps={{ step: 1, min: 1, max: 30 }}
+                            inputProps={{ step: 1, min: 1, max: 1 }}
                             disabled={isDisabled}
                         />
                     <TextField

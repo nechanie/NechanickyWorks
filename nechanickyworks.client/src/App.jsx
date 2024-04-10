@@ -20,6 +20,7 @@ import TrustWorthyMLProjectPage from './pages/TrustworthyMLPage';
 import { WebSocketProvider } from './components/Shared/WebsocketContext';
 import TaskWindow from './components/Display/TaskWindow';
 import { GlobalStyles } from '@mui/material';
+import ScrollToTop from './components/utils/useScrollToTop';
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -209,11 +210,24 @@ const GradientBox = styled(Box)(({ theme }) => ({
 
 function App() {
 
-    const [mode, setMode] = React.useState('light');
+    const [mode, setMode] = React.useState(() => {
+        // Try to fetch the theme from localStorage, default to 'light' if not found
+        const savedTheme = localStorage.getItem('themeMode');
+        return savedTheme || 'light';
+    });
+
+    React.useEffect(() => {
+        localStorage.setItem('themeMode', mode);
+    }, [mode]);
+
     const colorMode = React.useMemo(
         () => ({
             toggleColorMode: () => {
-                setMode((prevMode) => prevMode === 'light' ? 'dark' : 'light',);
+                setMode((prevMode) => {
+                    const newMode = prevMode === 'light' ? 'dark' : 'light';
+                    localStorage.setItem('themeMode', newMode); // Save the new theme mode to localStorage
+                    return newMode;
+                });
             },
         }),
         [],
@@ -240,6 +254,7 @@ function App() {
         />
     );
 
+
     return (
         <ThemeProvider theme={theme}>
             {globalThemeStyles}
@@ -247,6 +262,7 @@ function App() {
             <WebSocketProvider>
                 <GradientBox sx={{ paddingTop: "64px" }}>
                     <BrowserRouter>
+                        <ScrollToTop/>
                         <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                         <Routes>
                             <Route path="/" element={<HomePage />} />

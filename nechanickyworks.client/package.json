@@ -14,11 +14,15 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.12",
     "@mui/material": "^5.15.12",
+    "katex": "^0.16.10",
     "moment": "^2.30.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-katex": "^3.0.1",
     "react-router-dom": "^6.22.2",
-    "react-use-websocket": "^4.8.1"
+    "react-slick": "^0.30.2",
+    "react-use-websocket": "^4.8.1",
+    "slick-carousel": "^1.8.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",

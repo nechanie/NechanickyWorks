@@ -25,7 +25,6 @@ const TrustWorthyMLProjectPage = () => {
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
 
-    let j = 1;
     useEffect(() => {
         if (webSocketManager.currentTask &&
             webSocketManager.currentTask.PageRef() === socketPageRef &&
@@ -78,7 +77,7 @@ const TrustWorthyMLProjectPage = () => {
     const handleFormSubmit = useCallback((formData) => {
         setIsFormDisabled(true);
         setShowLog(true);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/capstoneV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = {
             model: formData.model,

@@ -48,3 +48,21 @@ h1 {
     font-size: 58px;
   }
 }
+
+.center img{
+    opacity: 0.8;
+}
+
+.center img{
+    margin: 10px;
+    position: relative;
+    padding: 2%;
+}
+
+.center .slick-center img {
+    -moz-transform: scale(1.08);
+    -ms-transform: scale(1.08);
+    -o-transform: scale(1.08);
+    opacity: 1;
+    transform: scale(1.08);
+}
