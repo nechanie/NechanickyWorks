@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Paper, Container, Typography, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, RadioGroup, Radio, Checkbox, Button, Box } from '@mui/material';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import axios from 'axios';
+import UnavailableServiceOverlay from '../Display/UnavailableServiceOverlay';
 
 const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
+    const [isBackendHealthy, setIsBackendHealthy] = useState(false);
+    const [isAltDisabled, setIsAltDisabled] = useState(true);
     const [formData, setFormData] = useState({
         model: 'LeNet',
         dataset: 'MNIST',
@@ -19,6 +24,26 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
         randomInitializer: true,
     });
 
+    useEffect(() => {
+        const checkBackendHealth = async () => {
+            try {
+                const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
+                if (response.status === 200 && response.data.status === 'healthy') {
+                    setIsBackendHealthy(true);
+                    setIsAltDisabled(false);
+                } else {
+                    setIsBackendHealthy(false);
+                    setIsAltDisabled(true);
+                }
+            } catch (error) {
+                setIsBackendHealthy(false);
+                setIsAltDisabled(true);
+            }
+        };
+
+        checkBackendHealth();
+    }, []);
+
     const handleInputChange = (event) => {
         const { name, value, checked, type } = event.target;
         setFormData({
@@ -35,187 +60,194 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
 
     return (
         <Container maxWidth="md" sx={{ m: 3 }}>
-            <Paper sx={{p:3}}>
-            <Typography variant="h4" gutterBottom>
-                Demo Configuration
-            </Typography>
-            <form onSubmit={handleSubmit}>
-                <Box sx={{ marginBottom: 2 }}>
-                    <Typography variant="h6">Model Choice</Typography>
-                        <FormControl fullWidth margin="normal" disabled={isDisabled}>
-                        <InputLabel>Model</InputLabel>
-                        <Select
-                            name="model"
-                            value={formData.model}
-                            onChange={handleInputChange}
-                            label="Model"
-                        >
-                            <MenuItem value="LeNet">LeNet</MenuItem>
-                            <MenuItem value="VGG">VGG</MenuItem>
-                            <MenuItem value="ResNet">ResNet</MenuItem>
-                        </Select>
-                    </FormControl>
-                        <FormControl component="fieldset" margin="normal" disabled={isDisabled}>
-                        <RadioGroup
-                            row
-                            name="dataset"
-                            value={formData.dataset}
-                            onChange={handleInputChange}
-                        >
-                            <FormControlLabel value="MNIST" control={<Radio />} label="MNIST" />
-                            <FormControlLabel value="CIFAR10" control={<Radio />} label="CIFAR10" />
-                        </RadioGroup>
-                    </FormControl>
-                </Box>
+            <Paper sx={{ p: 3 }}>
+                {isBackendHealthy && (
+                    <Box sx={{ position: 'absolute', right: 16, top: 16 }}> {/* Positioning the icon */}
+                        <CheckCircleOutlineIcon color="success" />
+                    </Box>
+                )}
+                <Typography variant="h4" gutterBottom>
+                    Demo Configuration
+                </Typography>
+                <UnavailableServiceOverlay>
+                    <form onSubmit={handleSubmit}>
+                        <Box sx={{ marginBottom: 2 }}>
+                            <Typography variant="h6">Model Choice</Typography>
+                                <FormControl fullWidth margin="normal" disabled={isDisabled || isAltDisabled}>
+                                <InputLabel>Model</InputLabel>
+                                <Select
+                                    name="model"
+                                    value={formData.model}
+                                    onChange={handleInputChange}
+                                    label="Model"
+                                >
+                                    <MenuItem value="LeNet">LeNet</MenuItem>
+                                    <MenuItem value="VGG">VGG</MenuItem>
+                                    <MenuItem value="ResNet">ResNet</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl component="fieldset" margin="normal" disabled={isDisabled || isAltDisabled}>
+                                <RadioGroup
+                                    row
+                                    name="dataset"
+                                    value={formData.dataset}
+                                    onChange={handleInputChange}
+                                >
+                                    <FormControlLabel value="MNIST" control={<Radio />} label="MNIST" />
+                                    <FormControlLabel value="CIFAR10" control={<Radio />} label="CIFAR10" />
+                                </RadioGroup>
+                            </FormControl>
+                        </Box>
 
-                <Box sx={{ marginBottom: 2 }}>
-                    <Typography variant="h6">Hyperparameters</Typography>
-                    <TextField
-                        fullWidth
-                        name="learningRate"
-                        label="Learning Rate"
-                        type="number"
-                        margin="normal"
-                        value={formData.learningRate}
-                        onChange={handleInputChange}
-                            inputProps={{ step: 0.001, min: 0, maxLength: 6 }}
-                            disabled={isDisabled}
-                        />
-                        <TextField
-                            fullWidth
-                            name="epochs"
-                            label="Epochs"
-                            type="number"
-                            margin="normal"
-                            value={formData.epochs}
-                            onChange={handleInputChange}
-                            inputProps={{ step: 1, min: 1, max: 1 }}
-                            disabled={isDisabled}
-                        />
-                    <TextField
-                        fullWidth
-                        name="batchSize"
-                        label="Batch Size"
-                        type="number"
-                        margin="normal"
-                        value={formData.batchSize}
-                        onChange={handleInputChange}
-                            inputProps={{ min: 1, max: 1000 }}
-                            disabled={isDisabled}
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                name="includeDropout"
-                                checked={formData.includeDropout}
-                                    onChange={handleInputChange}
-                                    disabled={isDisabled}
-                            />
-                        }
-                        label="Include Dropout"
-                    />
-                    {formData.includeDropout && (
-                        <TextField
-                            fullWidth
-                            name="dropoutRate"
-                            label="Dropout Rate"
-                            type="number"
-                            margin="normal"
-                            value={formData.dropoutRate}
-                            onChange={handleInputChange}
-                                inputProps={{ step: 0.1, min: 0, max: 20, maxLength: 4 }}
-                                disabled={isDisabled}
-                        />
-                    )}
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                name="randomRotations"
-                                checked={formData.randomRotations}
-                                    onChange={handleInputChange}
-                                    disabled={isDisabled}
-                            />
-                        }
-                        label="Random Rotations"
-                    />
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                name="randomFlips"
-                                checked={formData.randomFlips}
-                                    onChange={handleInputChange}
-                                    disabled={isDisabled}
-                            />
-                        }
-                        label="Random Flips"
-                    />
-                </Box>
-
-                <Box sx={{ marginBottom: 2 }}>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                name="attackEvaluation"
-                                checked={formData.attackEvaluation}
-                                    onChange={handleInputChange}
-                                    disabled={isDisabled}
-                            />
-                        }
-                        label="Attack Evaluation"
-                    />
-                    {formData.attackEvaluation && (
-                        <Box>
+                        <Box sx={{ marginBottom: 2 }}>
+                            <Typography variant="h6">Hyperparameters</Typography>
                             <TextField
                                 fullWidth
-                                name="epsilonValue"
-                                label="Epsilon Value"
+                                name="learningRate"
+                                label="Learning Rate"
                                 type="number"
                                 margin="normal"
-                                value={formData.epsilonValue}
+                                value={formData.learningRate}
                                 onChange={handleInputChange}
-                                    inputProps={{ step: 0.1, min: 0, max: 5, maxLength: 10 }}
-                                    disabled={isDisabled}
-                            />
+                                    inputProps={{ step: 0.001, min: 0, maxLength: 6 }}
+                                disabled={isDisabled || isAltDisabled}
+                                />
+                                <TextField
+                                    fullWidth
+                                    name="epochs"
+                                    label="Epochs"
+                                    type="number"
+                                    margin="normal"
+                                    value={formData.epochs}
+                                    onChange={handleInputChange}
+                                    inputProps={{ step: 1, min: 1, max: 1 }}
+                                disabled={isDisabled || isAltDisabled}
+                                />
                             <TextField
                                 fullWidth
-                                name="alphaValue"
-                                label="Alpha Value"
+                                name="batchSize"
+                                label="Batch Size"
                                 type="number"
                                 margin="normal"
-                                value={formData.alphaValue}
+                                value={formData.batchSize}
                                 onChange={handleInputChange}
-                                    inputProps={{ step: 0.0001, min: 0, max: 3, maxLength: 10 }}
-                                    disabled={isDisabled}
-                            />
-                            <TextField
-                                fullWidth
-                                name="numberOfIterations"
-                                label="Number of Iterations"
-                                type="number"
-                                margin="normal"
-                                value={formData.numberOfIterations}
-                                onChange={handleInputChange}
-                                    inputProps={{ min: 1, max: 100 }}
-                                    disabled={isDisabled}
+                                    inputProps={{ min: 1, max: 1000 }}
+                                disabled={isDisabled || isAltDisabled}
                             />
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="randomInitializer"
-                                        checked={formData.randomInitializer}
+                                        name="includeDropout"
+                                        checked={formData.includeDropout}
                                             onChange={handleInputChange}
-                                            disabled={isDisabled}
+                                        disabled={isDisabled || isAltDisabled}
                                     />
                                 }
-                                label="Random Initializer"
+                                label="Include Dropout"
+                            />
+                            {formData.includeDropout && (
+                                <TextField
+                                    fullWidth
+                                    name="dropoutRate"
+                                    label="Dropout Rate"
+                                    type="number"
+                                    margin="normal"
+                                    value={formData.dropoutRate}
+                                    onChange={handleInputChange}
+                                        inputProps={{ step: 0.1, min: 0, max: 20, maxLength: 4 }}
+                                    disabled={isDisabled || isAltDisabled}
+                                />
+                            )}
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="randomRotations"
+                                        checked={formData.randomRotations}
+                                            onChange={handleInputChange}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                }
+                                label="Random Rotations"
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="randomFlips"
+                                        checked={formData.randomFlips}
+                                            onChange={handleInputChange}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                }
+                                label="Random Flips"
                             />
                         </Box>
-                    )}
-                </Box>
-                    <Button type="submit" variant="contained" color="primary" disabled={isDisabled}>
-                    Submit
-                </Button>
-                </form>
+
+                        <Box sx={{ marginBottom: 2 }}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="attackEvaluation"
+                                        checked={formData.attackEvaluation}
+                                            onChange={handleInputChange}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                }
+                                label="Attack Evaluation"
+                            />
+                            {formData.attackEvaluation && (
+                                <Box>
+                                    <TextField
+                                        fullWidth
+                                        name="epsilonValue"
+                                        label="Epsilon Value"
+                                        type="number"
+                                        margin="normal"
+                                        value={formData.epsilonValue}
+                                        onChange={handleInputChange}
+                                            inputProps={{ step: 0.1, min: 0, max: 5, maxLength: 10 }}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        name="alphaValue"
+                                        label="Alpha Value"
+                                        type="number"
+                                        margin="normal"
+                                        value={formData.alphaValue}
+                                        onChange={handleInputChange}
+                                            inputProps={{ step: 0.0001, min: 0, max: 3, maxLength: 10 }}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        name="numberOfIterations"
+                                        label="Number of Iterations"
+                                        type="number"
+                                        margin="normal"
+                                        value={formData.numberOfIterations}
+                                        onChange={handleInputChange}
+                                            inputProps={{ min: 1, max: 100 }}
+                                        disabled={isDisabled || isAltDisabled}
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                name="randomInitializer"
+                                                checked={formData.randomInitializer}
+                                                    onChange={handleInputChange}
+                                                disabled={isDisabled || isAltDisabled}
+                                            />
+                                        }
+                                        label="Random Initializer"
+                                    />
+                                </Box>
+                            )}
+                        </Box>
+                        <Button type="submit" variant="contained" color="primary" disabled={isDisabled || isAltDisabled}>
+                            Submit
+                        </Button>
+                    </form>
+                </UnavailableServiceOverlay>
             </Paper>
         </Container>
     );
