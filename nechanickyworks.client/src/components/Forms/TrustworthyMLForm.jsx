@@ -28,6 +28,8 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
         const checkBackendHealth = async () => {
             try {
                 const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
+                console.log(response.status);
+                console.log(response.data.status);
                 if (response.status === 200 && response.data.status === 'healthy') {
                     setIsBackendHealthy(true);
                     setIsAltDisabled(false);
@@ -69,7 +71,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                 <Typography variant="h4" gutterBottom>
                     Demo Configuration
                 </Typography>
-                <UnavailableServiceOverlay>
+                <UnavailableServiceOverlay isServiceAvailable={isBackendHealthy}>
                     <form onSubmit={handleSubmit}>
                         <Box sx={{ marginBottom: 2 }}>
                             <Typography variant="h6">Model Choice</Typography>
@@ -120,7 +122,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     margin="normal"
                                     value={formData.epochs}
                                     onChange={handleInputChange}
-                                    inputProps={{ step: 1, min: 1, max: 1 }}
+                                    inputProps={{ step: 1, min: 1, max: 10 }}
                                 disabled={isDisabled || isAltDisabled}
                                 />
                             <TextField

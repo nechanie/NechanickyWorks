@@ -122,8 +122,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                         }}
                     >
                         {/* Replace these with your actual navigation links */}
-                            <MenuItem onClick={handleAboutClose} component={Link} disabled={false} to="/about-me">About Me (Coming Soon)</MenuItem>
-                            <MenuItem onClick={handleAboutClose} component={Link} disabled={false} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
+                            <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-me">About Me (Coming Soon)</MenuItem>
+                            <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
                     </Menu>
                     <IconButton
                         disableFocusRipple={true}
