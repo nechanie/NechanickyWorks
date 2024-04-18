@@ -74,7 +74,7 @@ const TaskList = () => {
                                 <Typography sx={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.taskName}</Typography>
                             </ListItemText>
                         </ListItemButton>
-                        <Divider orientation="vertical" variant="middle" flexItem sx={{ marginLeft: "2%", marginRight: "2%" }} flexItem/>
+                        <Divider orientation="vertical" variant="middle" sx={{ marginLeft: "2%", marginRight: "2%" }} flexItem/>
                         <Stack direction="row" spacing={1}>
                             <LogVisibility hidden={item.taskStatus !== TaskStatus.RUNNING} isVisible={showLogs} onVisibilityClick={(event) => handleVisibilityClick(event)} />
                             <IconButton edge="end" aria-label="Cancel Task" onClick={(event) => handleCancelClick(event, item)}>

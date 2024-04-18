@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack } from '@mui/material';
+import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
 import { useWebSocket } from '../components/Shared/WebsocketContext';
 import PageRef from '../components/Shared/Data/PageRefs';
 import WebSocketTask, { TaskPage } from '../components/Shared/Data/WebSocketTask';
 import { useLocation } from 'react-router-dom';
+import LineGraph from '../components/Display/LineGraph';
+import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -18,10 +20,21 @@ const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
     const socketPageRef = PageRef.TML;
     const [accuracy, setAccuracy] = useState(null);
+    const [batches, setBatches] = useState([]);
+    const [lossData, setLossData] = useState([]);
+    const [accuracyData, setAccuracyData] = useState([]);
+    const [epochs, setEpochs] = useState([]);
+    const [epochLossData, setEpochLossData] = useState([]);
+    const [epochAccuracyData, setEpochAccuracyData] = useState([]);
+    const [batchGraphData, setBatchGraphData] = useState([]);
+    const [epochGraphData, setEpochGraphData] = useState([]);
     const [isFormDisabled, setIsFormDisabled] = useState(false);
+    const [showPoints, setShowPoints] = useState(false);
     const [logMessages, setLogMessages] = useState("");
-    const [showLog, setShowLog] = useState(false);
-
+    const [showBatchGraph, setShowBatchGraph] = useState(false);
+    const [showEpochGraph, setShowEpochGraph] = useState(false);
+    const theme = useTheme();
+    const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
 
@@ -52,13 +65,61 @@ const TrustWorthyMLProjectPage = () => {
     // Effect to handle received messages
     useEffect(() => {
         const handleMessage = (message) => {
-            console.log("< Received: ", message);
+            const msg = JSON.parse(message);
+            console.log("< Received: ", msg);
             setLogMessages(prev => prev + message + "\n");
-
-            if (message.startsWith("Accuracy")) {
-                const accuracyValue = message.slice(-10);
-                setAccuracy(accuracyValue);
+            if (msg.type === 'batch_info') {
+                if (showBatchGraph === false) {
+                    setShowBatchGraph(true);
+                }
+                setBatches((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseInt(msg.data.batch_num));
+                    return copy;
+                });
+                setAccuracyData((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseFloat(msg.data.train_accuracy));
+                    return copy;
+                });
+                setLossData((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseFloat(msg.data.train_loss));
+                    return copy;
+                });
             }
+            if (msg.type === "epoch_info") {
+                if (showEpochGraph === false) {
+                    if (msg.data.epoch_num === msg.data.total_epochs) {
+                        setShowPoints(true);
+                    }
+                    setShowEpochGraph(true);
+                }
+                if (msg.data.epoch_num !== msg.data.total_epochs) {
+                    setAccuracyData([]);
+                    setLossData([]);
+                    setBatches([]);
+                }
+                setEpochs((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseInt(msg.data.epoch_num));
+                    return copy;
+                });
+                setEpochAccuracyData((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseFloat(msg.data.train_accuracy));
+                    return copy;
+                });
+                setEpochLossData((prevState) => {
+                    const copy = [...prevState];
+                    copy.push(parseFloat(msg.data.train_loss));
+                    return copy;
+                });
+            }
+            if (msg.type === 'evaluation_info') {
+                setAccuracy(msg.data.accuracy);
+            }
+            
         };
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
@@ -72,11 +133,73 @@ const TrustWorthyMLProjectPage = () => {
         return () => {
             webSocketManager.onLogMessage = originalOnLogMessage;
         };
-    }, [webSocketManager, socketPageRef]);
+    }, [webSocketManager, socketPageRef, showEpochGraph, showBatchGraph]);
+
+    useEffect(() => {
+        
+        setBatchGraphData((prevState) => {
+            console.log(prevState);
+            const newData = [
+                {
+                    label: "Training Accuracy",
+                    yAxisKey: 'leftAxisId',
+                    color: lineColor[6],
+                    curve: 'monotoneX',
+                    type: 'line',
+                    data: accuracyData
+                },
+                {
+                    label: "Training Loss",
+                    yAxisKey: 'rightAxisId',
+                    color: lineColor[7],
+                    curve: 'monotoneX',
+                    type: 'line',
+                    data: lossData
+                }
+            ];
+            return newData;
+        });
+    }, [accuracyData, lossData, lineColor]);
+
+    useEffect(() => {
+
+        setEpochGraphData((prevState) => {
+            const newData = [
+                {
+                    label: "Training Accuracy",
+                    yAxisKey: 'leftAxisId',
+                    color: lineColor[6],
+                    curve: 'monotoneX',
+                    type: 'line',
+                    data: epochAccuracyData
+                },
+                {
+                    label: "Training Loss",
+                    yAxisKey: 'rightAxisId',
+                    color: lineColor[7],
+                    curve: 'monotoneX',
+                    type: 'line',
+                    data: epochLossData
+                }
+            ];
+            return newData;
+        });
+    }, [epochAccuracyData, epochLossData, lineColor]);
 
     const handleFormSubmit = useCallback((formData) => {
+        setAccuracy(null);
+        setAccuracyData([]);
+        setBatches([]);
+        setBatchGraphData([]);
+        setEpochAccuracyData([]);
+        setEpochGraphData([]);
+        setEpochLossData([]);
+        setEpochs([]);
+        setLossData([]);
+        setShowBatchGraph(false);
+        setShowPoints(false);
+        setShowEpochGraph(false);
         setIsFormDisabled(true);
-        setShowLog(true);
         const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = {
@@ -152,31 +275,22 @@ const TrustWorthyMLProjectPage = () => {
                         </Stack>
                     </Paper>
                     <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
-                    {showLog && (
-                        <Box sx={{ marginTop: 2 }}>
-                            <Paper sx={{ padding: 2 }}>
-                                <Typography variant="h6" gutterBottom>
-                                    Training Log
-                                </Typography>
-                                <TextField
-                                    fullWidth
-                                    multiline
-                                    rows={10}
-                                    variant="outlined"
-                                    value={logMessages}
-                                    InputProps={{
-                                        readOnly: true,
-                                    }}
-                                />
-                            </Paper>
+                      
+                    {showBatchGraph && (<Paper sx={{ marginTop: 2 }}>
+                        <Box sx={{ height: "50vh", p: "3%" }}>
+                            <LineGraph dataRefs={batches} dataVals={batchGraphData} xLabel="Batches" showPoints={showPoints} />
+
                         </Box>
-                    )}
-                    {/* Optionally, display accuracy value after WebSocket closes */}
-                    {accuracy !== null && (
-                        <Typography variant="h5" sx={{ marginTop: 2 }}>
-                            Final Accuracy: {accuracy}
-                        </Typography>
-                    )}
+                        {accuracy !== null && (
+                            <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
+                                Final Accuracy: {accuracy}
+                            </Typography>
+                        )}
+                        {showEpochGraph && (<Box sx={{ height: "50vh", p: "3%" }}>
+                            <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
+                        </Box>)}
+                    </Paper>)}
+                    
                     <Container maxWidth='sm' sx={{ marginTop: "2%" }}>
                         <Paper sx={{p:3}}>
                         <Typography variant="h5" align="center" component="h1" gutterBottom>
