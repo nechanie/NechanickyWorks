@@ -9,7 +9,7 @@ const LineGraph = ({ dataRefs, dataVals, xLabel, showPoints = false}) => {
             {(dataVals.length > 0 && dataRefs.length > 0) ? (<ResponsiveChartContainer
                 series={dataVals}
                 xAxis={[{ id: "xAxisId", scaleType: 'linear', data: dataRefs }]}
-                yAxis={[{ scaleType: 'linear', id: 'leftAxisId', min: 0, max: 1 }, { scaleType: 'linear', id: 'rightAxisId' }]}>
+                yAxis={[{ scaleType: 'linear', id: 'leftAxisId', min: 0, max: 100 }, { scaleType: 'linear', id: 'rightAxisId' }]}>
                 <LinePlot />
                 <ChartsXAxis label={xLabel} position="bottom" axisId="xAxisId" />
                 <ChartsYAxis label="Accuracy" position="left" axisId="leftAxisId" />

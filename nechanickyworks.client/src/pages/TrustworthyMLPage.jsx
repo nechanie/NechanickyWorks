@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme } from '@mui/material';
+import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme, CircularProgress, LinearProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
 import { useWebSocket } from '../components/Shared/WebsocketContext';
@@ -8,6 +8,7 @@ import WebSocketTask, { TaskPage } from '../components/Shared/Data/WebSocketTask
 import { useLocation } from 'react-router-dom';
 import LineGraph from '../components/Display/LineGraph';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
+import BarGraph from '../components/Display/BarGraph';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -20,6 +21,7 @@ const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
     const socketPageRef = PageRef.TML;
     const [accuracy, setAccuracy] = useState(null);
+    const [finalAccuracy, setFinalAccuracy] = useState(null);
     const [batches, setBatches] = useState([]);
     const [lossData, setLossData] = useState([]);
     const [accuracyData, setAccuracyData] = useState([]);
@@ -31,8 +33,19 @@ const TrustWorthyMLProjectPage = () => {
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [showPoints, setShowPoints] = useState(false);
     const [logMessages, setLogMessages] = useState("");
+    const [primaryProgress, setPrimaryProgress] = useState(0);
+    const [secondaryProgress, setSecondaryProgress] = useState(0);
+    const [showPrimaryProgress, setShowPrimaryProgress] = useState(false);
+    const [showSecondaryProgress, setShowSecondaryProgress] = useState(false);
+    const [isCircular, setIsCircular] = useState(true);
+    const [statusMessage, setStatusMessage] = useState(null);
+    const [lastBatchNum, setLastBatchNum] = useState(0);
+    const [willAttack, setWillAttack] = useState(false);
     const [showBatchGraph, setShowBatchGraph] = useState(false);
     const [showEpochGraph, setShowEpochGraph] = useState(false);
+    const [categories, setCategories] = useState([]);
+    const [categoryPercentages, setCategoryPercentages] = useState([]);
+    const [showBarGraph, setShowBarGraph] = useState(false);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
@@ -68,10 +81,48 @@ const TrustWorthyMLProjectPage = () => {
             const msg = JSON.parse(message);
             console.log("< Received: ", msg);
             setLogMessages(prev => prev + message + "\n");
+            if (msg.type === 'process_info') {
+                if (msg.data.message === "setup_start") {
+                    setShowSecondaryProgress(true);
+                    setStatusMessage("Setup Started.");
+                }
+                else if (msg.data.message === "setup_complete") {
+                    setShowSecondaryProgress(false);
+                    setStatusMessage("Waiting for turn in queue.");
+                }
+                else if (msg.data.message === "task_starting") {
+                    setStatusMessage("Starting...");
+                    setIsCircular(false);
+                    setShowSecondaryProgress(true);
+                    setShowPrimaryProgress(true);
+                }
+                else if (msg.data.message === "task_complete") {
+                    setStatusMessage("Finished.");
+                    setShowPrimaryProgress(false);
+                    setShowSecondaryProgress(false);
+                }
+            }
             if (msg.type === 'batch_info') {
                 if (showBatchGraph === false) {
+
+                    setStatusMessage("Training Model...");
                     setShowBatchGraph(true);
                 }
+                setSecondaryProgress((prevState) => {
+                    const result = 100 * msg.data.batch_num / msg.data.total_batches;
+                    return result;
+                });
+                setPrimaryProgress((prevState) => {
+                    let multiplier = null;
+                    if (willAttack) {
+                        multiplier = 40;
+                    }
+                    else {
+                        multiplier = 80;
+                    }
+                    let addition = multiplier * ((msg.data.batch_num - lastBatchNum) / msg.data.total_batches) / msg.data.total_epochs;
+                    return prevState + addition;
+                });
                 setBatches((prevState) => {
                     const copy = [...prevState];
                     copy.push(parseInt(msg.data.batch_num));
@@ -87,18 +138,28 @@ const TrustWorthyMLProjectPage = () => {
                     copy.push(parseFloat(msg.data.train_loss));
                     return copy;
                 });
-            }
-            if (msg.type === "epoch_info") {
-                if (showEpochGraph === false) {
-                    if (msg.data.epoch_num === msg.data.total_epochs) {
-                        setShowPoints(true);
-                    }
-                    setShowEpochGraph(true);
+                if (msg.data.batch_num !== msg.data.total_batches) {
+                    setLastBatchNum(msg.data.batch_num);
                 }
-                if (msg.data.epoch_num !== msg.data.total_epochs) {
+                else {
+                    setLastBatchNum(0);
+                }
+            }
+            if (msg.type === "epoch_info") { //if for epoch
+                if (msg.data.epoch_num === msg.data.total_epochs) { // if is now finished
+                    setShowPoints(true); //show points
+                    setIsCircular(true); //set circular secondar progress to prep for eval
+                    setStatusMessage("Evaluating."); // set message to evaluating
+                    setSecondaryProgress(0);
+                }
+                else {
                     setAccuracyData([]);
                     setLossData([]);
                     setBatches([]);
+                    setSecondaryProgress(0);
+                }
+                if (showEpochGraph === false) {
+                    setShowEpochGraph(true);
                 }
                 setEpochs((prevState) => {
                     const copy = [...prevState];
@@ -116,10 +177,45 @@ const TrustWorthyMLProjectPage = () => {
                     return copy;
                 });
             }
+            if (msg.type === 'attack_batch_info') {
+                if (statusMessage !== "Generating Attacks..."){
+                    setStatusMessage("Generating Attacks...");
+                }
+                setSecondaryProgress((prevState) => {
+                    const result = msg.data.batch_num / msg.data.total_batches;
+                    return result;
+                });
+                setPrimaryProgress((prevState) => {
+                    let batch_diff = msg.data.batch_num - lastBatchNum;
+                    const result = prevState + (40 * batch_diff / msg.data.total_batches);
+                    return result;
+                });
+                setLastBatchNum(msg.data.batch_num);
+            }
             if (msg.type === 'evaluation_info') {
+                setPrimaryProgress((prevState) => {
+                    let addition = null;
+                    if (willAttack === true) {
+                        addition = 10;
+                    }
+                    else {
+                        addition = 20;
+                    }
+                    const result = prevState + addition;
+                    return result;
+                });
                 setAccuracy(msg.data.accuracy);
             }
-            
+            if (msg.type === 'attack_evaluation_info') {
+                setPrimaryProgress((prevState) => {
+                    const result = prevState + 10;
+                    return result;
+                });
+                setCategories(msg.data.categories);
+                setCategoryPercentages(msg.data.breakdown);
+                setFinalAccuracy(msg.data.accuracy);
+                setShowBarGraph(true);
+            }
         };
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
@@ -133,7 +229,7 @@ const TrustWorthyMLProjectPage = () => {
         return () => {
             webSocketManager.onLogMessage = originalOnLogMessage;
         };
-    }, [webSocketManager, socketPageRef, showEpochGraph, showBatchGraph]);
+    }, [webSocketManager, socketPageRef, showEpochGraph, showBatchGraph, showPoints, willAttack, lastBatchNum]);
 
     useEffect(() => {
         
@@ -144,16 +240,18 @@ const TrustWorthyMLProjectPage = () => {
                     label: "Training Accuracy",
                     yAxisKey: 'leftAxisId',
                     color: lineColor[6],
-                    curve: 'monotoneX',
+                    curve: 'catmullRom',
                     type: 'line',
+                    showMark: false,
                     data: accuracyData
                 },
                 {
                     label: "Training Loss",
                     yAxisKey: 'rightAxisId',
                     color: lineColor[7],
-                    curve: 'monotoneX',
+                    curve: 'catmullRom',
                     type: 'line',
+                    showMark: false,
                     data: lossData
                 }
             ];
@@ -177,7 +275,7 @@ const TrustWorthyMLProjectPage = () => {
                     label: "Training Loss",
                     yAxisKey: 'rightAxisId',
                     color: lineColor[7],
-                    curve: 'monotoneX',
+                    curve: 'catmullRom',
                     type: 'line',
                     data: epochLossData
                 }
@@ -188,6 +286,7 @@ const TrustWorthyMLProjectPage = () => {
 
     const handleFormSubmit = useCallback((formData) => {
         setAccuracy(null);
+        setFinalAccuracy(null);
         setAccuracyData([]);
         setBatches([]);
         setBatchGraphData([]);
@@ -199,7 +298,20 @@ const TrustWorthyMLProjectPage = () => {
         setShowBatchGraph(false);
         setShowPoints(false);
         setShowEpochGraph(false);
+        setWillAttack(false);
         setIsFormDisabled(true);
+        setPrimaryProgress(0);
+        setSecondaryProgress(0);
+        setShowPrimaryProgress(false);
+        setShowSecondaryProgress(false);
+        setIsCircular(true);
+        setStatusMessage(null);
+        setLastBatchNum(0);
+        setShowBatchGraph(false);
+        setShowEpochGraph(false);
+        setCategories([]);
+        setCategoryPercentages([]);
+        setShowBarGraph(false);
         const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = {
@@ -218,6 +330,9 @@ const TrustWorthyMLProjectPage = () => {
             niter: formData.numberOfIterations,
             randomstart: formData.randomInitializer
         };
+        if (newTask.taskInitData.attack === true) {
+            setWillAttack(true);
+        }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
         console.log("> Request queued");
@@ -225,6 +340,7 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
+            
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%" }}>
                 {/* Title Section */}
                 <Typography variant="h3" align="center" component="h1" gutterBottom>
@@ -281,14 +397,63 @@ const TrustWorthyMLProjectPage = () => {
                             <LineGraph dataRefs={batches} dataVals={batchGraphData} xLabel="Batches" showPoints={showPoints} />
 
                         </Box>
-                        {accuracy !== null && (
-                            <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
-                                Final Accuracy: {accuracy}
-                            </Typography>
-                        )}
+                        <Container maxWidth='md'>
+                            {showSecondaryProgress && (<Container maxWidth='sm'>
+                                {isCircular ? (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Box sx={{ width: '100%', mr: 1 }}>
+                                            <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                        </Box>
+                                        <Box sx={{ minWidth: 35 }}>
+                                            <CircularProgress />
+                                        </Box>
+                                    </Box>
+                                ) : (
+                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                        <Box sx={{ width: '100%', mr: 1 }}>
+                                            <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                        </Box>
+                                        <Box sx={{ width: '100%', mr: 1 }}>
+                                            <LinearProgress variant="determinate" value={secondaryProgress} />
+                                        </Box>
+                                        <Box sx={{ minWidth: 35 }}>
+                                            <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
+                                        </Box>
+                                    </Box>
+                                )}
+                            </Container>)}
+                            {showPrimaryProgress && (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <Box sx={{ width: '100%', mr: 1 }}>
+                                        <LinearProgress variant="determinate" value={primaryProgress} />
+                                    </Box>
+                                    <Box sx={{ minWidth: 35 }}>
+                                        <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                                    </Box>
+                                </Box>
+                            ) }
+                            {accuracy !== null && (
+                                <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
+                                    Final Accuracy: {accuracy}%
+                                </Typography>
+                            )}
+                            {finalAccuracy !== null && (
+                                <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
+                                    Final Accuracy After Attack: {finalAccuracy}%
+                                </Typography>
+                            )}
+                        </Container>
                         {showEpochGraph && (<Box sx={{ height: "50vh", p: "3%" }}>
                             <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
                         </Box>)}
+                        {showBarGraph && (
+                            <Box sx={{ height: "50vh", p: "3%" }}>
+                                <BarGraph dataRefs={categories} dataVals={[{
+                                    type: 'bar',
+                                    data: categoryPercentages
+                                }]}/>
+                            </Box>)
+                         }
                     </Paper>)}
                     
                     <Container maxWidth='sm' sx={{ marginTop: "2%" }}>

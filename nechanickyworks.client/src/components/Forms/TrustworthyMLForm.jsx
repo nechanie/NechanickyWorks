@@ -122,7 +122,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     margin="normal"
                                     value={formData.epochs}
                                     onChange={handleInputChange}
-                                    inputProps={{ step: 1, min: 1, max: 10 }}
+                                    inputProps={{ step: 1, min: 1, max: 20 }}
                                 disabled={isDisabled || isAltDisabled}
                                 />
                             <TextField
@@ -217,7 +217,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         margin="normal"
                                         value={formData.alphaValue}
                                         onChange={handleInputChange}
-                                            inputProps={{ step: 0.0001, min: 0, max: 3, maxLength: 10 }}
+                                            inputProps={{ step: 0.000001, min: 0, max: 3, maxLength: 10 }}
                                         disabled={isDisabled || isAltDisabled}
                                     />
                                     <TextField

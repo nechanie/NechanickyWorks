@@ -259,30 +259,30 @@ function App() {
         <ThemeProvider theme={theme}>
             {globalThemeStyles}
             <CssBaseline />
-            <WebSocketProvider>
-                <GradientBox sx={{ paddingTop: "64px" }}>
-                    <BrowserRouter>
-                        <ScrollToTop/>
-                        <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
-                        <Routes>
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/about-me" element={<AboutMePage />} />
-                            <Route path="/about-this-site" element={<AboutThisSitePage />} />
-                            <Route path="/Contact" element={<ContactPage />} />
-                            <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
-                            <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
-                            <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
-                            <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
-                            <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
-                            <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
-                            <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
+                <WebSocketProvider>
+                    <GradientBox sx={{ paddingTop: "64px" }}>
+                        <BrowserRouter>
+                            <ScrollToTop/>
+                            <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
+                            <Routes>
+                                <Route path="/" element={<HomePage />} />
+                                <Route path="/about-me" element={<AboutMePage />} />
+                                <Route path="/about-this-site" element={<AboutThisSitePage />} />
+                                <Route path="/Contact" element={<ContactPage />} />
+                                <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
+                                <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
+                                <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
+                                <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
+                                <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
+                                <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
+                                <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
 
-                            {/* Add more routes as needed */}
-                        </Routes>
-                        <TaskWindow/>
-                    </BrowserRouter>
-                </GradientBox>
-            </WebSocketProvider>
+                                {/* Add more routes as needed */}
+                            </Routes>
+                            <TaskWindow/>
+                        </BrowserRouter>
+                    </GradientBox>
+                </WebSocketProvider>
         </ThemeProvider>
     );
 }
