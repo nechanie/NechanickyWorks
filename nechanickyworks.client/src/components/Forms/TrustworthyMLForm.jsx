@@ -64,7 +64,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
         <Container maxWidth="md" sx={{ m: 3 }}>
             <Paper sx={{ p: 3 }}>
                 {isBackendHealthy && (
-                    <Box sx={{ position: 'absolute', right: 16, top: 16 }}> {/* Positioning the icon */}
+                    <Box sx={{ position: 'relative', display: 'flex', justifyContent: 'end', right: 16, top: 16 }}> {/* Positioning the icon */}
                         <CheckCircleOutlineIcon color="success" />
                     </Box>
                 )}

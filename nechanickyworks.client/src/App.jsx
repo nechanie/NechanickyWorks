@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import HomePageReImagined from './pages/HomePageReImagined'; // Adjust the path as necessary
 import HomePage from './pages/HomePage'; // Adjust the path as necessary
 import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
@@ -7,7 +8,7 @@ import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
 import { ThemeProvider, createTheme, styled} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
 import OSUCapstoneProjectPage from './pages/OSUCapstoneProjectPage';
 import DiffusionDenoisedRobustificationProjectPage from './pages/DiffusionDenoisedRobustificationPage';
@@ -21,6 +22,7 @@ import { WebSocketProvider } from './components/Shared/WebsocketContext';
 import TaskWindow from './components/Display/TaskWindow';
 import { GlobalStyles } from '@mui/material';
 import ScrollToTop from './components/utils/useScrollToTop';
+import Klotee from './assets/fonts/Klotee.ttf';
 
 const getDesignTokens = (mode) => ({
     palette: {
@@ -97,7 +99,6 @@ const getDesignTokens = (mode) => ({
                 },
                 background: {
                     paper: '#e0e0e0', // Background for components, such as cards
-                    default: 'linear-gradient(to right, #909590 0%, #9AE19D 100%)', // Default page background
                 },
                 action: {
                     active: 'rgba(0, 0, 0, 0.54)',
@@ -184,7 +185,6 @@ const getDesignTokens = (mode) => ({
                 },
                 background: {
                     paper: '#4f5552', // Dark grey for components background
-                    default: 'linear-gradient(to right, #3b5744 0%, #6cbf7b 100%)', // Slightly lighter grey for default background
                 },
                 action: {
                     active: 'rgba(255, 255, 255, 0.7)',
@@ -201,6 +201,22 @@ const getDesignTokens = (mode) => ({
                 },
             }),
     },
+    typography: {
+        fontFamily: 'Klotee',
+    },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: `
+        @font-face {
+          font-family: 'Klotee';
+          font-style: normal;
+          font-display: swap;
+          font-weight: 400;
+          src: local("Klotee"), url(${Klotee}) format('opentype');
+        }
+      `,
+        },
+    },
 });
 
 const GradientBox = styled(Box)(({ theme }) => ({
@@ -209,11 +225,11 @@ const GradientBox = styled(Box)(({ theme }) => ({
 }));
 
 function App() {
-
+    const modePref = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     const [mode, setMode] = React.useState(() => {
         // Try to fetch the theme from localStorage, default to 'light' if not found
         const savedTheme = localStorage.getItem('themeMode');
-        return savedTheme || 'light';
+        return savedTheme || modePref;
     });
 
     React.useEffect(() => {
@@ -260,12 +276,12 @@ function App() {
             {globalThemeStyles}
             <CssBaseline />
                 <WebSocketProvider>
-                    <GradientBox sx={{ paddingTop: "64px" }}>
+                    <GradientBox>
                         <BrowserRouter>
                             <ScrollToTop/>
                             <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                             <Routes>
-                                <Route path="/" element={<HomePage />} />
+                                <Route path="/" element={<HomePageReImagined />} />
                                 <Route path="/about-me" element={<AboutMePage />} />
                                 <Route path="/about-this-site" element={<AboutThisSitePage />} />
                                 <Route path="/Contact" element={<ContactPage />} />

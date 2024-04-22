@@ -9,6 +9,9 @@ import { useLocation } from 'react-router-dom';
 import LineGraph from '../components/Display/LineGraph';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
 import BarGraph from '../components/Display/BarGraph';
+import TMLBackground from '../assets/imgs/backgrounds/TML/TMLBackground.webp';
+import TMLBackgroundDark from '../assets/imgs/backgrounds/TML/TMLBackgroundDark.webp';
+import Cover from '../components/Display/Cover';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -46,10 +49,18 @@ const TrustWorthyMLProjectPage = () => {
     const [categories, setCategories] = useState([]);
     const [categoryPercentages, setCategoryPercentages] = useState([]);
     const [showBarGraph, setShowBarGraph] = useState(false);
+    const [backgroundImage, setBackgroundImage] = useState(null);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
+
+    React.useEffect(() => {
+        setBackgroundImage((prevState) => {
+            const background = theme.palette.mode === 'light' ? TMLBackground : TMLBackgroundDark;
+            return background;
+        });
+    }, [theme.palette.mode]);
 
     useEffect(() => {
         if (webSocketManager.currentTask &&
@@ -340,7 +351,7 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
-            
+            <Cover image={backgroundImage} />
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%" }}>
                 {/* Title Section */}
                 <Typography variant="h3" align="center" component="h1" gutterBottom>

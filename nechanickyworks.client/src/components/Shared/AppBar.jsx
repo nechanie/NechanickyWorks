@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, useTheme, Container} from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Menu, MenuItem, useTheme, Container, Box, Divider} from '@mui/material';
 import { Link } from 'react-router-dom';
 import IconButton from '@mui/material/IconButton';
 import SettingsIcon from '@mui/icons-material/Settings';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import DaneLogo from "../../assets/imgs/DaneLogo.svg"
+import DaneLogo from "../../assets/imgs/DaneLogo.png";
 
 const CustomAppBar = ({ onThemeToggle }) => {
 
@@ -15,11 +15,19 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [aboutAnchorEl, setAboutAnchorEl] = useState(null);
     const [settingsAnchorEl, setSettingsAnchorEl] = useState(null);
+    const [darkAppBar, setDarkAppBar] = useState((theme.palette.mode === 'light' ? 'rgba(0,0,0,0.5)' : 'transparent'));
 
     const isDarkMode = theme.palette.mode === 'dark';
     const settingsOpen = Boolean(settingsAnchorEl);
     const open = Boolean(anchorEl);
     const aboutOpen = Boolean(aboutAnchorEl);
+
+    React.useEffect(() => {
+        setDarkAppBar((prevState) => {
+            const background = (theme.palette.mode === 'light' ? 'rgba(0,0,0,0.5)' : 'transparent');
+            return background;
+        });
+    }, [theme.palette.mode]);
 
     // Handles opening the sub-menu
     const handleMenu = (event) => {
@@ -55,11 +63,16 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     return (
         <React.Fragment>
-            <AppBar position="fixed">
+            <AppBar position="absolute" sx={{ background: darkAppBar , boxShadow: 'none'}}>
                 <Container maxWidth="xl">
-                <Toolbar sx={{display: "flex", justifyContent:"space-between"} }>
-                        {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
-                    <img src={ DaneLogo } />
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", maxHeight: '64px', boxShadow: 'none' } }>
+                    {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
+                    <Box sx={{
+                            maxHeight: 'inherit',
+                        height:'100%'
+                    } }>
+                            <img style={{maxHeight:'inherit'}} src={DaneLogo} />
+                        </Box>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1, marginLeft: "1%"}}>
                         <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
                             Nechanicky Works
