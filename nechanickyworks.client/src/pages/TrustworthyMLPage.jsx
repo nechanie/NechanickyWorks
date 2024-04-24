@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme, CircularProgress, LinearProgress } from '@mui/material';
 import { styled } from '@mui/system';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
@@ -12,6 +12,8 @@ import BarGraph from '../components/Display/BarGraph';
 import TMLBackground from '../assets/imgs/backgrounds/TML/TMLBackground.webp';
 import TMLBackgroundDark from '../assets/imgs/backgrounds/TML/TMLBackgroundDark.webp';
 import Cover from '../components/Display/Cover';
+import SiteFooter from '../components/Shared/Footer';
+import GraphDescription from '../components/Display/GraphDescription';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
@@ -54,6 +56,12 @@ const TrustWorthyMLProjectPage = () => {
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
+    const demoRunningRef = useRef(null);
+
+    React.useEffect(() => {
+        console.log(demoRunningRef);
+        demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
+    }, [demoRunningRef.current])
 
     React.useEffect(() => {
         setBackgroundImage((prevState) => {
@@ -193,7 +201,7 @@ const TrustWorthyMLProjectPage = () => {
                     setStatusMessage("Generating Attacks...");
                 }
                 setSecondaryProgress((prevState) => {
-                    const result = msg.data.batch_num / msg.data.total_batches;
+                    const result = 100 * msg.data.batch_num / msg.data.total_batches;
                     return result;
                 });
                 setPrimaryProgress((prevState) => {
@@ -351,62 +359,75 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
-            <Cover image={backgroundImage} />
+            <Cover image={backgroundImage}>
+                <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
+                    <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around'}}>
+                        <Typography variant='h4' gutterBottom sx={{fontSynthesisWeight: 'auto', fontWeight:600}}>Welcome to the Trustworthy Machine Learning Project Page.</Typography>
+                        <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p:'2%' }}>
+                            {/* Key Features Section */}
+                            <Typography variant="h5" align="center" component="h1" color='inherit' gutterBottom>
+                                Introduction
+                            </Typography>
+                            <Typography variant="body1" align="center" sx={{ margin: '20px 0' }}>
+                                In this demo, you'll have the power to train your choice from three different types of neural networks: LeNet, VGG, and ResNet,
+                                using one of two classic datasets: MNIST and CIFAR-10. Experiment with various hyperparameters,
+                                like batch size and learning rate, and observe the effects of data augmentation techniques
+                                on your model's performance. After training, see how a PGD attack impacts the accuracy
+                                of your model on perturbed data.
+                            </Typography>
+                        </Paper>
+                    </Stack>
+                </Container>
+            </Cover>
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%" }}>
-                {/* Title Section */}
-                <Typography variant="h3" align="center" component="h1" gutterBottom>
-                    Welcome to the Trustworthy Machine Learning Project Page.
-                </Typography>
                 <Container maxWidth='lg' align="center" sx={{ margin: '20px 0' }}>
-                    <Paper square={false} sx={{
+                    <Paper square={false} elevation={3} sx={{
                         p:3
                     }}>
-                        {/* Key Features Section */}
-                        <Typography variant="h5" align="center" component="h1" gutterBottom>
-                            Introduction
-                        </Typography>
-                    <Typography variant="body1" align="center" sx={{ margin: '20px 0' }}>
-                    In this demo, you'll have the power to train your choice from three different types of neural networks: LeNet, VGG, and ResNet,
-                    using one of two classic datasets: MNIST and CIFAR-10. Experiment with various hyperparameters,
-                    like batch size and learning rate, and observe the effects of data augmentation techniques
-                    on your model's performance. After training, see how a PGD attack impacts the accuracy
-                    of your model on perturbed data.
-                    </Typography>
-                    <Stack direction='row'>
-                        <Stack direction='column' sx={{ width: "100%" }}>
-                            <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                Key Features:
-                            </Typography>
-                            <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                <ul>
-                                    <li>Train different neural network models (LeNet, VGG, ResNet).</li>
-                                    <li>Experiment with various hyperparameters like batch size and learning rate.</li>
-                                    <li>Observe model performance against PGD adversarial attacks.</li>
-                                    <li>Understand the effects of data augmentation on model robustness.</li>
-                                </ul>
-                            </Typography>
-                        </Stack>
-                        <Stack direction='column' sx={{width: "100%"}}>
-                            <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                What to Look For:
-                            </Typography>
-                            <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                <ul>
-                                    <li>Notice how changes in hyperparameters can significantly affect your model's training outcome and its ability to withstand adversarial attacks.</li>
-                                    <li>Use this demo as a learning tool to experiment with different configurations and understand deep learning concepts in a hands-on manner.</li>
-                                    <li>Observe model performance against PGD adversarial attacks.</li>
-                                    <li>Understand the effects of data augmentation on model robustness.</li>
-                                </ul>
-                            </Typography>
-                        </Stack>
-                        </Stack>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={6}>
+                                <Stack direction='column' sx={{ width: "100%" }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Key Features:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>Train different neural network models (LeNet, VGG, ResNet).</li>
+                                            <li>Experiment with various hyperparameters like batch size and learning rate.</li>
+                                            <li>Observe model performance against PGD adversarial attacks.</li>
+                                            <li>Understand the effects of data augmentation on model robustness.</li>
+                                        </ul>
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                                <Stack direction='column' sx={{width: "100%"}}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        What to Look For:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>Notice how changes in hyperparameters can significantly affect your model's training outcome and its ability to withstand adversarial attacks.</li>
+                                            <li>Use this demo as a learning tool to experiment with different configurations and understand deep learning concepts in a hands-on manner.</li>
+                                            <li>Observe model performance against PGD adversarial attacks.</li>
+                                            <li>Understand the effects of data augmentation on model robustness.</li>
+                                        </ul>
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                        </Grid>
                     </Paper>
                     <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
                       
-                    {showBatchGraph && (<Paper sx={{ marginTop: 2 }}>
-                        <Box sx={{ height: "50vh", p: "3%" }}>
+                    {showBatchGraph && (<Paper elevation={3} sx={{ marginTop: 2, py:'3%' }}>
+                        <Box sx={{height: { xs: '26vh', sm: '40vh', md:'50vh' }, p: "3%" }} ref={demoRunningRef}>
                             <LineGraph dataRefs={batches} dataVals={batchGraphData} xLabel="Batches" showPoints={showPoints} />
-
+                        </Box>
+                        <Box>
+                            <GraphDescription
+                                title="Batch Training Progress"
+                                description="This graph displays the training accuracy and loss over each batch. The X-axis represents each batch processed, while the Y-axis shows the accuracy percentage and loss value. Higher accuracy and lower loss values indicate better model performance. Look for trends of increasing accuracy and decreasing loss as more batches are processed, which suggest the model is learning effectively."
+                            />
                         </Box>
                         <Container maxWidth='md'>
                             {showSecondaryProgress && (<Container maxWidth='sm'>
@@ -416,7 +437,7 @@ const TrustWorthyMLProjectPage = () => {
                                             <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
                                         </Box>
                                         <Box sx={{ minWidth: 35 }}>
-                                            <CircularProgress />
+                                            <CircularProgress color="info"/>
                                         </Box>
                                     </Box>
                                 ) : (
@@ -425,7 +446,7 @@ const TrustWorthyMLProjectPage = () => {
                                             <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
                                         </Box>
                                         <Box sx={{ width: '100%', mr: 1 }}>
-                                            <LinearProgress variant="determinate" value={secondaryProgress} />
+                                            <LinearProgress variant="determinate" color="info" value={secondaryProgress} />
                                         </Box>
                                         <Box sx={{ minWidth: 35 }}>
                                             <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
@@ -436,7 +457,7 @@ const TrustWorthyMLProjectPage = () => {
                             {showPrimaryProgress && (
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <Box sx={{ width: '100%', mr: 1 }}>
-                                        <LinearProgress variant="determinate" value={primaryProgress} />
+                                        <LinearProgress variant="determinate" color="success" value={primaryProgress} />
                                     </Box>
                                     <Box sx={{ minWidth: 35 }}>
                                         <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
@@ -454,17 +475,33 @@ const TrustWorthyMLProjectPage = () => {
                                 </Typography>
                             )}
                         </Container>
-                        {showEpochGraph && (<Box sx={{ height: "50vh", p: "3%" }}>
+                        {showEpochGraph && (<React.Fragment><Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
                             <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
-                        </Box>)}
+                        </Box>
+                        <Box>
+                            <GraphDescription
+                                    title="Epoch Training Progress"
+                                    description="This graph shows the progression of training over each epoch. Each epoch represents a full cycle through the training dataset. The graph tracks the accuracy and loss at the end of each epoch. Stable or increasing accuracy combined with decreasing loss across epochs generally indicates a successful training session."
+                                />
+                            </Box>
+                        </React.Fragment>
+                        )}
                         {showBarGraph && (
-                            <Box sx={{ height: "50vh", p: "3%" }}>
+                            <React.Fragment>
+                                <Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
                                 <BarGraph dataRefs={categories} dataVals={[{
                                     type: 'bar',
                                     data: categoryPercentages
                                 }]}/>
-                            </Box>)
-                         }
+                            </Box>
+                            <Box>
+                            <GraphDescription
+                                title="Category Breakdown Performance"
+                                description="This bar graph represents the model's performance across different categories after being subjected to PGD attacks. It helps visualize the robustness of the model against adversarial examples. Bars closer in height indicate consistent model performance across categories, while significant variations can highlight vulnerabilities."
+                            />
+                                </Box>
+                            </React.Fragment>
+                        )}
                     </Paper>)}
                     
                     <Container maxWidth='sm' sx={{ marginTop: "2%" }}>
@@ -491,20 +528,7 @@ const TrustWorthyMLProjectPage = () => {
                 </Container>
             </Container>
             {/* Footer Section */}
-            <StyledFooter sx={{ width: "100%" }}>
-                <Typography align="center" variant="h6">Quick Links</Typography>
-                {/* Links to sections */}
-                <Typography align="center" variant="h6">
-                    <Stack direction="column">
-                        <Button component={Link} href="#title">Title</Button>
-                        <Button component={Link} href="#product1">Product 1</Button>
-                    </Stack>
-                </Typography>
-                {/* Add more as needed */}
-
-                {/* Other common footer content */}
-                <Typography align="center">Contact Me | About Me</Typography>
-            </StyledFooter>
+            <SiteFooter/>
         </React.Fragment>
     );
 };

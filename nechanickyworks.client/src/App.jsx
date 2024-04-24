@@ -6,7 +6,8 @@ import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
-import { ThemeProvider, createTheme, styled} from '@mui/material/styles';
+import NewCustomAppBar from './components/Shared/AppBar';
+import { ThemeProvider, createTheme, styled, responsiveFontSizes} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, useMediaQuery } from '@mui/material';
 import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
@@ -97,6 +98,7 @@ const getDesignTokens = (mode) => ({
                 background: {
                     paper: '#fff',  // White background for components, such as cards
                     paperOpaque: "rgba(255, 255, 255, 0.5)",
+                    paperOpaqueContrast: "rgba(79, 85, 82, 0.5)",
                     footer: '#000'
                 },
                 action: {
@@ -179,6 +181,7 @@ const getDesignTokens = (mode) => ({
                 background: {
                     paper: '#4f5552',  // Dark grey for components background
                     paperOpaque: "rgba(79, 85, 82, 0.5)",
+                    paperOpaqueContrast: "rgba(0, 0, 0, 0.5)",
                     footer: '#4f5552'
                 },
                 action: {
@@ -449,7 +452,7 @@ function App() {
         [],
     );
 
-    const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+    const theme = React.useMemo(() => responsiveFontSizes(createTheme(getDesignTokens(mode))), [mode]);
 
     const globalThemeStyles = (
         <GlobalStyles
@@ -479,7 +482,7 @@ function App() {
                     <GradientBox>
                         <BrowserRouter>
                             <ScrollToTop/>
-                            <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
+                            <NewCustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                             <Routes>
                                 <Route path="/" element={<HomePageReImagined />} />
                                 <Route path="/projects" element={ <ProjectPage/> }/>

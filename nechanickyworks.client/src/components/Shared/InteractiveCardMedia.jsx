@@ -11,7 +11,8 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                backgroundColor: 'transparent'
+            backgroundColor: 'transparent',
+                height: '100%'
         }}>
             <Box className='hover-overlay' sx={{
                 position: 'absolute',
@@ -21,6 +22,7 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'transparent',
+                padding: '4%',
                 transition: 'background-color 0.5s ease',
                 color: theme.palette.common.white,
                 '&:hover': {
@@ -42,6 +44,7 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 sx={{
                     width: 'inherit',  // width of the div
                     minHeight: 'inherit', // height of the div
+                    height: '100%'
                 }}
             >
                 {props.children}

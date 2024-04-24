@@ -32,8 +32,8 @@ const CardTableItem = ({ projectData, ...props }) => {
 
     return (
         <Grid item xs={12} sm={6} md={4} lg={4} xl={3} {...props}>
-            <Card sx={{ maxWidth: 345, minHeight: 300 }}>
-                <CardActionArea onClick={handleCardClick}>
+            <Card sx={{ maxWidth: 345, minHeight: 300, height:"100%" }}>
+                <CardActionArea onClick={handleCardClick} sx={{height:"100%"} }>
                     <InteractiveCardMedia text={projectData.description}>
                         <CardMedia
                             component={Box}
@@ -75,7 +75,7 @@ const CardTable = ({ projectList = null, defaultFilter=null }) => {
     return (
         <React.Fragment>
             <Stack direction='column' spacing={2} sx={{height:"100%"} } >
-                <Grid container spacing={0} sx={{ p: "2%", height: "100%", width: "100%" }}>
+                <Grid container spacing={0} sx={{ p: "2%", height: "fit-content", width: "100%" }}>
                     <Grid item sx={{my:'auto', mx: "4%"} }>
                         <Typography>Project Categories:</Typography>
                     </Grid>
@@ -90,7 +90,7 @@ const CardTable = ({ projectList = null, defaultFilter=null }) => {
                         </Grid>
                     ))}
                 </Grid>
-                <Grid container spacing={2} sx={{p:"2%", maxHeight:'75vh', height: "100%", width:"100%", overflowY:'scroll'} }>
+                <Grid container spacing={2} sx={{p:"2%", maxHeight:'100%', height: "100%", width:"100%", overflowY:'scroll'} }>
                     {filteredData.map((project) => (
                         <CardTableItem key={project.id} projectData={project} />
                     ))}

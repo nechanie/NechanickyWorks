@@ -32,10 +32,10 @@ const ProjectPage = () => {
         <React.Fragment>
             <PageTitle pageTitle="Nechanicky Works" />
             <Cover image={ backgroundImage }>
-                <Container maxWidth='xl' align='center' sx={{ py: "2%" }} >
-                    <Stack direction='column'>
+                <Container maxWidth='xl' align='center' sx={{ py: "2%", height: '100%' }} >
+                    <Stack direction='column' sx={{height:'100%'}}>
                         <Typography variant='h4' gutterBottom sx={{color: 'white'} }>Project Browser</Typography>
-                        <Paper sx={{backgroundColor: theme.palette.background.paperOpaque}}>
+                        <Paper sx={{backgroundColor: theme.palette.background.paperOpaque, height:'100%'}}>
                             <CardTable projectList={ProjectDataList} defaultFilter={ tag } />
                         </Paper>
                     </Stack>
