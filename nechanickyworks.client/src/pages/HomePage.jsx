@@ -10,13 +10,8 @@ import RecruitmentImage from "../assets/imgs/recruitment.jpg";
 import MyFridgeImage from "../assets/imgs/Myfridge.jpg";
 import TMLImage from "../assets/imgs/TML.jpg";
 import ComingSoonOverlay from '../components/Display/ComingSoonOverlay';
+import SiteFooter from '../components/Shared/Footer';
 
-// Customized components for styling
-const StyledFooter = styled('footer')(({ theme }) => ({
-  padding: theme.spacing(3),
-  marginTop: '2%',
-  background: theme.palette.background.paper,
-}));
 
 const HomePage = () => {
     return (
@@ -64,20 +59,7 @@ const HomePage = () => {
                     </ComingSoonOverlay>
                 </Stack>    
             </Container>
-            {/* Footer Section */}
-            <StyledFooter sx={{ width: "100%" }}>
-                <Typography align="center" variant="h6">Quick Links</Typography>
-                {/* Links to sections */}
-                <Typography align="center" variant="h6">
-                    <Stack direction="column">
-                        <Button component={Link} href="#title">Title</Button>
-                        <Button component={Link} href="#product1">Product 1</Button>
-                    </Stack>
-                </Typography>
-                {/* Add more as needed */}
-                {/* Other common footer content */}
-                <Typography align="center">Contact Me | About Me</Typography>
-            </StyledFooter>
+            <SiteFooter/>
         </React.Fragment>
     );
 };

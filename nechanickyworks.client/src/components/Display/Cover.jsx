@@ -3,7 +3,7 @@ import { Paper, Card, CardHeader, CardContent, Typography, Box, Button, CardActi
 import { Link } from 'react-router-dom';
 
 const Cover = ({ image, children }) => {
-
+    const theme = useTheme();
     return (
         
         <Box sx={{
@@ -15,9 +15,10 @@ const Cover = ({ image, children }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            paddingTop:'64px',
+            paddingTop:'7vh',
             width: '100%',
-            height: '100vh'
+            height: '100vh',
+            color: theme.palette.common.white
         }}>
             {children}
         </Box>

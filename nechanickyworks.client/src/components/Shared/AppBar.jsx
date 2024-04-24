@@ -15,8 +15,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [aboutAnchorEl, setAboutAnchorEl] = useState(null);
     const [settingsAnchorEl, setSettingsAnchorEl] = useState(null);
-    const [darkAppBar, setDarkAppBar] = useState((theme.palette.mode === 'light' ? 'rgba(0,0,0,0.5)' : 'transparent'));
-
+    const [darkAppBar, setDarkAppBar] = useState((theme.palette.mode === 'light' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)'));
     const isDarkMode = theme.palette.mode === 'dark';
     const settingsOpen = Boolean(settingsAnchorEl);
     const open = Boolean(anchorEl);
@@ -24,7 +23,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     React.useEffect(() => {
         setDarkAppBar((prevState) => {
-            const background = (theme.palette.mode === 'light' ? 'rgba(0,0,0,0.5)' : 'transparent');
+            const background = (theme.palette.mode === 'light' ? 'rgba(255,255,255,0.5)' : 'rgba(0,0,0,0.5)');
             return background;
         });
     }, [theme.palette.mode]);
@@ -63,9 +62,9 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     return (
         <React.Fragment>
-            <AppBar position="absolute" sx={{ background: darkAppBar , boxShadow: 'none'}}>
+            <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none'}}>
                 <Container maxWidth="xl">
-                <Toolbar sx={{ display: "flex", justifyContent: "space-between", maxHeight: '64px', boxShadow: 'none' } }>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", maxHeight: '7vh', boxShadow: 'none' } }>
                     {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
                     <Box sx={{
                             maxHeight: 'inherit',
@@ -144,8 +143,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                         aria-label="open settings"
                         aria-controls="menu-appbar"
                         aria-haspopup="true"
-                        onClick={handleSettingsClick}
-                        edge="end">
+                        onClick={handleSettingsClick}>
                         <SettingsIcon/>
                     </IconButton>
                     <Menu

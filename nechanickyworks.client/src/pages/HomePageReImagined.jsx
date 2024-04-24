@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Link, Paper, Stack, useTheme, Card } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Link, Paper, Stack, useTheme, Card, CardActionArea, Divider } from '@mui/material';
 import { styled } from '@mui/system';
 import InfoGraphic from '../components/Display/InfoGraphic';
 import GaussImage from "../assets/imgs/gauss.jpg";
@@ -17,18 +18,23 @@ import learningImage from '../assets/imgs/CardImgs/Learning.webp';
 import interactiveDemo from '../assets/imgs/CardImgs/InteractiveDemo.webp';
 import allProjects from '../assets/imgs/CardImgs/AllProjects.webp';
 import presentation from '../assets/imgs/CardImgs/Presentation.webp';
+import ContrastButton from '../components/Shared/ContrastButton';
+import InteractiveCardMedia from '../components/Shared/InteractiveCardMedia';
+import SiteFooter from '../components/Shared/Footer';
 
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
     padding: theme.spacing(3),
     marginTop: '2%',
-    background: theme.palette.background.paper,
+    background: theme.palette.background.footer,
+    color: theme.palette.primary.main
 }));
 
 const HomePageReImagined = () => {
     const [backgroundImage, setBackgroundImage] = useState(null);
     const theme = useTheme();
     const exploreSectionRef = useRef(null); 
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         setBackgroundImage((prevState) => {
@@ -39,6 +45,10 @@ const HomePageReImagined = () => {
 
     const handleExploreClick = () => {
         exploreSectionRef.current.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const handleProjectCardClick = (tag) => {
+        navigate(`/projects?tag=${tag}`);
     };
 
     return (
@@ -55,7 +65,7 @@ const HomePageReImagined = () => {
                     <Stack direction='column' spacing={2 }>
                         <Typography variant='h2'>Nechanicky Works</Typography>
                         <Typography>Ethan Nechanicky Portfolio</Typography>
-                        <Button onClick={handleExploreClick} variant='outlined' sx={{ width: 'fit-content', color: theme.palette.primary.contrastText, borderColor: theme.palette.primary.contrastText }}>Explore</Button>
+                        <ContrastButton onClick={handleExploreClick} variant='outlined'>Explore</ContrastButton>
                     </Stack>
                 </Box>
             </Cover>
@@ -64,6 +74,7 @@ const HomePageReImagined = () => {
                 width: '100%',
                 height: 'fit-content',
                 p: '5%',
+                my: 10,
                 color: theme.palette.text.primary
             }} align='center' ref={exploreSectionRef}>
                 <Grid container spacing={2}>
@@ -71,71 +82,75 @@ const HomePageReImagined = () => {
                         <Typography align='center' variant='h3'>Explore Projects by Content</Typography>
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
-                        <Card sx={{ maxWidth: 345, minHeight:120 }}>
-                            <CardMedia
-                                component={Box}
-                                sx={{minHeight: 250, display:'flex', flexDirection: 'column', justifyContent: 'space-around'}}
-                                align='center'
-                                image={learningImage}
-                            >
-                                <Button size="medium" variant='outlined' sx={{ width: 'fit-content', margin: 'auto', backgroundColor: 'rgba(0,0,0,0.4)', color: theme.palette.primary.contrastText, borderColor: theme.palette.primary.contrastText }} component={Link}>Learn More</Button>
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Educational
-                                </Typography>
-                            </CardContent>
+                        <Card sx={{ maxWidth: 345, minHeight: 120 }}>
+                            <CardActionArea onClick={()=>handleProjectCardClick('Educational') }>
+                                <InteractiveCardMedia>
+                                    <CardMedia
+                                        component={Box}
+                                        sx={{ minHeight: 250, maxWidth: 'inherit' }}
+                                        image={learningImage}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            Educational
+                                        </Typography>
+                                    </CardContent>
+                                </InteractiveCardMedia>
+                            </CardActionArea>
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardMedia
-                                component={Box}
-                                sx={{ minHeight: 250, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}
-                                align='center'
-                                image={interactiveDemo}
-                            >
-                                <Button size="medium" variant='outlined' sx={{ width: 'fit-content', margin: 'auto', backgroundColor: 'rgba(0,0,0,0.4)', color: theme.palette.primary.contrastText, borderColor: theme.palette.primary.contrastText }} component={Link}>Learn More</Button>
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Interactive
-                                </Typography>
-                            </CardContent>
+                            <CardActionArea>
+                                <InteractiveCardMedia>
+                                    <CardMedia
+                                        component={Box}
+                                        sx={{ minHeight: 250, maxWidth: 'inherit'}}
+                                        image={interactiveDemo}
+                                    />                               
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            Interactive
+                                        </Typography>
+                                    </CardContent>
+                                </InteractiveCardMedia>
+                            </CardActionArea>
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardMedia
-                                component={Box}
-                                sx={{ minHeight: 250, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}
-                                align='center'
-                                image={presentation}
-                            >
-                                <Button size="medium" variant='outlined' sx={{ width: 'fit-content', margin: 'auto', backgroundColor: 'rgba(0,0,0,0.4)', color: theme.palette.primary.contrastText, borderColor: theme.palette.primary.contrastText }} component={Link}>Learn More</Button>
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Presentations
-                                </Typography>
-                            </CardContent>
+                            <CardActionArea>
+                                <InteractiveCardMedia>
+                                    <CardMedia
+                                        component={Box}
+                                        sx={{ minHeight: 250, maxWidth: 'inherit' }}
+                                        image={presentation}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            Presentations
+                                        </Typography>
+                                    </CardContent>
+                                </InteractiveCardMedia>
+                            </CardActionArea>
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardMedia
-                                component={Box}
-                                sx={{ minHeight: 250, display: 'flex', flexDirection: 'column', justifyContent: 'space-around' }}
-                                align='center'
-                                image={allProjects}
-                            >
-                                <Button size="medium" variant='outlined' sx={{ width: 'fit-content', margin: 'auto', backgroundColor:'rgba(0,0,0,0.4)', color: theme.palette.primary.contrastText, borderColor: theme.palette.primary.contrastText }} component={Link}>Learn More</Button>
-                            </CardMedia>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    All Projects
-                                </Typography>
-                            </CardContent>
+                            <CardActionArea>
+                                <InteractiveCardMedia>
+                                    <CardMedia
+                                        component={Box}
+                                        sx={{ minHeight: 250, maxWidth: 'inherit' }}
+                                        image={allProjects}
+                                    />
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="div">
+                                            All Projects
+                                        </Typography>
+                                    </CardContent>
+                                    </InteractiveCardMedia>
+                            </CardActionArea>
                         </Card>
                     </Grid>
                 </Grid>
@@ -143,37 +158,51 @@ const HomePageReImagined = () => {
             <Box sx={{
 
                 position: 'relative',
-                width: '100%',
-                minHeight:400,
+                minHeight: 400,
+                m: '3%',
                 height: 'fit-content',
                 color: theme.palette.text.primary
             }}>
-                <Container maxWidth='md' align='center'>
-                    <Stack direction='column' spacing={2}>
+                <Container maxWidth='md' align='center' sx={{ py: '5%', px: 0, border: 'solid', borderWidth: 2 }}>
+                    <Stack direction='column' spacing={2} sx={{ mx: 10 }}>
                         <Typography variant='h3' align='center'>Who Am I?</Typography>
-                        <Typography variant='p' align='center'>Give a short intro of who I am and prompt user to explore my projects and use the link provided to read more about me.</Typography>
+                        <Typography variant='p' align='center'>
+                            My name is Ethan and I am a computer science graduate of Oregon State University. I am 24 years old, and I live in Albany, OR.
+                            I have been acting as a professional software engineer for the last 5+ years, and have experience with a variety of platforms.
+                            Visit the 'About Me' page to read all about who I am and how I got to where I am today.
+                        </Typography>
                         <Box sx={{
                             width:'100%'
                         }} align='center'>
-                            <Button size="large" variant='outlined' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link}>Read About Me</Button>
+                            <Button size="large" variant='outlined' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} disabled={true}>Read About Me (Coming Soon)</Button>
+                        </Box>
+                    </Stack>
+                </Container>
+            </Box>
+            <Box sx={{
+
+                position: 'relative',
+                minHeight: 400,
+                m:'3%',
+                height: 'fit-content',
+                color: theme.palette.text.primary
+            }}>
+                <Container maxWidth='lg' align='center' sx={{py:'5%', px:0, border:'solid', borderColor: theme.palette.primary.main, borderWidth:2} }>
+                    <Stack direction='column' spacing={2} sx={{mx:10}}>
+                        <Typography variant='h3' align='center'>Read about this site.</Typography>
+                        <Typography variant='p' align='center'>My work spans academic challenges, professional achievements, and personal projects.
+                            This platform not only presents my accomplishments, but invites you to interact with live demos that provide the opportunity to truly engage with my work.
+                            You can read more about the development process and other aspects of this website using the link below.</Typography>
+                        <Box sx={{
+                            width: '100%'
+                        }} align='center'>
+                            <Button size="large" variant='outlined' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} disabled>Learn About this Site (Coming Soon)</Button>
                         </Box>
                     </Stack>
                 </Container>
             </Box>
             {/* Footer Section */}
-            <StyledFooter sx={{ width: "100%" }}>
-                <Typography align="center" variant="h6">Quick Links</Typography>
-                {/* Links to sections */}
-                <Typography align="center" variant="h6">
-                    <Stack direction="column">
-                        <Button component={Link} href="#title">Title</Button>
-                        <Button component={Link} href="#product1">Product 1</Button>
-                    </Stack>
-                </Typography>
-                {/* Add more as needed */}
-                {/* Other common footer content */}
-                <Typography align="center">Contact Me | About Me</Typography>
-            </StyledFooter>
+            <SiteFooter/>
         </React.Fragment>
     );
 };
