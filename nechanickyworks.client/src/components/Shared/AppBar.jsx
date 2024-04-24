@@ -103,6 +103,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             }}
                         >
                             {/* Replace these with your actual navigation links */}
+                            <MenuItem onClick={handleClose} component={Link} to="/projects">Browse Projects</MenuItem>
                             <MenuItem onClick={handleClose} component={Link} to="/projects/TrustWorthyMachineLearning">Trustworthy Machine Learning</MenuItem>
                             <MenuItem onClick={handleClose} component={Link} to="/projects/GaussianQuadrature">Gaussian Quadrature</MenuItem>
                             <MenuItem onClick={handleClose} component={Link} to="/projects/OSUCapstoneProject">OSU Senior Capstone</MenuItem>

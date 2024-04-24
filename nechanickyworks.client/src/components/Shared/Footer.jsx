@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { Container, Grid, Typography, Box, CardContent, CardMedia, IconButton, Button, Link, Paper, Stack, useTheme, Card, CardActionArea, Divider } from '@mui/material';
+import { Container, Grid, Typography, Box, CardContent, CardMedia, IconButton, Button, Paper, Stack, useTheme, Card, CardActionArea, Divider } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
@@ -48,7 +49,7 @@ const SiteFooter = () => {
                     <Grid item xs={12} sm={6} md={4} sx={{ marginBottom: "3%" }}>
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Projects</u></Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>Project Browser (Coming Soon)</Typography>
+                            <Typography component={Link} to='/projects' variant='overline'>Project Browser</Typography>
                             <Typography component={Link} variant='overline'>Trustworthy Machine Learning</Typography>
                             <Typography component={Link} variant='overline'>Gaussian Quadrature</Typography>
                             <Typography component={Link} variant='overline'>OSU Senior Capstone</Typography>
