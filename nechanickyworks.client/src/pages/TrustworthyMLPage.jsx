@@ -370,8 +370,8 @@ const TrustWorthyMLProjectPage = () => {
                             </Typography>
                             <Typography variant="body1" align="center" sx={{ margin: '20px 0' }}>
                                 In this demo, you'll have the power to train your choice from three different types of neural networks: LeNet, VGG, and ResNet,
-                                using one of two classic datasets: MNIST and CIFAR-10. Experiment with various hyperparameters,
-                                like batch size and learning rate, and observe the effects of data augmentation techniques
+                                using one of two classic datasets: MNIST and CIFAR-10. You will train this model to categorize each images in the dataset into one of 10 categories.
+                                Experiment with various hyperparameters, like batch size and learning rate, and observe the effects of data augmentation techniques
                                 on your model's performance. After training, see how a PGD attack impacts the accuracy
                                 of your model on perturbed data.
                             </Typography>
@@ -497,7 +497,7 @@ const TrustWorthyMLProjectPage = () => {
                             <Box>
                             <GraphDescription
                                 title="Category Breakdown Performance"
-                                description="This bar graph represents the model's performance across different categories after being subjected to PGD attacks. It helps visualize the robustness of the model against adversarial examples. Bars closer in height indicate consistent model performance across categories, while significant variations can highlight vulnerabilities."
+                                description="This bar graph represents the attack's performance on your model across each of the different categories. It helps visualize the robustness (strength against attacks) of the model against adversarial examples. Each bar will show you what percentage of the images in each class were misclasified. Low bars will signify categories that are difficult to attack, while high bars will signify categories that are easy to attack, which can help reveal weaknesses in your model."
                             />
                                 </Box>
                             </React.Fragment>
