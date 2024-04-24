@@ -50,10 +50,10 @@ const SiteFooter = () => {
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Projects</u></Typography>
                             <Typography component={Link} to='/projects' variant='overline'>Project Browser</Typography>
-                            <Typography component={Link} variant='overline'>Trustworthy Machine Learning</Typography>
-                            <Typography component={Link} variant='overline'>Gaussian Quadrature</Typography>
-                            <Typography component={Link} variant='overline'>OSU Senior Capstone</Typography>
-                            <Typography component={Link} variant='overline'>Diffusion Denoised Robustification</Typography>
+                            <Typography component={Link} to='projects/TrustworthyMachineLearning' variant='overline'>Trustworthy Machine Learning</Typography>
+                            <Typography component={Link} to='projects/GaussianQuadrature' variant='overline'>Gaussian Quadrature</Typography>
+                            <Typography component={Link} to='projects/OSUCapstoneProject' variant='overline'>OSU Senior Capstone</Typography>
+                            <Typography component={Link} to='projects/DiffusionDenoisedRobustification' variant='overline'>Diffusion Denoised Robustification</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>Warehouse Order Form (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>New Hire Request Form (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>MyFridge Android App (Coming Soon)</Typography>
