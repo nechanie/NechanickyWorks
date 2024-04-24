@@ -96,6 +96,7 @@ const getDesignTokens = (mode) => ({
                 },
                 background: {
                     paper: '#fff',  // White background for components, such as cards
+                    paperOpaque: "rgba(255, 255, 255, 0.5)",
                     footer: '#000'
                 },
                 action: {
@@ -177,6 +178,7 @@ const getDesignTokens = (mode) => ({
                 },
                 background: {
                     paper: '#4f5552',  // Dark grey for components background
+                    paperOpaque: "rgba(79, 85, 82, 0.5)",
                     footer: '#4f5552'
                 },
                 action: {
@@ -372,8 +374,11 @@ const getDesignTokens = (mode) => ({
     //},
     typography: {
         fontFamily: 'Klotee, Artega',
+        body1: {
+            fontFamily: 'Easy'
+        },
         tag: {
-            FontFamily: "Artega",
+            FontFamily: "Easy",
             fontWeight: 400,
             fontSize: "0.7rem",
         }

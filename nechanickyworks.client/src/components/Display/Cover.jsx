@@ -15,10 +15,11 @@ const Cover = ({ image, children }) => {
             left: 0,
             right: 0,
             bottom: 0,
-            paddingTop:'7vh',
+            paddingTop:'64px',
             width: '100%',
             height: '100vh',
-            color: theme.palette.common.white
+            color: theme.palette.common.white,
+            overflowY:'clip'
         }}>
             {children}
         </Box>

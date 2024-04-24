@@ -9,7 +9,6 @@ import DaneLogo from "../../assets/imgs/DaneLogo.png";
 // Customized components for styling
 const StyledFooter = styled('footer')(({ theme }) => ({
     padding: theme.spacing(3),
-    marginTop: '2%',
     background: theme.palette.background.footer,
     color: theme.palette.primary.main,
     'a': {

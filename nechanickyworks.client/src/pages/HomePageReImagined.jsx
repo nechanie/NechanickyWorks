@@ -48,7 +48,7 @@ const HomePageReImagined = () => {
     };
 
     const handleProjectCardClick = (tag) => {
-        navigate(`/projects?tag=${tag}`);
+        tag !== null ? navigate(`/projects?tag=${tag}`) : navigate(`/projects`);
     };
 
     return (
@@ -83,7 +83,7 @@ const HomePageReImagined = () => {
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardActionArea onClick={()=>handleProjectCardClick('Educational') }>
+                            <CardActionArea onClick={()=>handleProjectCardClick('ed') }>
                                 <InteractiveCardMedia>
                                     <CardMedia
                                         component={Box}
@@ -101,7 +101,7 @@ const HomePageReImagined = () => {
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardActionArea>
+                            <CardActionArea onClick={() => handleProjectCardClick('demo')}>
                                 <InteractiveCardMedia>
                                     <CardMedia
                                         component={Box}
@@ -119,7 +119,7 @@ const HomePageReImagined = () => {
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardActionArea>
+                            <CardActionArea onClick={() => handleProjectCardClick('pres')}>
                                 <InteractiveCardMedia>
                                     <CardMedia
                                         component={Box}
@@ -137,7 +137,7 @@ const HomePageReImagined = () => {
                     </Grid>
                     <Grid item xs={12} sm={4} md={3}>
                         <Card sx={{ maxWidth: 345, minHeight: 120 }}>
-                            <CardActionArea>
+                            <CardActionArea onClick={() => handleProjectCardClick(null)}>
                                 <InteractiveCardMedia>
                                     <CardMedia
                                         component={Box}

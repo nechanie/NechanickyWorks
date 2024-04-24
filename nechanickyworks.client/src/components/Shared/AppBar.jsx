@@ -64,7 +64,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
         <React.Fragment>
             <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none'}}>
                 <Container maxWidth="xl">
-                <Toolbar sx={{ display: "flex", justifyContent: "space-between", maxHeight: '7vh', boxShadow: 'none' } }>
+                <Toolbar sx={{ display: "flex", justifyContent: "space-between", maxHeight: '64px', boxShadow: 'none' } }>
                     {/* Logo and Name, assuming the logo is text. If you have an image, use <img src="path/to/logo" alt="logo" /> */}
                     <Box sx={{
                             maxHeight: 'inherit',
