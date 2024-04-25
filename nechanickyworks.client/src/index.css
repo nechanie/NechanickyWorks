@@ -19,15 +19,13 @@ a {
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: rgb(0 159 164);
 }
 
 body {
   margin: 0;
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  flex-direction: column;
 }
 
 h1 {
@@ -49,9 +47,8 @@ button {
 button:hover {
   border-color: #646cff;
 }
-button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+    outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -69,9 +66,9 @@ button:focus-visible {
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed&display=swap");
 
 body {
-    color: #fff;
+/*    color: #fff;
     font-family: "Roboto Condensed", sans-serif;
-    background-image: url(https://images.unsplash.com/photo-1508389377389-b8221c0bcc9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
+    background-image: url(https://images.unsplash.com/photo-1508389377389-b8221c0bcc9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);*/
     background-position: top top;
     background-size: cover;
     margin: 0;
@@ -84,8 +81,6 @@ body {
     right: 0;
     bottom: 0;
     text-align: center;
-    background: rgb(49, 49, 177);
-    background: linear-gradient( 0deg, rgba(49, 49, 177, 1) 0%, rgba(49, 49, 177, 1) 50%, rgba(49, 49, 177, 0.6) 100% );
 }
 
 .container {
