@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme, CircularProgress, LinearProgress } from '@mui/material';
+import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme, CircularProgress, LinearProgress, Fade } from '@mui/material';
 import { styled } from '@mui/system';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
 import { useWebSocket } from '../components/Shared/WebsocketContext';
@@ -14,13 +14,8 @@ import TMLBackgroundDark from '../assets/imgs/backgrounds/TML/TMLBackgroundDark.
 import Cover from '../components/Display/Cover';
 import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
+import Glossary from '../components/Glossary';
 
-// Customized components for styling
-const StyledFooter = styled('footer')(({ theme }) => ({
-    padding: theme.spacing(3),
-    marginTop: '2%',
-    background: theme.palette.background.paper,
-}));
 
 const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
@@ -57,6 +52,7 @@ const TrustWorthyMLProjectPage = () => {
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
     const demoRunningRef = useRef(null);
+    const [bannerOpen, setBannerOpen] = React.useState(true);
 
     React.useEffect(() => {
         console.log(demoRunningRef);
@@ -80,6 +76,10 @@ const TrustWorthyMLProjectPage = () => {
             });
         }
     }, [webSocketManager, socketPageRef]);
+
+    useEffect(() => {
+        setBannerOpen((showSecondaryProgress || showPrimaryProgress));
+    }, [showSecondaryProgress, showPrimaryProgress]);
 
     useEffect(() => {
         const checkRefAndDisableForm = () => {
@@ -382,9 +382,61 @@ const TrustWorthyMLProjectPage = () => {
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%" }}>
                 <Container maxWidth='lg' align="center" sx={{ margin: '20px 0' }}>
                     <Paper square={false} elevation={3} sx={{
+                        my:'3%',
+                        p: 3
+                    }}>
+                        <Stack direction='column' sx={{ width: "100%" }}>
+                            <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                Background:
+                            </Typography>
+                            <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                Machine learning is a practice increasingly integrated into modern technology. For instance, AI
+                                chatbots like ChatGPT rely on machine learning's various layers to understand and generate human-like
+                                text. One of the earliest and most prevalent applications of machine learning is in computer vision,
+                                which aims to enable computers to process and interpret visual information from the world around us.
+                                Unlike humans, computers do not have eyes, so they use algorithms to analyze images and learn from them.
+                                This involves training models on large datasets to recognize patterns, objects, or even faces within images.
+
+                                The interactive demo on this page offers a hands-on experience with machine learning in computer vision. You'll
+                                have the opportunity to train a model using image data, seeing firsthand how these systems learn to understand
+                                and categorize visual inputs based on their content. Try it out to see how advances in machine learning continue
+                                to transform our interaction with technology.
+                            </Typography>
+                        </Stack>
+                    </Paper>
+                    <Paper square={false} elevation={3} sx={{
                         p:3
                     }}>
                         <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Stack direction='column' sx={{ width: "100%" }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        What does it do?
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        The demo below enables you to train a computer vision model using one of three base model architectures: LeNet, VGG, and ResNet.
+                                        You will train your model on one of two datasets: MNIST, which includes 70,000 black and white images of handwritten digits from
+                                        0 to 9, or CIFAR-10, which consists of 60,000 colored images of ten different types of objects. The training process involves teaching
+                                        the model to recognize and categorize images from these datasets into their respective categories. For instance, if you train your
+                                        model on MNIST and then provide it with an image of a handwritten '3', it will identify and categorize the image as a '3'. Similarly,
+                                        a model trained on CIFAR-10 will classify an image of an airplane into the 'airplane' category among the ten different categories
+                                        available in the dataset. This hands-on demo will not only help you understand the mechanics of model training but also how it applies
+                                        learned concepts to new, unseen data.
+                                    </Typography>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Then what?
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        Once your model is trained, you can choose to test its security by performing what is known as an adversarial attack.
+                                        As machine learning becomes integrated into a wide array of technologies, it is crucial to ensure these models are not
+                                        vulnerable to malicious inputs designed to deceive them. This testing is part of a broader field of computer science
+                                        dedicated to studying these vulnerabilities. However, this project will not provide an exhaustive explanation of the entire
+                                        field. For instance, a common adversarial attack on computer vision models involves subtly altering images-such as adding a
+                                        small amount of noise or distorting features-before they are processed by the model, with the aim of tricking the model into
+                                        misclassifying the image into the wrong category.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
                             <Grid item xs={12} sm={12} md={6}>
                                 <Stack direction='column' sx={{ width: "100%" }}>
                                     <Typography variant="h5" align="center" component="h1" gutterBottom>
@@ -417,7 +469,35 @@ const TrustWorthyMLProjectPage = () => {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                    <Grid container>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <Container maxWidth='sm' sx={{ my: '3%' }}>
+                                <Paper elevation={3} sx={{ p: 3 }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Demo How To:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>I recommend checking out the <Glossary/>, which includes some helpful definitions for the concepts you may be unfamiliar with.</li>
+                                            <li>Start by accessing the demo configuration form.</li>
+                                            <li>Review the pre-filled hyperparameters. These defaults are a good starting point for your experimentation.</li>
+                                            <li>Customize your training session. You have the flexibility to adjust any of the hyperparameters according to your interests or needs.</li>
+                                            <li>(Optional) Select the option to evaluate against PGD attacks if you wish to test the model's performance under adversarial conditions.</li>
+                                            <li>(Optional) Review and adjust the PGD attack hyperparameters, if necessary. These fields become visible only when you opt to evaluate the model against PGD attacks and are pre-filled with recommended default values.</li>
+                                            <li>Once you've configured your settings, submit the form. This action initiates the model's training and evaluation process.</li>
+                                            <li>Watch the live display that appears, showing real-time updates of the model's training progress and performance evaluation.</li>
+                                            <li>After the demo completes, the final evaluation metrics of the model will be displayed. This includes its accuracy and, if selected, its robustness against PGD attacks.</li>
+                                            <li>Analyze the outcomes. Use this information to understand how different hyperparameters and adversarial attacks affect the model's performance.</li>
+                                            <li>The form will allow new submissions once the current demo run completes. Feel free to experiment with different configurations to see how they impact model performance.</li>
+                                        </ul>
+                                    </Typography>
+                                </Paper>
+                            </Container>
+                        </Grid>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                        </Grid>
+                    </Grid>
                       
                     {showBatchGraph && (<Paper elevation={3} sx={{ marginTop: 2, py:'3%' }}>
                         <Box sx={{height: { xs: '26vh', sm: '40vh', md:'50vh' }, p: "3%" }} ref={demoRunningRef}>
@@ -430,50 +510,12 @@ const TrustWorthyMLProjectPage = () => {
                             />
                         </Box>
                         <Container maxWidth='md'>
-                            {showSecondaryProgress && (<Container maxWidth='sm'>
-                                {isCircular ? (
-                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Box sx={{ width: '100%', mr: 1 }}>
-                                            <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
-                                        </Box>
-                                        <Box sx={{ minWidth: 35 }}>
-                                            <CircularProgress color="info"/>
-                                        </Box>
-                                    </Box>
-                                ) : (
-                                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                        <Box sx={{ width: '100%', mr: 1 }}>
-                                            <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
-                                        </Box>
-                                        <Box sx={{ width: '100%', mr: 1 }}>
-                                            <LinearProgress variant="determinate" color="info" value={secondaryProgress} />
-                                        </Box>
-                                        <Box sx={{ minWidth: 35 }}>
-                                            <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
-                                        </Box>
-                                    </Box>
-                                )}
-                            </Container>)}
-                            {showPrimaryProgress && (
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <Box sx={{ width: '100%', mr: 1 }}>
-                                        <LinearProgress variant="determinate" color="success" value={primaryProgress} />
-                                    </Box>
-                                    <Box sx={{ minWidth: 35 }}>
-                                        <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
-                                    </Box>
-                                </Box>
-                            ) }
                             {accuracy !== null && (
                                 <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
-                                    Final Accuracy: {accuracy}%
+                                    Accuracy of your trained model: {accuracy}%
                                 </Typography>
                             )}
-                            {finalAccuracy !== null && (
-                                <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
-                                    Final Accuracy After Attack: {finalAccuracy}%
-                                </Typography>
-                            )}
+                            
                         </Container>
                         {showEpochGraph && (<React.Fragment><Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
                             <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
@@ -485,6 +527,17 @@ const TrustWorthyMLProjectPage = () => {
                                 />
                             </Box>
                         </React.Fragment>
+                        )}
+
+                        {finalAccuracy !== null && (
+                            <React.Fragment>
+                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
+                                    Final Accuracy After Attack: {finalAccuracy}%
+                                </Typography>
+                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
+                                    Change in accuracy due to attack: {(finalAccuracy - accuracy).toFixed(2)}%
+                                </Typography>
+                            </React.Fragment>
                         )}
                         {showBarGraph && (
                             <React.Fragment>
@@ -503,30 +556,66 @@ const TrustWorthyMLProjectPage = () => {
                             </React.Fragment>
                         )}
                     </Paper>)}
-                    
-                    <Container maxWidth='sm' sx={{ marginTop: "2%" }}>
-                        <Paper sx={{p:3}}>
-                        <Typography variant="h5" align="center" component="h1" gutterBottom>
-                            Demo How To:
-                        </Typography>
-                        <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                            <ul>
-                                <li>Start by accessing the form provided above.</li>
-                                <li>Review the pre-filled hyperparameters. These defaults are a good starting point for your experimentation.</li>
-                                <li>Customize your training session. You have the flexibility to adjust any of the hyperparameters according to your interests or needs.</li>
-                                <li>(Optional) Select the option to evaluate against PGD attacks if you wish to test the model's performance under adversarial conditions.</li>
-                                <li>(Optional) Review and adjust the PGD attack hyperparameters, if necessary. These fields become visible only when you opt to evaluate the model against PGD attacks and are pre-filled with recommended default values.</li>
-                                <li>Once you've configured your settings, submit the form. This action initiates the model's training and evaluation process.</li>
-                                <li>Watch the live display that appears, showing real-time updates of the model's training progress and performance evaluation.</li>
-                                <li>After the demo completes, the final evaluation metrics of the model will be displayed. This includes its accuracy and, if selected, its robustness against PGD attacks.</li>
-                                <li>Analyze the outcomes. Use this information to understand how different hyperparameters and adversarial attacks affect the model's performance.</li>
-                                <li>The form will allow new submissions once the current demo run completes. Feel free to experiment with different configurations to see how they impact model performance.</li>
-                            </ul>
-                            </Typography>
-                        </Paper>
-                </Container>
                 </Container>
             </Container>
+                <Fade appear={false} in={bannerOpen}>
+                    <Paper
+                        role="dialog"
+                        aria-modal="false"
+                        aria-label="Cookie banner"
+                        square
+
+                        variant="outlined"
+                        tabIndex={-1}
+                        sx={{
+                            position: 'fixed',
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            m: 0,
+                            p: 2,
+                            borderWidth: 0,
+                            borderTopWidth: 1,
+                        }}
+                    >
+                    {showSecondaryProgress && (<Container maxWidth='sm'>
+                        {isCircular ? (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Box sx={{ width: '100%', mr: 1 }}>
+                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                </Box>
+                                <Box sx={{ minWidth: 35 }}>
+                                    <CircularProgress color="info" />
+                                </Box>
+                            </Box>
+                        ) : (
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <Box sx={{ width: '100%', mr: 1 }}>
+                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                </Box>
+                                <Box sx={{ width: '100%', mr: 1 }}>
+                                    <LinearProgress variant="determinate" color="info" value={secondaryProgress} />
+                                </Box>
+                                <Box sx={{ minWidth: 35 }}>
+                                    <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
+                                </Box>
+                            </Box>
+                        )}
+                    </Container>)}
+                    {showPrimaryProgress && (<Container maxWidth='lg'>
+                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Box sx={{ width: '100%', mr: 1 }}>
+                                <LinearProgress variant="determinate" color="success" value={primaryProgress} />
+                            </Box>
+                            <Box sx={{ minWidth: 35 }}>
+                                <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                            </Box>
+                        </Box>
+                        </Container>
+                    )}
+                    </Paper>
+                </Fade>
+
             {/* Footer Section */}
             <SiteFooter/>
         </React.Fragment>

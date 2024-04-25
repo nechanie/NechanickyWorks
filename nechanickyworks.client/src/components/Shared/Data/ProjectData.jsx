@@ -13,6 +13,7 @@ const ProjectDataList = ([
         description: 'Explore the impact of hyperparameters on AI robustness with our interactive demo. Train neural networks, face adversarial attacks, and discover the balance of AI resilience.',
         image: TMLImage,
         href: "TrustworthyMachineLearning",
+        comingSoon: false,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'demo', text: 'Interactive Demo' }, { id: 3, ref: 'ml', text: 'Machine Learning' }]
@@ -23,6 +24,7 @@ const ProjectDataList = ([
         description: 'Discover the computational power of Gaussian Quadrature which surpasses traditional methods in numerical integration.',
         image: GaussImage,
         href: "GaussianQuadrature",
+        comingSoon: true,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'demo', text: 'Interactive Demo' }]
@@ -33,6 +35,7 @@ const ProjectDataList = ([
         description: 'Experience real-world applications of advanced NLP and vector database technology, and understand how these modern technologies can identify and analyze patterns in vast datasets.',
         image: CapstoneImage,
         href: "OSUCapstoneProject",
+        comingSoon: true,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'demo', text: 'Interactive Demo' }, { id: 3, ref: 'ml', text: 'Machine Learning' }]
@@ -43,6 +46,7 @@ const ProjectDataList = ([
         description: 'Dive into an exploration of cutting-edge diffusion denoising techniques and their effectiveness in improving the securty of constantly evolving deep learning technologies. ',
         image: DdsImage,
         href: "DiffusionDenoisedRobustification",
+        comingSoon: true,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'pres', text: 'Presentation' }, { id: 3, ref: 'ml', text: 'Machine Learning' }]
@@ -53,6 +57,7 @@ const ProjectDataList = ([
         description: 'Explore the real-world application of Blazor Web Forms in an industry setting to bring outdated enterprise applications back to life. ',
         image: RequestImage,
         href: "WarehouseRequestForm",
+        comingSoon: true,
         tags: [{ id: 1, ref: 'pres', text: 'Presentation' }]
     },
     {
@@ -61,6 +66,7 @@ const ProjectDataList = ([
         description: 'Explore the real-world application of Blazor Web Forms in an industry setting to streamline hiring processes.',
         image: RecruitmentImage,
         href: "RecruitmentRequestForm",
+        comingSoon: true,
         tags: [{ id: 1, ref: 'pres', text: 'Presentation' }]
     },
     {
@@ -69,6 +75,7 @@ const ProjectDataList = ([
         description: 'Immerse yourself in a fully functional android application designed to assist with grocery shopping and tracking.',
         image: MyFridgeImage,
         href: "MyFridgeApp",
+        comingSoon: true,
         tags: [{ id: 1, ref: 'demo', text: 'Interactive Demo' }, { id: 2, ref: 'pres', text: 'Presentation' }]
     },
 ]);

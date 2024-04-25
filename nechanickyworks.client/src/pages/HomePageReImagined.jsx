@@ -53,18 +53,19 @@ const HomePageReImagined = () => {
 
     return (
         <React.Fragment>
-            <Cover image={backgroundImage}>
+            <Cover image={backgroundImage} dynaColor={false }>
                 <Box sx={{
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
                     px: '15%',
-                    paddingBottom: '15%'
+                    paddingBottom: '15%',
+                    color:'inherit'
                 }}>
                     <Stack direction='column' spacing={2 }>
-                        <Typography variant='h2'>Nechanicky Works</Typography>
-                        <Typography>Ethan Nechanicky Portfolio</Typography>
+                        <Typography variant='h2' color='white'>Nechanicky Works</Typography>
+                        <Typography color='white'>Ethan Nechanicky Portfolio</Typography>
                         <ContrastButton onClick={handleExploreClick} variant='outlined'>Explore</ContrastButton>
                     </Stack>
                 </Box>

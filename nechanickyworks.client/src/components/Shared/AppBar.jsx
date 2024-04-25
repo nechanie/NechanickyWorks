@@ -26,8 +26,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const settingsOpen = Boolean(settingsAnchorEl);
     const open = Boolean(anchorEl);
     const aboutOpen = Boolean(aboutAnchorEl);
-    const [expandedProjects, setExpandedProjects] = useState(true);
-    const [expandedAbout, setExpandedAbout] = useState(true);
+    const [expandedProjects, setExpandedProjects] = useState(false);
+    const [expandedAbout, setExpandedAbout] = useState(false);
 
     const handleExpandProjectsClick = () => {
         setExpandedProjects(!expandedProjects);
@@ -91,34 +91,34 @@ const CustomAppBar = ({ onThemeToggle }) => {
             </Typography>
             <Divider />
             <List>
-                <ListItem disablePadding>
+                <ListItem disablePadding={true}>
                     <ListItemButton component={Link} to="/" onClick={handleDrawerToggle}>
                         <ListItemText primary="Home" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablePadding={true}>
                     <ListItemButton onClick={handleExpandProjectsClick}>
                         <ListItemText primary="Projects" />
                         {expandedProjects ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemButton>
                 </ListItem>
-                <ListItem disabledPadding>
+                <ListItem disablePadding={true}>
                     <Collapse in={expandedProjects} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
+                        <List component="div">
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Browse Projects' />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/TrustWorthyMachineLearning" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Trustworthy Machine Learning' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/GaussianQuadrature" onClick={handleDrawerToggle}>
-                                <ListItemText primary='Gaussian Quadrature' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/GaussianQuadrature" onClick={handleDrawerToggle}>
+                                <ListItemText primary='Gaussian Quadrature (Coming Soon)' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
-                                <ListItemText primary='OSU Senior Capstone' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
+                                <ListItemText primary='OSU Senior Capstone (Coming Soon)' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>
-                                <ListItemText primary='Diffusion Denoised Robustification' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>
+                                <ListItemText primary='Diffusion Denoised Robustification (Coming Soon)' />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/WarehouseRequestForm" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Warehouse Order Form (Coming Soon)' />
@@ -132,15 +132,15 @@ const CustomAppBar = ({ onThemeToggle }) => {
                         </List>
                     </Collapse>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablePadding={true}>
                     <ListItemButton onClick={handleExpandAboutClick}>
                         <ListItemText primary="About" />
                         {expandedAbout ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemButton>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablePadding={true}>
                     <Collapse in={expandedAbout} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
+                        <List component="div">
                             <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/about-me" onClick={handleDrawerToggle}>
                                 <ListItemText primary='About Me (Coming Soon)' />
                             </ListItemButton>
@@ -150,7 +150,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                         </List>
                     </Collapse>
                 </ListItem>
-                <ListItem disablePadding>
+                <ListItem disablePadding={true}>
                     <ListItemButton component={Link} to="/contact" disabled={true} onClick={handleDrawerToggle}>
                         <ListItemText primary="Contact (Coming Soon)" />
                     </ListItemButton>
@@ -210,9 +210,9 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 {/* Replace these with your actual navigation links */}
                                 <MenuItem onClick={handleClose} component={Link} to="/projects">Browse Projects</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/TrustWorthyMachineLearning">Trustworthy Machine Learning</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} to="/projects/GaussianQuadrature">Gaussian Quadrature</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} to="/projects/OSUCapstoneProject">OSU Senior Capstone</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification</MenuItem>
+                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/GaussianQuadrature">Gaussian Quadrature (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/OSUCapstoneProject">OSU Senior Capstone (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/WarehouseRequestForm">Warehouse Order Form (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/RecruitmentRequestForm">New Hire Request Form (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/MyFridgeApp">MyFridge Android App (Coming Soon)</MenuItem>

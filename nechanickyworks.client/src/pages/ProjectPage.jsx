@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom';
 import PageTitle from '../components/Shared/PageTitle';
 import PythonMLWebSocketTest from '../components/Demos/PythonMLWebsocketTest';
 import ProjectBrowser from '../components/Display/ProjectBrowser';
-import { Container, Paper, Typography, useTheme, Stack } from '@mui/material';
+import { Container, Paper, Typography, useTheme, Stack, Divider } from '@mui/material';
 import CardTable from '../components/Display/CardTable';
 import SiteFooter from '../components/Shared/Footer';
 import BackgroundDark from '../assets/imgs/backgrounds/ProjectPage/ProjectPageBackground.webp';
@@ -34,8 +34,8 @@ const ProjectPage = () => {
             <Cover image={ backgroundImage }>
                 <Container maxWidth='xl' align='center' sx={{ py: "2%", height: '100%' }} >
                     <Stack direction='column' sx={{height:'100%'}}>
-                        <Typography variant='h4' gutterBottom sx={{color: 'white'} }>Project Browser</Typography>
-                        <Paper sx={{backgroundColor: theme.palette.background.paperOpaque, height:'100%'}}>
+                        <Typography variant='h4' gutterBottom sx={{ color: 'white' }}>Project Browser</Typography>
+                        <Paper sx={{backgroundColor: theme.palette.background.paperOpaque, height:'100%', overflow:'hidden', paddingBottom: '2%'}}>
                             <CardTable projectList={ProjectDataList} defaultFilter={ tag } />
                         </Paper>
                     </Stack>

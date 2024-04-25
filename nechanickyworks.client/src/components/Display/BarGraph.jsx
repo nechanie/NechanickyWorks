@@ -11,19 +11,7 @@ const BarGraph = ({ dataRefs, dataVals }) => {
     return (
         <React.Fragment>
             {(dataVals.length > 0 && dataRefs.length > 0) ? (
-                //    <ResponsiveChartContainer
-                //    series={dataVals}
-                //    xAxis={[{ id: "xAxisId", scaleType: 'band', tickPlacement: 'middle', tickLabelPlacement: 'middle', data: dataRefs }]}
-                //    yAxis={[{ scaleType: 'linear', id: 'leftAxisId', min: 0, max: 100 }]}
-                //>
-                //    <BarPlot />
-                //    <ChartsXAxis position="bottom" axisId="xAxisId"/>
-                //    <ChartsYAxis label="Incorrect (%)" position="left" axisId="leftAxisId" />
-                //    <ChartsGrid horizontal={true} />
-                //    <ChartsTooltip />
-                //    <ChartsAxisHighlight/>
-                //    </ResponsiveChartContainer>
-                <BarChart series={dataVals} grid={{ horizontal: true }} xAxis={[{ scaleType: 'band', tickPlacement: 'middle', tickLabelPlacement: 'middle', data: dataRefs, colorMap: {type: 'ordinal', colors: lineColor} }]} yAxis={[{ scaleType: 'linear', id: 'leftAxisId', min: 0, max: 100, label:"Incorrect (%)" }]}/>
+                <BarChart series={dataVals} grid={{ horizontal: true }} xAxis={[{ label: 'Image Category',  scaleType: 'band', tickPlacement: 'middle', tickLabelPlacement: 'middle', data: dataRefs, colorMap: {type: 'ordinal', colors: lineColor} }]} yAxis={[{ scaleType: 'linear', id: 'leftAxisId', min: 0, max: 100, label:"Incorrect (%)" }]}/>
             ) : (
                 null
             )}

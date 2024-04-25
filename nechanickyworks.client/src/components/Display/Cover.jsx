@@ -2,12 +2,12 @@ import React, {  useEffect, useState } from 'react';
 import { Paper, Card, CardHeader, CardContent, Typography, Box, Button, CardActions, useTheme } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const Cover = ({ image, children }) => {
+const Cover = ({ image, children, dynaColor=true }) => {
     const theme = useTheme();
-    const [color, setColor] = useState((theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white));
+    const [color, setColor] = useState((theme.palette.mode === 'dark' && dynaColor ? theme.palette.common.white : theme.palette.common.black));
     React.useEffect(() => {
         setColor((prevState) => {
-            const newColor = theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white;
+            const newColor = theme.palette.mode === 'dark' && dynaColor ? theme.palette.common.white : theme.palette.common.black;
             return newColor;
         });
     }, [theme.palette.mode]);

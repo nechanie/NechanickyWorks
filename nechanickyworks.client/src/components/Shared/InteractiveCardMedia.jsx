@@ -1,7 +1,7 @@
 import React from 'react';
-import { Box, Button, useTheme, Typography } from '@mui/material';
+import { Box, Button, useTheme, Typography, Stack } from '@mui/material';
 
-const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
+const InteractiveCardMedia = ({ text = 'Learn More', comingSoon=false, ...props }) => {
     const theme = useTheme();
     return (
             <Box className sx={{
@@ -11,7 +11,7 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-            backgroundColor: 'transparent',
+                backgroundColor: 'transparent',
                 height: '100%'
         }}>
             <Box className='hover-overlay' sx={{
@@ -19,6 +19,7 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 width: '100%',  // width of the div
                 minHeight: '100%', // height of the div
                 display: 'flex',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'transparent',
@@ -30,17 +31,26 @@ const InteractiveCardMedia = ({ text = 'Learn More', ...props }) => {
                 },
                 '&:hover .exposed-text': {
                     opacity: 1,
-                }
+                },
+                zIndex: 100
             }}
             >
+                {comingSoon && (<Typography className='exposed-text' sx={{
+                    opacity: 0,
+                    transition: 'opacity 0.5s ease',
+                    m: 'auto'
+                }}>
+                    Coming Soon
+                </Typography>)}
                 <Typography className='exposed-text' sx={{
                     opacity: 0,
                     transition: 'opacity 0.5s ease',
-                } }>
-                    {text}
-                </Typography>
+                    m:'auto'
+                    }}>
+                        {text}
+                    </Typography>
             </Box>
-            <Box className="inner-group"
+            <Box
                 sx={{
                     width: 'inherit',  // width of the div
                     minHeight: 'inherit', // height of the div

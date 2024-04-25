@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Grid, Card, CardContent, CardMedia, Typography, CardActionArea, Stack, Chip, Box, Switch, FormControlLabel } from '@mui/material';
+import { Grid, Card, CardContent, CardMedia, Typography, CardActionArea, Stack, Chip, Box, Switch, FormControlLabel, Divider } from '@mui/material';
 import InteractiveCardMedia from '../Shared/InteractiveCardMedia';
+import ComingSoonOverlay from './ComingSoonOverlay';
 
 const CardTableItemTag = ({ tag, ...props }) => {
     let tagColor = null;
@@ -29,17 +30,24 @@ const CardTableItem = ({ projectData, ...props }) => {
     const handleCardClick = () => {
         navigate(projectData.href);
     };
-
     return (
         <Grid item xs={12} sm={6} md={4} lg={4} xl={3} {...props}>
-            <Card sx={{ maxWidth: 345, minHeight: 300, height:"100%" }}>
-                <CardActionArea onClick={handleCardClick} sx={{height:"100%"} }>
-                    <InteractiveCardMedia text={projectData.description}>
-                        <CardMedia
-                            component={Box}
-                            sx={{ minHeight: 200, maxWidth: 'inherit' }}
-                            image={projectData.image}
-                        />
+            <Card sx={{ maxWidth: 345, minHeight: 300}}>
+                <CardActionArea onClick={(projectData.comingSoon ? null : handleCardClick)} sx={{minHeight:"inherit"} }>
+                    <InteractiveCardMedia text={projectData.description} sx={{ height: '100%' }} comingSoon={projectData.comingSoon}>
+                        {projectData.comingSoon ? (<ComingSoonOverlay>
+                            <CardMedia
+                                component={Box}
+                                sx={{ minHeight: 200, maxWidth: 'inherit' }}
+                                image={projectData.image}
+                            />
+                        </ComingSoonOverlay>) : (
+                                <CardMedia
+                                    component={Box}
+                                    sx={{ minHeight: 200, maxWidth: 'inherit' }}
+                                    image={projectData.image}
+                                />
+                        )}
                         <CardContent sx={{ width: 'fit-content' }}>
                             <Stack alignItems='center'>
                                 <Typography gutterBottom align='center' variant="Caption" sx={{width:'fit-content'} }>
@@ -90,7 +98,8 @@ const CardTable = ({ projectList = null, defaultFilter=null }) => {
                         </Grid>
                     ))}
                 </Grid>
-                <Grid container spacing={2} sx={{p:"2%", maxHeight:'100%', height: "100%", width:"100%", overflowY:'scroll'} }>
+                <Divider variant='middle' oreientation='horizontal' />
+                <Grid container spacing={2} sx={{px:"2%", maxHeight:'100%', height: "100%", width:"100%", overflowY:'scroll'} }>
                     {filteredData.map((project) => (
                         <CardTableItem key={project.id} projectData={project} />
                     ))}
