@@ -19,19 +19,11 @@ const ProjectPage = () => {
     const theme = useTheme();
     let query = useQuery();
     let tag = query.get('tag');
-    const [backgroundImage, setBackgroundImage] = useState(null);
-
-    React.useEffect(() => {
-        setBackgroundImage((prevState) => {
-            const background = theme.palette.mode === 'light' ? BackgroundLight : BackgroundDark;
-            return background;
-        });
-    }, [theme.palette.mode]);
 
     return (
         <React.Fragment>
             <PageTitle pageTitle="Nechanicky Works" />
-            <Cover image={ backgroundImage }>
+            <Cover light={BackgroundLight} dark={BackgroundDark }>
                 <Container maxWidth='xl' align='center' sx={{ py: "2%", height: '100%' }} >
                     <Stack direction='column' sx={{height:'100%'}}>
                         <Typography variant='h4' gutterBottom sx={{ color: 'white' }}>Project Browser</Typography>

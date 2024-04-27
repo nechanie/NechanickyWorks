@@ -46,7 +46,6 @@ const TrustWorthyMLProjectPage = () => {
     const [categories, setCategories] = useState([]);
     const [categoryPercentages, setCategoryPercentages] = useState([]);
     const [showBarGraph, setShowBarGraph] = useState(false);
-    const [backgroundImage, setBackgroundImage] = useState(null);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
@@ -55,16 +54,9 @@ const TrustWorthyMLProjectPage = () => {
     const [bannerOpen, setBannerOpen] = React.useState(true);
 
     React.useEffect(() => {
-        console.log(demoRunningRef);
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
     }, [demoRunningRef.current])
 
-    React.useEffect(() => {
-        setBackgroundImage((prevState) => {
-            const background = theme.palette.mode === 'light' ? TMLBackground : TMLBackgroundDark;
-            return background;
-        });
-    }, [theme.palette.mode]);
 
     useEffect(() => {
         if (webSocketManager.currentTask &&
@@ -98,7 +90,6 @@ const TrustWorthyMLProjectPage = () => {
     useEffect(() => {
         const handleMessage = (message) => {
             const msg = JSON.parse(message);
-            console.log("< Received: ", msg);
             setLogMessages(prev => prev + message + "\n");
             if (msg.type === 'process_info') {
                 if (msg.data.message === "setup_start") {
@@ -253,7 +244,6 @@ const TrustWorthyMLProjectPage = () => {
     useEffect(() => {
         
         setBatchGraphData((prevState) => {
-            console.log(prevState);
             const newData = [
                 {
                     label: "Training Accuracy",
@@ -354,12 +344,11 @@ const TrustWorthyMLProjectPage = () => {
         }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
-        console.log("> Request queued");
     }, [webSocketManager, currentPath]);
 
     return (
         <React.Fragment>
-            <Cover image={backgroundImage}>
+            <Cover light={TMLBackground} dark={TMLBackgroundDark }>
                 <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around'}}>
                         <Typography variant='h4' gutterBottom sx={{fontSynthesisWeight: 'auto', fontWeight:600}}>Welcome to the Trustworthy Machine Learning Project Page.</Typography>

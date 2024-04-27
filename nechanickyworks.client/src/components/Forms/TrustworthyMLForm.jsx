@@ -28,8 +28,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
         const checkBackendHealth = async () => {
             try {
                 const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
-                console.log(response.status);
-                console.log(response.data.status);
                 if (response.status === 200 && response.data.status === 'healthy') {
                     setIsBackendHealthy(true);
                     setIsAltDisabled(false);

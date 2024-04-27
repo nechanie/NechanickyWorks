@@ -31,17 +31,9 @@ const StyledFooter = styled('footer')(({ theme }) => ({
 }));
 
 const HomePageReImagined = () => {
-    const [backgroundImage, setBackgroundImage] = useState(null);
     const theme = useTheme();
     const exploreSectionRef = useRef(null); 
     const navigate = useNavigate();
-
-    React.useEffect(() => {
-        setBackgroundImage((prevState) => {
-            const background = theme.palette.mode === 'light' ? bgImage : bgImageDark;
-            return background;
-        });
-    }, [theme.palette.mode]);
 
     const handleExploreClick = () => {
         exploreSectionRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -53,7 +45,7 @@ const HomePageReImagined = () => {
 
     return (
         <React.Fragment>
-            <Cover image={backgroundImage} dynaColor={false }>
+            <Cover light={bgImage} dark={bgImageDark} dynaColor={false }>
                 <Box sx={{
                     height: '100%',
                     display: 'flex',

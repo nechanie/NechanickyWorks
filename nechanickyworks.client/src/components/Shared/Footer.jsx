@@ -50,10 +50,10 @@ const SiteFooter = () => {
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Projects</u></Typography>
                             <Typography component={Link} to='/projects' variant='overline'>Project Browser</Typography>
-                            <Typography component={Link} to='projects/TrustworthyMachineLearning' variant='overline'>Trustworthy Machine Learning</Typography>
-                            <Typography component={Link} disabled={true} to='projects/GaussianQuadrature' variant='overline'>Gaussian Quadrature (Coming Soon)</Typography>
-                            <Typography component={Link} disabled={true} to='projects/OSUCapstoneProject' variant='overline'>OSU Senior Capstone (Coming Soon)</Typography>
-                            <Typography component={Link} disabled={true} to='projects/DiffusionDenoisedRobustification' variant='overline'>Diffusion Denoised Robustification (Coming Soon)</Typography>
+                            <Typography component={Link} to='/projects/TrustworthyMachineLearning' variant='overline'>Trustworthy Machine Learning</Typography>
+                            <Typography component={Link} disabled={true} to='/projects/GaussianQuadrature' variant='overline'>Gaussian Quadrature (Coming Soon)</Typography>
+                            <Typography component={Link} disabled={true} to='/projects/OSUCapstoneProject' variant='overline'>OSU Senior Capstone (Coming Soon)</Typography>
+                            <Typography component={Link} disabled={true} to='/projects/DiffusionDenoisedRobustification' variant='overline'>Diffusion Denoised Robustification (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>Warehouse Order Form (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>New Hire Request Form (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>MyFridge Android App (Coming Soon)</Typography>
@@ -67,7 +67,7 @@ const SiteFooter = () => {
                         </Stack>
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Contact</u></Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>Contact Information (Coming Soon)</Typography>
+                            <Typography component={Link} to='/contact' variant='overline'>Contact Information</Typography>
                         </Stack>
                     </Grid>
                 </Grid>

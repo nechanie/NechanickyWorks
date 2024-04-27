@@ -151,8 +151,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                     </Collapse>
                 </ListItem>
                 <ListItem disablePadding={true}>
-                    <ListItemButton component={Link} to="/contact" disabled={true} onClick={handleDrawerToggle}>
-                        <ListItemText primary="Contact (Coming Soon)" />
+                    <ListItemButton component={Link} to="/contact" onClick={handleDrawerToggle}>
+                        <ListItemText primary="Contact" />
                     </ListItemButton>
                 </ListItem>
             </List>
@@ -169,7 +169,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             aria-label="open drawer"
                             edge="start"
                             onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { sm: 'none' } }}
+                            sx={{ mr: 2, display: { md: 'none' } }}
                         >
                             <MenuIcon />
                         </IconButton>
@@ -181,7 +181,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 </Link>
                             </Typography>
                         </Box>
-                        <Box sx={{ display: { xs: 'none', sm: 'block', marginLeft: 'auto' } }}>
+                        <Box sx={{ display: { xs: 'none', md: 'block', marginLeft: 'auto' } }}>
                             {/* Navigation buttons for larger screens */}
                             <Button color="inherit" component={Link} variant="text" to="/">
                                 Home
@@ -242,7 +242,10 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 {/* Replace these with your actual navigation links */}
                                 <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-me">About Me (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
-                            </Menu>                            
+                            </Menu>     
+                            <Button color="inherit" variant="text" component={Link} to='/contact' onClick={handleAboutClick}>
+                                Contact Me
+                            </Button>
                         </Box>
                         <IconButton
                             disableFocusRipple={true}
