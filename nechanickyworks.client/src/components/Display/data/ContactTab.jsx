@@ -51,7 +51,8 @@ const ContactTab = ({ title, light, dark }) => {
                     <Typography variant='h4' align='center' sx={{
                         fontWeight: '900',
                         fontSynthesisWeight: 'auto',
-                        m: 'auto'
+                        m: 'auto',
+                        overflowWrap: 'anywhere'
                     }}>
                         {title}
                     </Typography>
