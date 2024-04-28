@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleMap, LoadScript, MarkerF } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -12,9 +12,25 @@ const center = {
 };
 
 function GoogleMapsEmbed() {
+    const [apiKey, setApiKey] = useState(null);
+
+    useEffect(() => {
+        fetch('/GoogleMaps/config') // Ensure this matches your backend route exactly
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                setApiKey(data.apiKey);
+            })
+            .catch(error => console.error('Error fetching API key:', error));
+    }, []);
+
     return (
         <LoadScript
-            googleMapsApiKey="AIzaSyBV0G_IaCHp9JKZJI6Z4bbiYnV8s6kxLeY" 
+            googleMapsApiKey={apiKey || import.meta.env.VITE_GOOGLE_MAPS_API_KEY } 
         >
             <GoogleMap
                 mapContainerStyle={containerStyle}

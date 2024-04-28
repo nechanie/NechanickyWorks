@@ -1,6 +1,6 @@
 @NechanickyWorks.Server_HostAddress = http://localhost:5283
 
-GET {{NechanickyWorks.Server_HostAddress}}/weatherforecast/
+GET {{NechanickyWorks.Server_HostAddress}}/maps/
 Accept: application/json
 
 ###

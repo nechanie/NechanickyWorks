@@ -6,7 +6,6 @@ import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
-import NewCustomAppBar from './components/Shared/AppBar';
 import { ThemeProvider, createTheme, styled, responsiveFontSizes} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Box, useMediaQuery } from '@mui/material';
@@ -482,7 +481,7 @@ function App() {
                     <GradientBox>
                         <BrowserRouter>
                             <ScrollToTop/>
-                            <NewCustomAppBar onThemeToggle={colorMode.toggleColorMode} />
+                            <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                             <Routes>
                                 <Route path="/" element={<HomePageReImagined />} />
                                 <Route path="/projects" element={ <ProjectPage/> }/>

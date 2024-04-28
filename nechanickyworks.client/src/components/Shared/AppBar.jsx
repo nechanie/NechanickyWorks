@@ -81,6 +81,12 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const handleAboutClick = (event) => {
         setAboutAnchorEl(event.currentTarget);
     }
+
+    const handleOnThemeToggle = () => {
+        onThemeToggle();
+        setSettingsAnchorEl(null);
+    }
+
     const drawer = (
         <Box
             role="presentation"
@@ -243,7 +249,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-me">About Me (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
                             </Menu>     
-                            <Button color="inherit" variant="text" component={Link} to='/contact' onClick={handleAboutClick}>
+                            <Button color="inherit" variant="text" component={Link} to='/contact'>
                                 Contact Me
                             </Button>
                         </Box>
@@ -274,7 +280,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                         >
                             <MenuItem>
                                 <FormGroup>
-                                    <FormControlLabel control={<Switch checked={isDarkMode} onChange={onThemeToggle} />} label="Dark Mode" />
+                                    <FormControlLabel control={<Switch checked={isDarkMode} onChange={handleOnThemeToggle} />} label="Dark Mode" />
                                 </FormGroup>
                             </MenuItem>
                         </Menu>

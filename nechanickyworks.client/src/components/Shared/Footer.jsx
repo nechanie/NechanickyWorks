@@ -25,7 +25,7 @@ const StyledFooter = styled('footer')(({ theme }) => ({
     },
     'a:is([disabled])': {
         cursor: 'default',
-        color: '#212121'
+        color: '#9d9d9d'
     }
 }));
 
