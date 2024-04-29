@@ -4,19 +4,18 @@ import { axisClasses } from '@mui/x-charts/ChartsAxis';
 
 const GQLineGraph = ({ dataRefs, dataVals, xLabel }) => {
     const yValueFormatter = (value) => {
-        const exponent = Math.log10(value);
-        return `10E${Math.round(exponent)}`;
-    };
-    const xValueFormatter = (value) => {
-        return `${value.toFixed(0)}`;
+        return `10E${value}`;
     };
     return (
         <React.Fragment>
             {(dataVals.length > 0 && dataRefs.length > 0) ? (
                 <LineChart
-                    series={dataVals}
+                    series={dataVals.map((series) => ({
+                        ...series,
+                        valueFormatter: (v) => (yValueFormatter(v)),
+                    }))}
                     xAxis={[{ id: "xAxisId", scaleType: 'linear', data: dataRefs, label: xLabel, tickMinStep: 1 }]}
-                    yAxis={[{ scaleType: 'log', id: 'leftAxisId', label: "Absolute Error", valueFormatter: yValueFormatter}]}
+                    yAxis={[{ scaleType: 'linear', id: 'leftAxisId', label: "Absolute Error", valueFormatter: yValueFormatter, max:1, min: -20}]}
                     slotProps={{ direction: "row", position: { vertical: "top", horizontal: "middle" } }}
                     margin={{left:90} }
                     sx={{

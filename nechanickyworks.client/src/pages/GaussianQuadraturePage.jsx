@@ -83,27 +83,27 @@ const GaussianQuadraturePage = () => {
                     });
                 }
                 setPrimaryProgress((prevState) => {
-                    let newState = 100 * msg.data.iteration / msg.data.toatl_iterations;
+                    let newState = 100 * msg.data.iteration / msg.data.total_iterations;
                     return newState;
                 });
                 setNodes((prevState) => {
                     const copy = [...prevState];
-                    copy.push(Math.log(parseInt(msg.data.nodes)));
+                    copy.push(parseInt(msg.data.nodes));
                     return copy;
                 });
                 setLegendreData((prevState) => {
                     const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.legendre_error));
+                    copy.push(Math.log10(parseFloat(msg.data.legendre_error)));
                     return copy;
                 });
                 setTrapezoidalData((prevState) => {
                     const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.trapezoidal_error));
+                    copy.push(Math.log10(parseFloat(msg.data.trapezoidal_error)));
                     return copy;
                 });
                 setSimpsonsData((prevState) => {
                     const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.simpsons_error));
+                    copy.push(Math.log10(parseFloat(msg.data.simpsons_error)));
                     return copy;
                 });
             }
