@@ -1,10 +1,16 @@
 import React from 'react';
-import { Box, Container, Typography, Grid, Avatar, Button } from '@mui/material';
+import { Box, Container, Typography, Grid, Avatar, Button, CardContent, Card, Paper } from '@mui/material';
+import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineOppositeContent, TimelineDot } from '@mui/lab';
 import MyPic from "../assets/imgs/me/MyPic.jpg";
+import SchoolIcon from '@mui/icons-material/School';
+import CodeIcon from '@mui/icons-material/Code';
+import WorkIcon from '@mui/icons-material/Work';
+import HorizontalTimeline from '../components/Display/HorizontalTimeline';
 
 const AboutMePage = () => {
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" sx={{ paddingTop: '64px' }}>
+            
             {/* Hero Section */}
             <Box sx={{ my: 4, textAlign: 'center' }}>
                 <Avatar
@@ -19,7 +25,9 @@ const AboutMePage = () => {
                     Your Professional Tagline
                 </Typography>
             </Box>
-
+            <Paper>
+                <HorizontalTimeline />
+            </Paper>
             {/* Professional Summary */}
             <Grid container spacing={4} sx={{ my: 4 }}>
                 <Grid item xs={12}>
