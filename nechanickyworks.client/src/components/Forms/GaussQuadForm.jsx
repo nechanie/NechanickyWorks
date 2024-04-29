@@ -42,7 +42,6 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
     }, []);
 
     const validateForm = () => {
-        console.log(polynomialFields);
         if (parseInt(intervalStart) >= parseInt(intervalStop)) {
             setFormError('Interval start must be less than interval stop.');
             return false;

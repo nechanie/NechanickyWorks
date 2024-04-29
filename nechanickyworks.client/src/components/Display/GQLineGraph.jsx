@@ -15,7 +15,7 @@ const GQLineGraph = ({ dataRefs, dataVals, xLabel }) => {
                         valueFormatter: (v) => (yValueFormatter(v)),
                     }))}
                     xAxis={[{ id: "xAxisId", scaleType: 'linear', data: dataRefs, label: xLabel, tickMinStep: 1 }]}
-                    yAxis={[{ scaleType: 'linear', id: 'leftAxisId', label: "Absolute Error", valueFormatter: yValueFormatter, max:1, min: -20}]}
+                    yAxis={[{ scaleType: 'linear', id: 'leftAxisId', label: "Absolute Error", valueFormatter: yValueFormatter, min: -20}]}
                     slotProps={{ direction: "row", position: { vertical: "top", horizontal: "middle" } }}
                     margin={{left:90} }
                     sx={{

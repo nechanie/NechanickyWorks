@@ -75,11 +75,12 @@ const GaussianQuadraturePage = () => {
             }
             if (msg.type === 'final_node_info') {
                 setFinalIntegral((prevState) => {
-                    const newIntegral = msg.data.final_integral;
+                    const newIntegral = parseFloat(msg.data.final_integral);
                     return newIntegral;
                 });
                 setTrueIntegral((prevState) => {
-                    const newIntegral = msg.data.true_itegral;
+                    console.log(msg);
+                    const newIntegral = msg.data.true_integral;
                     return newIntegral;
                 });
             }
