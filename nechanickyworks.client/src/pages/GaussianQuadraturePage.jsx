@@ -73,14 +73,20 @@ const GaussianQuadraturePage = () => {
                     setShowPrimaryProgress(false);
                 }
             }
+            if (msg.type === 'final_node_info') {
+                setFinalIntegral((prevState) => {
+                    const newIntegral = msg.data.final_integral;
+                    return newIntegral;
+                });
+                setTrueIntegral((prevState) => {
+                    const newIntegral = msg.data.true_itegral;
+                    return newIntegral;
+                });
+            }
             if (msg.type === 'node_info') {
                 if (showNodeGraph === false) {
                     setStatusMessage("Running...");
                     setShowNodeGraph(true);
-                    setTrueIntegral((prevState) => {
-                        const newIntegral = msg.data.true_itegral;
-                        return newIntegral;
-                    });
                 }
                 setPrimaryProgress((prevState) => {
                     let newState = 100 * msg.data.iteration / msg.data.total_iterations;
