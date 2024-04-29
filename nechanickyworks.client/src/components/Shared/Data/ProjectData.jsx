@@ -24,7 +24,7 @@ const ProjectDataList = ([
         description: 'Discover the computational power of Gaussian Quadrature which surpasses traditional methods in numerical integration.',
         image: GaussImage,
         href: "GaussianQuadrature",
-        comingSoon: true,
+        comingSoon: false,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'demo', text: 'Interactive Demo' }]

@@ -74,12 +74,13 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                         <Box sx={{ marginBottom: 2 }}>
                             <Typography variant="h6">Model Choice</Typography>
                                 <FormControl fullWidth margin="normal" disabled={isDisabled || isAltDisabled}>
-                                <InputLabel>Model</InputLabel>
+                                <InputLabel color='info'>Model</InputLabel>
                                 <Select
                                     name="model"
                                     value={formData.model}
                                     onChange={handleInputChange}
                                     label="Model"
+                                    color='info'
                                 >
                                     <MenuItem value="LeNet">LeNet</MenuItem>
                                     <MenuItem value="VGG">VGG</MenuItem>
@@ -106,6 +107,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 name="learningRate"
                                 label="Learning Rate"
                                 type="number"
+                                color='info'
                                 margin="normal"
                                 value={formData.learningRate}
                                 onChange={handleInputChange}
@@ -118,6 +120,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     label="Epochs"
                                     type="number"
                                     margin="normal"
+                                    color='info'
                                     value={formData.epochs}
                                     onChange={handleInputChange}
                                     inputProps={{ step: 1, min: 1, max: 20 }}
@@ -128,6 +131,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 name="batchSize"
                                 label="Batch Size"
                                 type="number"
+                                color='info'
                                 margin="normal"
                                 value={formData.batchSize}
                                 onChange={handleInputChange}
@@ -151,6 +155,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     name="dropoutRate"
                                     label="Dropout Rate"
                                     type="number"
+                                    color='info'
                                     margin="normal"
                                     value={formData.dropoutRate}
                                     onChange={handleInputChange}
@@ -201,6 +206,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         name="epsilonValue"
                                         label="Epsilon Value"
                                         type="number"
+                                        color='info'
                                         margin="normal"
                                         value={formData.epsilonValue}
                                         onChange={handleInputChange}
@@ -213,6 +219,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         label="Alpha Value"
                                         type="number"
                                         margin="normal"
+                                        color='info'
                                         value={formData.alphaValue}
                                         onChange={handleInputChange}
                                             inputProps={{ step: 0.000001, min: 0, max: 3, maxLength: 10 }}
@@ -224,6 +231,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         label="Number of Iterations"
                                         type="number"
                                         margin="normal"
+                                        color='info'
                                         value={formData.numberOfIterations}
                                         onChange={handleInputChange}
                                             inputProps={{ min: 1, max: 100 }}
