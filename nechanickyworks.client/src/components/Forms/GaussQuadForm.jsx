@@ -1,19 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Container, Paper, Typography, Box, TextField, Button, IconButton, FormControl,
     InputLabel, Select, MenuItem, RadioGroup, FormControlLabel, Radio, FormGroup
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import axios from 'axios';
+import UnavailableServiceOverlay from '../Display/UnavailableServiceOverlay';
 
 
 const GaussQuadForm = ({ onSubmit, isDisabled }) => {
+    const [isBackendHealthy, setIsBackendHealthy] = useState(false);
+    const [isAltDisabled, setIsAltDisabled] = useState(true);
     const [functionType, setFunctionType] = useState('polynomial');
     const [polynomialFields, setPolynomialFields] = useState([{ coefficient: '', power: '' }]);
     const [exponential, setExponential] = useState({ a: '', b: '' });
     const [intervalStart, setIntervalStart] = useState('');
     const [intervalStop, setIntervalStop] = useState('');
-    const [steps, setSteps] = useState('');
+    const [nodes, setNodes] = useState('');
+    const [formError, setFormError] = useState('');
+
+    useEffect(() => {
+        const checkBackendHealth = async () => {
+            try {
+                const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
+                if (response.status === 200 && response.data.status === 'healthy') {
+                    setIsBackendHealthy(true);
+                    setIsAltDisabled(false);
+                } else {
+                    setIsBackendHealthy(false);
+                    setIsAltDisabled(true);
+                }
+            } catch (error) {
+                setIsBackendHealthy(false);
+                setIsAltDisabled(true);
+            }
+        };
+
+        checkBackendHealth();
+    }, []);
+
+    const validateForm = () => {
+        console.log(polynomialFields);
+        if (parseInt(intervalStart) >= parseInt(intervalStop)) {
+            setFormError('Interval start must be less than interval stop.');
+            return false;
+        }
+        if (functionType === 'exponential' && (!exponential.a || !exponential.b)) {
+            setFormError('Coefficients a and b must not be empty.');
+            return false;
+        }
+        if (functionType === 'polynomial' && polynomialFields.some(field => !field.coefficient || !field.power)) {
+            setFormError('All polynomial terms must have a coefficient and a power.');
+            return false;
+        }
+        if (functionType === 'polynomial' && polynomialFields.length === 0) {
+            setFormError('At least one polynomial terms must be specified.');
+            return false;
+        }
+        if (!nodes) {
+            setFormError('Please select the maximum nodes.');
+            return false;
+        }
+        setFormError('');
+        return true;
+    };
 
     const handlePolynomialChange = (index, event) => {
         let data = [...polynomialFields];
@@ -39,119 +91,140 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = {
-            functionType,
-            polynomialFields,
-            exponential,
-            intervalStart,
-            intervalStop,
-            steps,
-        };
-        onSubmit(formData);
+        if (validateForm()) {
+            const formData = {
+                functionType,
+                polynomialFields,
+                exponential,
+                intervalStart,
+                intervalStop,
+                nodes,
+            };
+            onSubmit(formData);
+        }
     };
 
     return (
         <Container maxWidth="md" sx={{ m: 3 }}>
             <Paper sx={{ p: 3 }}>
+                {isBackendHealthy && (
+                    <Box sx={{ position: 'relative', display: 'flex', width: "100%", height: 'fit-content', justifyContent: 'end' }}> {/* Positioning the icon */}
+                        <CheckCircleOutlineIcon color="success" />
+                    </Box>
+                )}
                 <Typography variant="h4" gutterBottom>Demo Configuration</Typography>
-                <form onSubmit={handleSubmit}>
-                    <FormControl component="fieldset" disabled={isDisabled}>
-                        <RadioGroup row name="functionType" value={functionType} onChange={(e) => setFunctionType(e.target.value)}>
-                            <FormControlLabel value="polynomial" control={<Radio />} label="Polynomial" />
-                            <FormControlLabel value="exponential" control={<Radio />} label="Exponential" />
-                        </RadioGroup>
-                    </FormControl>
+                <UnavailableServiceOverlay isServiceAvailable={isBackendHealthy}>
+                    <form onSubmit={handleSubmit}>
+                        {formError && (
+                            <Typography color="error">{formError}</Typography>
+                        )}
+                        <FormControl component="fieldset" disabled={isDisabled || isAltDisabled}>
+                            <RadioGroup row name="functionType" value={functionType} onChange={(e) => setFunctionType(e.target.value)}>
+                                <FormControlLabel value="polynomial" control={<Radio color="secondary" />} label="Polynomial" />
+                                <FormControlLabel value="exponential" control={<Radio color="secondary" />} label="Exponential" />
+                            </RadioGroup>
+                        </FormControl>
 
-                    {functionType === 'polynomial' ? (
-                        polynomialFields.map((form, index) => (
-                            <Box key={index} sx={{ marginBottom: 2 }}>
-                                <FormGroup sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                                    <TextField
-                                        name="coefficient"
-                                        label="Coefficient (A)"
+                        {functionType === 'polynomial' ? (
+                            polynomialFields.map((form, index) => (
+                                <Box key={index} sx={{ marginBottom: 2 }}>
+                                    <FormGroup sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 2 }}>
+                                        <TextField
+                                            name="coefficient"
+                                            label="Coefficient (A)"
+                                            type="number"
+                                            color='info'
+                                            value={form.coefficient}
+                                            onChange={event => handlePolynomialChange(index, event)}
+                                            disabled={isDisabled || isAltDisabled}
+                                        />
+                                        <TextField
+                                            name="power"
+                                            label="Power (b)"
+                                            type="number"
+                                            color='info'
+                                            value={form.power}
+                                            onChange={event => handlePolynomialChange(index, event)}
+                                            disabled={isDisabled || isAltDisabled}
+                                            inputProps={{ min: "1" }}
+                                        />
+                                        <IconButton onClick={() => removeFields(index)} disabled={isDisabled || isAltDisabled}>
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </FormGroup>
+                                </Box>
+                            ))
+                        ) : (
+                            <Box sx={{ marginBottom: 2 }}>
+                                <TextField
+                                    fullWidth
+                                    name="a"
+                                    label="Coefficient (a)"
                                         type="number"
-                                        value={form.coefficient}
-                                        onChange={event => handlePolynomialChange(index, event)}
-                                        disabled={isDisabled}
-                                    />
-                                    <TextField
-                                        name="power"
-                                        label="Power (b)"
-                                        type="number"
-                                        value={form.power}
-                                        onChange={event => handlePolynomialChange(index, event)}
-                                        disabled={isDisabled}
-                                    />
-                                    <IconButton onClick={() => removeFields(index)} disabled={isDisabled}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </FormGroup>
+                                        color='info'
+                                    margin="normal"
+                                    value={exponential.a}
+                                    onChange={handleExponentialChange}
+                                        disabled={isDisabled || isAltDisabled}
+                                />
+                                <TextField
+                                    fullWidth
+                                    name="b"
+                                    label="Exponent (b)"
+                                    color='info'
+                                    type="number"
+                                    margin="normal"
+                                    value={exponential.b}
+                                    inputProps={{ min: "1" }}
+                                    onChange={handleExponentialChange}
+                                        disabled={isDisabled || isAltDisabled}
+                                />
                             </Box>
-                        ))
-                    ) : (
+                        )}
+
+                        {functionType === 'polynomial' && (
+                            <Button startIcon={<AddCircleOutlineIcon />} onClick={addFields} disabled={isDisabled || isAltDisabled} color="info">Add Term</Button>
+                        )}
+
                         <Box sx={{ marginBottom: 2 }}>
                             <TextField
                                 fullWidth
-                                name="a"
-                                label="Coefficient (a)"
+                                label="Interval Start"
                                 type="number"
                                 margin="normal"
-                                value={exponential.a}
-                                onChange={handleExponentialChange}
-                                disabled={isDisabled}
+                                color='info'
+                                value={intervalStart}
+                                onChange={e => setIntervalStart(e.target.value)}
+                                disabled={isDisabled || isAltDisabled}
                             />
                             <TextField
                                 fullWidth
-                                name="b"
-                                label="Exponent (b)"
+                                label="Interval Stop"
                                 type="number"
                                 margin="normal"
-                                value={exponential.b}
-                                onChange={handleExponentialChange}
-                                disabled={isDisabled}
+                                color='info'
+                                value={intervalStop}
+                                onChange={e => setIntervalStop(e.target.value)}
+                                disabled={isDisabled || isAltDisabled}
                             />
+                            <FormControl fullWidth margin="normal" disabled={isDisabled || isAltDisabled}>
+                                <InputLabel color='info'>Max Nodes</InputLabel>
+                                <Select
+                                    value={nodes}
+                                    onChange={e => setNodes(e.target.value)}
+                                    label="Max Nodes"
+                                    color='info'
+                                >
+                                    {[1, 2, 3, 4, 5, 6, 7].map(node => (
+                                        <MenuItem key={node} value={node}>{node}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Box>
-                    )}
 
-                    {functionType === 'polynomial' && (
-                        <Button startIcon={<AddCircleOutlineIcon />} onClick={addFields} disabled={isDisabled}>Add Term</Button>
-                    )}
-
-                    <Box sx={{ marginBottom: 2 }}>
-                        <TextField
-                            fullWidth
-                            label="Interval Start"
-                            type="number"
-                            margin="normal"
-                            value={intervalStart}
-                            onChange={e => setIntervalStart(e.target.value)}
-                            disabled={isDisabled}
-                        />
-                        <TextField
-                            fullWidth
-                            label="Interval Stop"
-                            type="number"
-                            margin="normal"
-                            value={intervalStop}
-                            onChange={e => setIntervalStop(e.target.value)}
-                            disabled={isDisabled}
-                        />
-                        <FormControl fullWidth margin="normal" disabled={isDisabled}>
-                            <InputLabel>Computational Steps</InputLabel>
-                            <Select
-                                value={steps}
-                                onChange={e => setSteps(e.target.value)}
-                                label="Computational Steps"
-                            >
-                                {[1, 2, 3, 4, 5, 6, 7].map(step => (
-                                    <MenuItem key={step} value={step}>{step}</MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Box>
-
-                    <Button type="submit" variant="contained" color="primary" disabled={isDisabled}>Submit</Button>
-                </form>
+                        <Button type="submit" variant="contained" color="success" disabled={isDisabled || isAltDisabled}>Submit</Button>
+                    </form>
+                </UnavailableServiceOverlay>
             </Paper>
         </Container>
     );

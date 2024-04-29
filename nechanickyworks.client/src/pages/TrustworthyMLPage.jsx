@@ -304,7 +304,6 @@ const TrustWorthyMLProjectPage = () => {
         setEpochLossData([]);
         setEpochs([]);
         setLossData([]);
-        setShowBatchGraph(false);
         setShowPoints(false);
         setShowEpochGraph(false);
         setWillAttack(false);

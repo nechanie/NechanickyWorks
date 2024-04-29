@@ -51,7 +51,7 @@ const SiteFooter = () => {
                             <Typography variant='body1'><u>Projects</u></Typography>
                             <Typography component={Link} to='/projects' variant='overline'>Project Browser</Typography>
                             <Typography component={Link} to='/projects/TrustworthyMachineLearning' variant='overline'>Trustworthy Machine Learning</Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>Gaussian Quadrature (Coming Soon)</Typography>{/*'/projects/GaussianQuadrature'*/}
+                            <Typography component={Link} to='/projects/GaussianQuadrature' variant='overline'>Gaussian Quadrature</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>OSU Senior Capstone (Coming Soon)</Typography>{/*'/projects/OSUCapstoneProject'*/}
                             <Typography component={Link} disabled={true} variant='overline'>Diffusion Denoised Robustification (Coming Soon)</Typography>{/*'/projects/DiffusionDenoisedRobustification'*/}
                             <Typography component={Link} disabled={true} variant='overline'>Warehouse Order Form (Coming Soon)</Typography>
