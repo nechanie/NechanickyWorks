@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme, styled, responsiveFontSizes } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import HomePageReImagined from './pages/HomePageReImagined'; // Adjust the path as necessary
 import HomePage from './pages/HomePage'; // Adjust the path as necessary
 import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
-import { ThemeProvider, createTheme, styled, responsiveFontSizes} from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { Box, useMediaQuery } from '@mui/material';
 import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
 import OSUCapstoneProjectPage from './pages/OSUCapstoneProjectPage';

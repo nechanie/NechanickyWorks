@@ -6,8 +6,13 @@ import SchoolIcon from '@mui/icons-material/School';
 import CodeIcon from '@mui/icons-material/Code';
 import WorkIcon from '@mui/icons-material/Work';
 import HorizontalTimeline from '../components/Display/HorizontalTimeline';
+import VerticalTimeline from '../components/Display/VerticalTimeline';
+import useCurrentBreakpoint from '../components/utils/BreakpointTracker';
+import SkillMatrixGrid from '../components/Custom/SkillMatrixGrid';
 
 const AboutMePage = () => {
+    let breakpoint = useCurrentBreakpoint();
+    const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl'];
     return (
         <Container maxWidth="lg" sx={{ paddingTop: '64px' }}>
             
@@ -25,9 +30,7 @@ const AboutMePage = () => {
                     Your Professional Tagline
                 </Typography>
             </Box>
-            <Paper>
-                <HorizontalTimeline />
-            </Paper>
+            
             {/* Professional Summary */}
             <Grid container spacing={4} sx={{ my: 4 }}>
                 <Grid item xs={12}>
@@ -39,13 +42,25 @@ const AboutMePage = () => {
                         your expertise, and how you've evolved in your career. This is your story.
                     </Typography>
                 </Grid>
-
                 <Grid item xs={12}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4" align='center' gutterBottom>
+                        My Timeline
+                    </Typography>
+                    <Paper>
+
+                        {breakpoints.includes(breakpoint, 2) ? (
+
+                            <HorizontalTimeline />
+                        ) : (
+                            <VerticalTimeline />
+                        )}
+                    </Paper>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography variant="h4" align='center' gutterBottom>
                         Skills & Expertise
                     </Typography>
-                    {/* List your skills here. Consider using MUI Chips for technology names, or simple Typography for broader skills. */}
-                    <Typography variant="body1">Skill 1, Skill 2, Skill 3, ...</Typography>
+                    <SkillMatrixGrid/>
                 </Grid>
             </Grid>
 
@@ -54,17 +69,17 @@ const AboutMePage = () => {
                 <Typography variant="h6" gutterBottom>
                     Interested in seeing my work?
                 </Typography>
-                <Button variant="contained" color="primary" href="/">
+                <Button variant="contained" color="primary" href="/projects">
                     View Projects
                 </Button>
             </Box>
 
             {/* Optional: Personal Insights or Hobbies */}
             <Box sx={{ my: 4 }}>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h4" align='center' gutterBottom>
                     A Bit More About Me
                 </Typography>
-                <Typography variant="body1">
+                <Typography variant="body1" align='center'>
                     Share something personal here: hobbies, interests, or fun facts. This helps humanize your profile
                     and connect with the reader on a personal level.
                 </Typography>
