@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Container, Typography, TextField, Button, Grid, Box, Stack, Divider, Paper, Avatar } from '@mui/material';
+import { Container, Typography, TextField, Button, Grid, Box, Stack, Divider, Paper, Avatar, useTheme } from '@mui/material';
 import SiteFooter from '../components/Shared/Footer';
 import Cover from '../components/Display/Cover';
 import ContactBackground from '../assets/imgs/backgrounds/ContactPage/ContactBackground.webp';
@@ -12,15 +12,14 @@ import GoogleMapsEmbed from '../components/Display/GoogleMapsEmbed';
 
 
 const ContactPage = () => {
-    
-
+    const theme = useTheme();
     return (
         <React.Fragment>
             <Cover light={ContactBackground} dark={ContactBackgroundDark} sx={{height:'auto', minHeight: '100vh', backgroundRepeat:'repeat-y'} }>
                 <Container maxWidth='xl' sx={{ width: '100%', height: '100%', my: '3%' }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
-                            <Typography variant='h3' align='center'>Contact Me</Typography>
+                            <Typography variant='h3' align='center' sx={{ color: theme.palette.mode === 'light' ? theme.palette.common.black : 'inherit' } }>Contact Me</Typography>
                         </Grid>
                         <Grid item xs={12} sm={12} md={12} lg={4}>
                             <Stack direction='column' sx={{ height: '100%' }} justifyContent='center'>
@@ -30,7 +29,7 @@ const ContactPage = () => {
                                         src={MyPic}
                                         sx={{ width: { 'xs': 90, 'sm': 90, 'md': 175, 'lg': 175, 'xl': 225 }, height: { 'xs': 90, 'sm': 90, 'md': 175, 'lg': 175, 'xl': 225 } } }/>
                                 </Box>
-                                <Typography variant='h4' align='center'>Ethan Nechanicky</Typography>
+                                <Typography variant='h4' align='center' sx={{ color: theme.palette.mode === 'light' ? theme.palette.common.black : 'inherit' }}>Ethan Nechanicky</Typography>
                                 <Divider orientation='horizontal' variant='middle'/>
                             </Stack>
                         </Grid>

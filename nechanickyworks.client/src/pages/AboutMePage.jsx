@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Typography, Grid, Avatar, Button, CardContent, Card, Paper, Stack } from '@mui/material';
+import { Box, Container, Typography, Grid, Avatar, Button, CardContent, Card, Paper, Stack, useTheme } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineOppositeContent, TimelineDot } from '@mui/lab';
 import MyPic from "../assets/imgs/me/MyPic.jpg";
 import SchoolIcon from '@mui/icons-material/School';
@@ -13,10 +13,12 @@ import SiteFooter from '../components/Shared/Footer';
 import Cover from '../components/Display/Cover';
 import AboutMeBackground from '../assets/imgs/backgrounds/AboutMe/AboutMeBackground.webp';
 import AboutMeBackgroundDark from '../assets/imgs/backgrounds/AboutMe/AboutMeBackgroundDark.webp';
+import DoubleRippleButton from '../components/Custom/DoubleRippleButton';
 
 const AboutMePage = () => {
     let breakpoint = useCurrentBreakpoint();
     const breakpoints = ['xs', 'sm', 'md', 'lg', 'xl'];
+    const theme = useTheme();
 
     const timelineEvents = [
         {
@@ -101,10 +103,13 @@ const AboutMePage = () => {
                 <Stack spacing={4} sx={{ my: 4, padding: '5%' }} alignItems='center'>
 
                     <Container maxWidth="xl">
-                        <Paper sx={{padding: '3%', width:'100%'}}>
+                        <Paper sx={{padding: '3%', width:'100%'}} >
                             <Typography variant="h4" align='center' gutterBottom>
                                 <u>My Timeline</u>
-                            </Typography>
+                        </Typography>
+                            <Container maxWidth='md'>
+                        <Typography variant='h6' align='center' component='div' paddingBottom='2%' gutterBottom>The timeline below provides you with the opportunity to explore some of the milestones and experiences that define my professional and educational background.</Typography>
+                        </Container>
                             <VerticalTimeline timelineEvents={timelineEvents} />
                         </Paper>
                     </Container>
@@ -113,22 +118,27 @@ const AboutMePage = () => {
                         <Paper sx={{ padding: '3%', paddingInline: '10%', width:'100%'}}>
                             <Typography variant="h4" align='center' gutterBottom>
                                 <u>Skills & Expertise</u>
-                            </Typography>
+                        </Typography>
+                        <Typography variant='h6' align='center' component='div' paddingBottom='2%' gutterBottom>
+                            Dive into my skillset: A visual breakdown of my capabilities in computer science and technology.
+                        </Typography>
                             <SkillMatrixGrid />
                         </Paper>
 
                     </Container>
                 </Stack>
 
-                {/* Call to Action to Projects Page */}
-                <Box textAlign="center" sx={{ my: 4 }}>
+            {/* Call to Action to Projects Page */}
+            <Container maxWidth="xs" align='center' sx={{ paddingBottom: '64px'}}>
+                <Paper sx={{ padding: '3%', paddingInline: '10%', width: '100%' }}>
                     <Typography variant="h6" align='center' gutterBottom>
                         <u>Interested in seeing my work?</u>
                     </Typography>
-                    <Button variant="contained" color="primary" href="/projects">
-                        View Projects
-                    </Button>
-                </Box>
+                    <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={theme.palette.primary.main} variant="contained" href="/projects">
+                        Browse My Projects
+                    </DoubleRippleButton>
+                </Paper>
+                </Container>
 
                 {/* Optional: Personal Insights or Hobbies */}
                 {/*<Box sx={{ my: 4 }}>*/}

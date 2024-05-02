@@ -564,28 +564,29 @@ const TrustWorthyMLProjectPage = () => {
                             p: 2,
                             borderWidth: 0,
                             borderTopWidth: 1,
+                            zIndex:20,
                         }}
                     >
                     {showSecondaryProgress && (<Container maxWidth='sm'>
                         {isCircular ? (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                    <Typography variant="body2">{statusMessage}</Typography>
                                 </Box>
                                 <Box sx={{ minWidth: 35 }}>
-                                    <CircularProgress color="info" />
+                                    <CircularProgress color='secondary' />
                                 </Box>
                             </Box>
                         ) : (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                    <Typography variant="body2" >{statusMessage}</Typography>
                                 </Box>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <LinearProgress variant="determinate" color="info" value={secondaryProgress} />
+                                    <LinearProgress variant="determinate" color='secondary' value={secondaryProgress} />
                                 </Box>
                                 <Box sx={{ minWidth: 35 }}>
-                                    <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
+                                    <Typography variant="body2" >{`${Math.round(secondaryProgress)}%`}</Typography>
                                 </Box>
                             </Box>
                         )}
@@ -593,10 +594,10 @@ const TrustWorthyMLProjectPage = () => {
                     {showPrimaryProgress && (<Container maxWidth='lg'>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <LinearProgress variant="determinate" color="success" value={primaryProgress} />
+                                <LinearProgress variant="determinate" value={primaryProgress} />
                             </Box>
                             <Box sx={{ minWidth: 35 }}>
-                                <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                                <Typography variant="body2" >{`${Math.round(primaryProgress)}%`}</Typography>
                             </Box>
                         </Box>
                         </Container>

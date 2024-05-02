@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { Button, useTheme, alpha } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Button } from '@mui/material';
 import { styled } from '@mui/system';
 
-const ContrastButton = ({ addBackground = false, ...props }) => {
-    const theme = useTheme();
-    const color = theme.palette.common.white;
+const DoubleRippleButton = ({ rippleColor, startingColor, ...props }) => {
     const [backgroundPos, setBackgroundPos] = React.useState(null);
     const [isMouseOver, setIsMouseOver] = React.useState(false);
 
@@ -26,26 +23,19 @@ const ContrastButton = ({ addBackground = false, ...props }) => {
     };
 
     const CoverButton = styled(Button)`
-        color: ${color};
-        border-color: ${color};
-        width: fit-content;
-        marginLeft: auto;
-        marginRight: auto;
         &:hover {
-            color: ${theme.palette.secondary.main};
+            background-color: ${startingColor};
             background-repeat: no-repeat;
-            background-image: radial-gradient(circle at ${backgroundPos}, ${theme.palette.primary.main} 10%, transparent 10%);
+            background-image: radial-gradient(circle at ${backgroundPos}, ${rippleColor} 10%, transparent 10%);
             background-position: ${backgroundPos};
             animation: ripple 0.5s forwards;
         }
         @keyframes ripple{
             from {
                 background-size: 0 0;
-                border-color:${color}
             }
             to {
                 background-size: 1000% 1000%;
-                border-color:${theme.palette.secondary.main}
             }
         }
     `;
@@ -55,14 +45,10 @@ const ContrastButton = ({ addBackground = false, ...props }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             {...props}
-            sx={{
-                ...props.sx,
-                backgroundColor: (addBackground ? 'rgba(0,0,0,0.4)': 'transparent'),
-            }}
-            component={Link}>
+            >
             {props.children}
         </CoverButton>
     );
 }
 
-export default ContrastButton;
+export default DoubleRippleButton;

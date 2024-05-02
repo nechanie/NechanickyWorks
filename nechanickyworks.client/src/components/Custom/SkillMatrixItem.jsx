@@ -86,9 +86,7 @@ const RatingStyled = styled(Rating)({
 });
 
 const SkillMatrixItem = ({ skill }) => {
-    const { name, level, icon, description, startDate } = skill;
-
-    const { years, months } = CalculateExperience(startDate);
+    const { name, level, icon, description, years, months } = skill;
 
     return (
         <SkillItem>

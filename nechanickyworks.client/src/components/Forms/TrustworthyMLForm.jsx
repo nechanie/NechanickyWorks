@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import {Paper, Container, Typography, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, RadioGroup, Radio, Checkbox, Button, Box } from '@mui/material';
+import {Paper, Container, Typography, TextField, FormControl, InputLabel, Select, MenuItem, FormControlLabel, RadioGroup, Radio, Checkbox, Button, Box, useTheme } from '@mui/material';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import axios from 'axios';
 import UnavailableServiceOverlay from '../Display/UnavailableServiceOverlay';
+import DoubleRippleButton from '../Custom/DoubleRippleButton';
 
 const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
     const [isBackendHealthy, setIsBackendHealthy] = useState(false);
     const [isAltDisabled, setIsAltDisabled] = useState(true);
+    const theme = useTheme();
     const [formData, setFormData] = useState({
         model: 'LeNet',
         dataset: 'MNIST',
@@ -63,7 +65,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
             <Paper elevation={3} sx={{ p: 3 }}>
                 {isBackendHealthy && (
                     <Box sx={{ position: 'relative', display: 'flex', width:"100%", height:'fit-content', justifyContent: 'end' }}> {/* Positioning the icon */}
-                        <CheckCircleOutlineIcon color="success" />
+                        <CheckCircleOutlineIcon color='success'/>
                     </Box>
                 )}
                 <Typography variant="h4" gutterBottom>
@@ -74,13 +76,13 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                         <Box sx={{ marginBottom: 2 }}>
                             <Typography variant="h6">Model Choice</Typography>
                                 <FormControl fullWidth margin="normal" disabled={isDisabled || isAltDisabled}>
-                                <InputLabel color='info'>Model</InputLabel>
+                                <InputLabel >Model</InputLabel>
                                 <Select
                                     name="model"
                                     value={formData.model}
                                     onChange={handleInputChange}
                                     label="Model"
-                                    color='info'
+                                    
                                 >
                                     <MenuItem value="LeNet">LeNet</MenuItem>
                                     <MenuItem value="VGG">VGG</MenuItem>
@@ -94,8 +96,8 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     value={formData.dataset}
                                     onChange={handleInputChange}
                                 >
-                                    <FormControlLabel value="MNIST" control={<Radio color="secondary" />} label="MNIST" />
-                                    <FormControlLabel value="CIFAR10" control={<Radio color="secondary" />} label="CIFAR10" />
+                                    <FormControlLabel value="MNIST" control={<Radio  />} label="MNIST" />
+                                    <FormControlLabel value="CIFAR10" control={<Radio  />} label="CIFAR10" />
                                 </RadioGroup>
                             </FormControl>
                         </Box>
@@ -107,7 +109,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 name="learningRate"
                                 label="Learning Rate"
                                 type="number"
-                                color='info'
                                 margin="normal"
                                 value={formData.learningRate}
                                 onChange={handleInputChange}
@@ -120,7 +121,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     label="Epochs"
                                     type="number"
                                     margin="normal"
-                                    color='info'
                                     value={formData.epochs}
                                     onChange={handleInputChange}
                                     inputProps={{ step: 1, min: 1, max: 20 }}
@@ -131,7 +131,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 name="batchSize"
                                 label="Batch Size"
                                 type="number"
-                                color='info'
                                 margin="normal"
                                 value={formData.batchSize}
                                 onChange={handleInputChange}
@@ -141,7 +140,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="includeDropout" color="success"
+                                        name="includeDropout" 
                                         checked={formData.includeDropout}
                                             onChange={handleInputChange}
                                         disabled={isDisabled || isAltDisabled}
@@ -155,7 +154,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     name="dropoutRate"
                                     label="Dropout Rate"
                                     type="number"
-                                    color='info'
                                     margin="normal"
                                     value={formData.dropoutRate}
                                     onChange={handleInputChange}
@@ -166,7 +164,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="randomRotations" color="success"
+                                        name="randomRotations" 
                                         checked={formData.randomRotations}
                                             onChange={handleInputChange}
                                         disabled={isDisabled || isAltDisabled}
@@ -177,7 +175,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="randomFlips" color="success"
+                                        name="randomFlips" 
                                         checked={formData.randomFlips}
                                             onChange={handleInputChange}
                                         disabled={isDisabled || isAltDisabled}
@@ -191,7 +189,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        name="attackEvaluation" color="success"
+                                        name="attackEvaluation"
                                         checked={formData.attackEvaluation}
                                             onChange={handleInputChange}
                                         disabled={isDisabled || isAltDisabled}
@@ -206,7 +204,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         name="epsilonValue"
                                         label="Epsilon Value"
                                         type="number"
-                                        color='info'
                                         margin="normal"
                                         value={formData.epsilonValue}
                                         onChange={handleInputChange}
@@ -219,7 +216,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         label="Alpha Value"
                                         type="number"
                                         margin="normal"
-                                        color='info'
                                         value={formData.alphaValue}
                                         onChange={handleInputChange}
                                             inputProps={{ step: 0.000001, min: 0, max: 3, maxLength: 10 }}
@@ -231,7 +227,6 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                         label="Number of Iterations"
                                         type="number"
                                         margin="normal"
-                                        color='info'
                                         value={formData.numberOfIterations}
                                         onChange={handleInputChange}
                                             inputProps={{ min: 1, max: 100 }}
@@ -240,7 +235,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                     <FormControlLabel
                                         control={
                                             <Checkbox
-                                                name="randomInitializer" color="success"
+                                                name="randomInitializer"
                                                 checked={formData.randomInitializer}
                                                     onChange={handleInputChange}
                                                 disabled={isDisabled || isAltDisabled}
@@ -251,9 +246,9 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 </Box>
                             )}
                         </Box>
-                        <Button type="submit" variant="contained" color="success" disabled={isDisabled || isAltDisabled}>
+                        <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={ theme.palette.primary.main } type="submit" variant="contained"  disabled={isDisabled || isAltDisabled}>
                             Submit
-                        </Button>
+                        </DoubleRippleButton>
                     </form>
                 </UnavailableServiceOverlay>
             </Paper>

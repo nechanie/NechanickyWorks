@@ -6,6 +6,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
 const ContactMethodDisplay = ({ method, label, href }) => {
+    const theme = useTheme();
     let icon = null;
     switch (method) {
         case 'email':
@@ -24,7 +25,7 @@ const ContactMethodDisplay = ({ method, label, href }) => {
 
     return (
         <Box align='center' justify='center'>
-            <IconButton aria-label={label} href={href} target="_blank" rel="noopener noreferrer">
+            <IconButton sx={{ color: `${theme.palette.primary.main} !important`}} aria-label={label} href={href} target="_blank" rel="noopener noreferrer">
             {icon}
             </IconButton>
         </Box>

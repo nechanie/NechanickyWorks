@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
     Container, Paper, Typography, Box, TextField, Button, IconButton, FormControl,
-    InputLabel, Select, MenuItem, RadioGroup, FormControlLabel, Radio, FormGroup
+    InputLabel, Select, MenuItem, RadioGroup, FormControlLabel, Radio, FormGroup, useTheme
 } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import axios from 'axios';
 import UnavailableServiceOverlay from '../Display/UnavailableServiceOverlay';
+import DoubleRippleButton from '../Custom/DoubleRippleButton';
 
 
 const GaussQuadForm = ({ onSubmit, isDisabled }) => {
@@ -20,6 +21,7 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
     const [intervalStop, setIntervalStop] = useState('');
     const [nodes, setNodes] = useState('');
     const [formError, setFormError] = useState('');
+    const theme = useTheme();
 
     useEffect(() => {
         const checkBackendHealth = async () => {
@@ -116,12 +118,12 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                 <UnavailableServiceOverlay isServiceAvailable={isBackendHealthy}>
                     <form onSubmit={handleSubmit}>
                         {formError && (
-                            <Typography color="error">{formError}</Typography>
+                            <Typography >{formError}</Typography>
                         )}
                         <FormControl component="fieldset" disabled={isDisabled || isAltDisabled}>
                             <RadioGroup row name="functionType" value={functionType} onChange={(e) => setFunctionType(e.target.value)}>
-                                <FormControlLabel value="polynomial" control={<Radio color="secondary" />} label="Polynomial" />
-                                <FormControlLabel value="exponential" control={<Radio color="secondary" />} label="Exponential" />
+                                <FormControlLabel value="polynomial" control={<Radio  />} label="Polynomial" />
+                                <FormControlLabel value="exponential" control={<Radio  />} label="Exponential" />
                             </RadioGroup>
                         </FormControl>
 
@@ -133,7 +135,6 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                             name="coefficient"
                                             label="Coefficient (A)"
                                             type="number"
-                                            color='info'
                                             value={form.coefficient}
                                             onChange={event => handlePolynomialChange(index, event)}
                                             disabled={isDisabled || isAltDisabled}
@@ -142,13 +143,12 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                             name="power"
                                             label="Power (b)"
                                             type="number"
-                                            color='info'
                                             value={form.power}
                                             onChange={event => handlePolynomialChange(index, event)}
                                             disabled={isDisabled || isAltDisabled}
                                             inputProps={{ min: "1" }}
                                         />
-                                        <IconButton onClick={() => removeFields(index)} disabled={isDisabled || isAltDisabled}>
+                                        <IconButton color='error' onClick={() => removeFields(index)} disabled={isDisabled || isAltDisabled}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </FormGroup>
@@ -161,7 +161,6 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                     name="a"
                                     label="Coefficient (a)"
                                         type="number"
-                                        color='info'
                                     margin="normal"
                                     value={exponential.a}
                                     onChange={handleExponentialChange}
@@ -171,7 +170,6 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                     fullWidth
                                     name="b"
                                     label="Exponent (b)"
-                                    color='info'
                                     type="number"
                                     margin="normal"
                                     value={exponential.b}
@@ -183,7 +181,7 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                         )}
 
                         {functionType === 'polynomial' && (
-                            <Button startIcon={<AddCircleOutlineIcon />} onClick={addFields} disabled={isDisabled || isAltDisabled} color="info">Add Term</Button>
+                            <Button startIcon={<AddCircleOutlineIcon />} onClick={addFields} disabled={isDisabled || isAltDisabled}>Add Term</Button>
                         )}
 
                         <Box sx={{ marginBottom: 2 }}>
@@ -192,7 +190,6 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                 label="Interval Start"
                                 type="number"
                                 margin="normal"
-                                color='info'
                                 value={intervalStart}
                                 onChange={e => setIntervalStart(e.target.value)}
                                 disabled={isDisabled || isAltDisabled}
@@ -202,18 +199,16 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                                 label="Interval Stop"
                                 type="number"
                                 margin="normal"
-                                color='info'
                                 value={intervalStop}
                                 onChange={e => setIntervalStop(e.target.value)}
                                 disabled={isDisabled || isAltDisabled}
                             />
                             <FormControl fullWidth margin="normal" disabled={isDisabled || isAltDisabled}>
-                                <InputLabel color='info'>Max Nodes</InputLabel>
+                                <InputLabel >Max Nodes</InputLabel>
                                 <Select
                                     value={nodes}
                                     onChange={e => setNodes(e.target.value)}
                                     label="Max Nodes"
-                                    color='info'
                                 >
                                     {[1, 2, 3, 4, 5, 6, 7].map(node => (
                                         <MenuItem key={node} value={node}>{node}</MenuItem>
@@ -222,7 +217,7 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
                             </FormControl>
                         </Box>
 
-                        <Button type="submit" variant="contained" color="success" disabled={isDisabled || isAltDisabled}>Submit</Button>
+                        <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={theme.palette.primary.main} type="submit" variant="contained" disabled={isDisabled || isAltDisabled}>Submit</DoubleRippleButton>
                     </form>
                 </UnavailableServiceOverlay>
             </Paper>

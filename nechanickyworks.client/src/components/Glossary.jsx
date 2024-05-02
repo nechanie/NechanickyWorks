@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Dialog, DialogTitle, DialogContent, Typography, IconButton, List, ListItem, ListItemText, Button } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Typography, IconButton, List, ListItem, ListItemText, Button, useTheme } from '@mui/material';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -19,10 +19,10 @@ const Glossary = () => {
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-
+    const theme = useTheme();
     return (
         <React.Fragment>
-            <Button onClick={handleOpen} startIcon={<HelpOutlineIcon />} color="inherit">
+            <Button onClick={handleOpen} startIcon={<HelpOutlineIcon />} sx={{color: theme.palette.info.dark} }>
                 Glossary
             </Button>
             <Dialog open={open} onClose={handleClose} scroll="paper">
@@ -44,7 +44,7 @@ const Glossary = () => {
                         {glossaryTerms.map((item, index) => (
                             <ListItem key={index} alignItems="flex-start">
                                 <ListItemText
-                                    primary={<Typography variant="caption" sx={{fontWeight: 'bold', fontSynthesisWeight:'auto', textDecoration: 'underline'}} color="textPrimary">
+                                    primary={<Typography variant="caption" sx={{fontWeight: 'bold', fontSynthesisWeight:'auto', textDecoration: 'underline', letterSpacing:'0.25rem'}} color="textPrimary">
                                         {item.term}
                                     </Typography>} 
                                     secondary={

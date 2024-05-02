@@ -343,18 +343,19 @@ const GaussianQuadraturePage = () => {
                         p: 2,
                         borderWidth: 0,
                         borderTopWidth: 1,
+                        zIndex: 20,
                     }}
                 >
                     {showPrimaryProgress && (<Container maxWidth='lg'>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                <Typography variant="body2" >{statusMessage}</Typography>
                             </Box>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <LinearProgress variant="determinate" color="success" value={primaryProgress} />
+                                <LinearProgress variant="determinate" value={primaryProgress} />
                             </Box>
                             <Box sx={{ minWidth: 35 }}>
-                                <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                                <Typography variant="body2" >{`${Math.round(primaryProgress)}%`}</Typography>
                             </Box>
                         </Box>
                     </Container>
