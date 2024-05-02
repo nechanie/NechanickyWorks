@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Typography, Box, ListItem, Radio, Stack, Collapse, Fade } from '@mui/material';
+import { Typography, Box, ListItem, Radio, Stack, Collapse, Fade, Grid, Container } from '@mui/material';
 import { Timeline, TimelineItem, TimelineSeparator, TimelineDot, TimelineConnector, TimelineContent } from '@mui/lab';
 import { styled } from '@mui/system';
 import CircleIcon from '@mui/icons-material/Circle';
@@ -10,6 +10,7 @@ const HorizontalTimeline = styled(Timeline)({
     alignItems: 'center',
     overflowX: 'auto', // Enables horizontal scrolling
     paddingInline: '20px',
+    overflow: 'hidden'
 });
 
 const HorizontalTimelineItem = styled(TimelineItem)({
@@ -46,45 +47,60 @@ const HorizontalTimelineContentContainer = styled(Box)({
     }
 })
 
-function CustomHorizontalTimeline({ spacingTop = '10%', spacingBottom = '20px', minDistance = { xs: '70px', sm: '100px', md: '120px', lg: '150px', xl: '180px' }, labelRotation = '-45deg', labelShiftX='-5%', labelShiftY='0' }) {
-    const [activeItem, setActiveItem] = useState(0);
-    const [wrappable, setWrappable] = useState(true);
+function CustomHorizontalTimeline({ timelineEvents=[], spacingTop = '2%', spacingBottom = '2%', minDistance = { xs: '70px', sm: '100px', md: '120px', lg: '150px', xl: '180px' }, labelRotation = '-45deg', labelShiftX='-5%', labelShiftY='0' }) {
+    const [firstRender, setFirstRender] = useState(true);
+    const [activeItem, setActiveItem] = useState(null);
+    const [hasExited, setHasExited] = useState(true);
+
     const handleChange = (event) => {
+        if (!firstRender) {
+            setHasExited(false);
+        }
+        else {
+            setFirstRender(false);
+        }
         setActiveItem(event.target.value);
     };
-    const itemList = ['This is some long text', 'This is some long text', 'This is some long text', 'This is some long text', 'This is some long text']
+
     const HorizontalTimelineContent = styled(TimelineContent)({
         textAlign: 'center',
         position: 'absolute',
         paddingInline: 0,
-        top: 0,
-        left: '15px',
+        top: -10,
+        left:0,
         width: 'fit-content',
         textWrap: 'nowrap',
-        transformOrigin: 'top left',
-        transform: `rotate(${labelRotation}) translateX(${labelShiftX}) translateY(${labelShiftY})`
+        transformOrigin: 'top left'
     });
 
-    const onEnterFormat = () => {
-        setWrappable(false);
-    }
-    const onEnteredFormat = () => {
-        setWrappable(true);
-    }
     return (
         <React.Fragment>
-            <HorizontalTimeline position="left" sx={{ paddingTop: spacingTop, paddingBottom: spacingBottom }}>
-                {itemList.map((text, index) => (
-                    <HorizontalTimelineItem key={index} sx={{ minWidth: minDistance }}>
-                        {index !== itemList.length - 1 && <HorizontalTimelineConnector />}
-                        <HorizontalTimelineContentContainer>
-                            <HorizontalTimelineContent>{text}</HorizontalTimelineContent>
-                            <HorizontalTimelineDot value={index} checkedIcon={<CircleIcon color="success" />} icon={<CircleIcon sx={{ color: 'black' }} />} color="secondary" size="small" checked={parseInt(activeItem) === index} onChange={handleChange} />
-                        </HorizontalTimelineContentContainer>
-                    </HorizontalTimelineItem>
-                ))}
-            </HorizontalTimeline>
-            
+            <Stack direction='column' align='center'>
+                    <HorizontalTimeline position="left" sx={{ paddingTop: spacingTop, paddingBottom: spacingBottom }}>
+                        {timelineEvents.map((data, index) => (
+                            <>
+                            <HorizontalTimelineItem key={index}>
+                                <HorizontalTimelineContentContainer>
+                                        <HorizontalTimelineContent>{data.dates[0]}</HorizontalTimelineContent>
+                                        <HorizontalTimelineDot value={index} checkedIcon={<CircleIcon color="success" />} icon={<CircleIcon sx={{ color: 'black' }} />} color="secondary" size="small" checked={parseInt(activeItem) === index} onChange={handleChange} />
+                                </HorizontalTimelineContentContainer>
+                            </HorizontalTimelineItem>
+                                {index !== timelineEvents.length - 1 && <HorizontalTimelineConnector sx={{ minWidth: minDistance, flexGrow: index !== timelineEvents.length - 1 ? 1 : 0 }} />}
+                            </>
+                        ))}
+                    </HorizontalTimeline>
+                    <Container maxWidth='sm'>
+                        {timelineEvents.map((data, index) => (
+                            <Fade key={index} in={parseInt(activeItem) === index && hasExited} timeout={1000} onExited={() => (setHasExited(true))} mountOnEnter unmountOnExit>
+                                <Stack direction="column" justifyContent='space-around' height='100%'>
+                                    <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '1px'} }>{data.title}</Typography>
+                                    <Typography align='center' variant='subtitle' gutterBottom>{data.dates[0]}{data.dates[1] ? ` - ${data.dates[1]}` : ''}</Typography>
+                                    <Typography align='center' variant='body1'>{data.details}</Typography>
+                                </Stack>
+                            </Fade>
+                        ))}
+                    </Container>
+            </Stack>
         </React.Fragment>
     );
 }

@@ -11,7 +11,7 @@ import DaneLogo from "../../assets/imgs/DaneLogo.png";
 const StyledFooter = styled('footer')(({ theme }) => ({
     padding: theme.spacing(3),
     background: theme.palette.background.footer,
-    color: theme.palette.primary.main,
+    color: theme.palette.text.footer,
     'a': {
         fontWeight: 'inherit',
         color: "inherit",

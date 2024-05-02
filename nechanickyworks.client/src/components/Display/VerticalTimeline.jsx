@@ -15,54 +15,47 @@ const VerticalTimelineItem = styled(TimelineItem)({
         display:'none'
     }
 })
-const VerticalTimeline = () => {
+const VerticalTimeline = ({ timelineEvents=[] }) => {
     const [firstRender, setFirstRender] = useState(true);
-    const [activeItem, setActiveItem] = useState(null);
+    const [activeItem, setActiveItem] = useState(0);
     const [hasExited, setHasExited] = useState(true);
 
     const handleChange = (event) => {
+        console.log(firstRender);
+        console.log(hasExited);
         if (!firstRender) {
-            setHasExited(false);
-        }
-        else {
             setFirstRender(false);
         }
+        setHasExited(false);
         setActiveItem(event.target.value);
     };
-    const itemList = [['This is some long text', 'date: Mar. 2020'], ['This is some long text', 'date: Mar. 2020'], ['This is some long text', 'date: Mar. 2020'], ['This is some long text', 'date: Mar. 2020']]
-
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={5}>
-                <Timeline position='left'>
-                    {itemList.map((data, index) => (
+        <Stack direction='row' spacing={1}>
+            <Timeline position='left' sx={{ maxWidth: { 'xs': 'unset', 'sm': "25%", 'lg': '20%' }, minWidth: { 'xs': 'unset', 'sm': "25%", 'lg': '20%' } }}>
+                    {timelineEvents.map((data, index) => (
                         <VerticalTimelineItem key={index}>
                             <TimelineSeparator>
-                                <VerticalTimelineDot value={index} checkedIcon={<CircleIcon color="success" />} icon={<CircleIcon sx={{ color: 'black' }} />} color="secondary" size="small" checked={parseInt(activeItem) === index} onChange={handleChange} />
-                                {index !== itemList.length - 1 && <TimelineConnector />}
+                                <VerticalTimelineDot value={index} checkedIcon={<CircleIcon color="secondary" />} icon={<CircleIcon />} color="secondary" size="small" checked={parseInt(activeItem) === index} onChange={handleChange} />
+                                {index !== timelineEvents.length - 1 && <TimelineConnector />}
                             </TimelineSeparator>
                             <TimelineContent>
-                                {data[0]}
-                                <br />
-                                {data[1]}
+                                { data.dates[0] }
                             </TimelineContent>
                         </VerticalTimelineItem>
                     ))}
                 </Timeline>
-            </Grid>
-            <Grid item xs={7}>
                 <Box sx={{height:'100%', padding:'2%'} }>
-                    {itemList.map((data, index) => (
+                    {timelineEvents.map((data, index) => (
                         <Fade key={index} in={parseInt(activeItem) === index && hasExited} timeout={1000} onExited={() => (setHasExited(true)) } mountOnEnter unmountOnExit>
-                            <Stack direction="column" justifyContent='space-around' height='100%'>
-                                <Typography align='center' variant='h4'><u>This is the header</u></Typography>
-                                <Typography align='center' variant='body1'>This is the body content of the content section for fade item {index}</Typography>
+                            <Stack direction="column" justifyContent='space-around' height='100%' sx={{padding: '2%'} }>
+                                <Typography align='center' variant='h6' sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '1px' }}>{data.title}</Typography>
+                                <Typography align='center' variant='subtitle' gutterBottom>{data.dates[0]}{data.dates[1] ? ` - ${data.dates[1]}` : ''}</Typography>
+                                <Typography align='center' variant='body1'>{data.details}</Typography>
                             </Stack>
                         </Fade>
                     ))}
                 </Box>
-            </Grid>
-        </Grid>
+        </Stack>
     );
 }
 

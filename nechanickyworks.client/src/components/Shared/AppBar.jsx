@@ -90,7 +90,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const drawer = (
         <Box
             role="presentation"
-            sx={{ textAlign: 'center' }}
+            sx={{ textAlign: 'center'}}
         >
             <Typography variant="h6" sx={{ my: 2 }}>
                 Nechanicky Works
@@ -167,7 +167,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     return (
         <React.Fragment>
-            <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none' }}>
+            <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none', color: theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white }}>
                 <Container maxWidth="xl">
                     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                         <IconButton

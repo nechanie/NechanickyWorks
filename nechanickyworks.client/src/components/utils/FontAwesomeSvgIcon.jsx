@@ -9,7 +9,7 @@ const FontAwesomeSvgIcon = React.forwardRef((props, ref) => {
     if (icon && typeof icon === 'object' && icon.iconName) {
         const { icon: [width, height, , , svgPathData] } = icon;
         return (
-            <SvgIcon ref={ref} viewBox={`0 0 ${width} ${height}`}>
+            <SvgIcon ref={ref} viewBox={`0 0 ${width} ${height}`} {...props }>
                 {typeof svgPathData === 'string' ? (
                     <path d={svgPathData} />
                 ) : (
@@ -23,14 +23,14 @@ const FontAwesomeSvgIcon = React.forwardRef((props, ref) => {
     // Check if the icon prop is a valid React element
     if (React.isValidElement(icon)) {
         const IconComponent = icon;
-        return <IconComponent/>;
+        return <IconComponent {...props} />;
     }
 
     // Handle cases where icon is a component function or class
     if (typeof icon === 'function' || typeof icon === 'object') {
         const IconComponent = icon;
         return (
-                <IconComponent />
+            <IconComponent {...props} />
         );
     }
 
