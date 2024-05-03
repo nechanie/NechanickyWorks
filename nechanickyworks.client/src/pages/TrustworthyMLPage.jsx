@@ -15,6 +15,7 @@ import Cover from '../components/Display/Cover';
 import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
+import PageTitle from '../components/Shared/PageTitle';
 
 
 const TrustWorthyMLProjectPage = () => {
@@ -347,6 +348,7 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Trustworthy ML' />
             <Cover light={TMLBackground} dark={TMLBackgroundDark }>
                 <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around'}}>

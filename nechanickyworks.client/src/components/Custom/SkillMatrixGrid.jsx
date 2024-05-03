@@ -16,7 +16,7 @@ const SkillsMatrix = styled(Container)(({ theme }) => ({
     backgroundColor: theme.palette.background.default, // Soft background color
 }));
 
-const CategoryContainer = styled(DoubleRippleButton)(({ theme, categoryColor }) => ({
+const CategoryContainer = styled(DoubleRippleButton)(({ theme, categorycolor }) => ({
 
     width: '100%',
     paddingTop: '100%',
@@ -24,7 +24,7 @@ const CategoryContainer = styled(DoubleRippleButton)(({ theme, categoryColor }) 
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: categoryColor,
+    backgroundColor: categorycolor,
     borderRadius: '5%',
     '&:active': {
         transform: 'scale(0.95)'
@@ -143,7 +143,7 @@ const SkillMatrixGrid = () => {
                     <Grid item xs={4} key={category}>
                         <Tooltip title={category} placement="top">
                             <Box>
-                                <CategoryContainer hoverColor={theme.palette.common.white} rippleColor={theme.palette.accent.secondary} startingColor={categoryColors[category]} categoryColor={categoryColors[category]} onClick={(e) => handlePopoverOpen(e, category)} > {/*sx={{ borderWidth: { 'xs': '2px', 'sm': '3px', 'md': '4px', 'lg': '5px', 'xl': '6px' } } }*/}
+                                <CategoryContainer hoverColor={theme.palette.common.white} rippleColor={theme.palette.accent.secondary} startingColor={categoryColors[category]} categorycolor={categoryColors[category]} onClick={(e) => handlePopoverOpen(e, category)} > {/*sx={{ borderWidth: { 'xs': '2px', 'sm': '3px', 'md': '4px', 'lg': '5px', 'xl': '6px' } } }*/}
                                     <IconWrapper>
                                         <FontAwesomeSvgIcon icon={icon} style={{ maxHeight: '25%', maxWidth:'25%', width:'100%', height:'100%' }} />
                                     </IconWrapper>

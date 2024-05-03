@@ -21,8 +21,6 @@ const VerticalTimeline = ({ timelineEvents=[] }) => {
     const [hasExited, setHasExited] = useState(true);
 
     const handleChange = (event) => {
-        console.log(firstRender);
-        console.log(hasExited);
         if (!firstRender) {
             setFirstRender(false);
         }

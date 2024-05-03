@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Link, Paper, Stack, useTheme, Card, CardActionArea, Divider, alpha } from '@mui/material';
+import { useNavigate, Link } from 'react-router-dom';
+import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Paper, Stack, useTheme, Card, CardActionArea, Divider, alpha } from '@mui/material';
 import { styled } from '@mui/system';
 import InfoGraphic from '../components/Display/InfoGraphic';
 import GaussImage from "../assets/imgs/gauss.jpg";
@@ -21,6 +21,7 @@ import presentation from '../assets/imgs/CardImgs/Presentation.webp';
 import InteractiveCardMedia from '../components/Shared/InteractiveCardMedia';
 import SiteFooter from '../components/Shared/Footer';
 import DoubleRippleButton from '../components/Custom/DoubleRippleButton';
+import PageTitle from '../components/Shared/PageTitle';
 
 
 const HomePageReImagined = () => {
@@ -38,6 +39,7 @@ const HomePageReImagined = () => {
 
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Nechanicky Works' />
             <Cover light={bgImage} dark={bgImageDark} dynaColor={false }>
                 <Box sx={{
                     display: 'flex',

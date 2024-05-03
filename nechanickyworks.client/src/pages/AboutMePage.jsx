@@ -14,6 +14,7 @@ import Cover from '../components/Display/Cover';
 import AboutMeBackground from '../assets/imgs/backgrounds/AboutMe/AboutMeBackground.webp';
 import AboutMeBackgroundDark from '../assets/imgs/backgrounds/AboutMe/AboutMeBackgroundDark.webp';
 import DoubleRippleButton from '../components/Custom/DoubleRippleButton';
+import PageTitle from '../components/Shared/PageTitle';
 
 const AboutMePage = () => {
     let breakpoint = useCurrentBreakpoint();
@@ -60,6 +61,7 @@ const AboutMePage = () => {
     ];
     return (
         <React.Fragment>
+            <PageTitle pageTitle='About Me'/>
             <Cover light={AboutMeBackground} dark={AboutMeBackgroundDark}>
                 <Stack direction='column' sx={{ justifyContent: 'space-around' }}>
                 <Container maxWidth='sm' align='center'>

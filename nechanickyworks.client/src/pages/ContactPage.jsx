@@ -8,6 +8,7 @@ import AccordionTabs from '../components/Display/AccordionTabs';
 import ContactTabData from '../components/Display/data/ContactTabData';
 import MyPic from '../assets/imgs/me/MyPic.jpg';
 import GoogleMapsEmbed from '../components/Display/GoogleMapsEmbed';
+import PageTitle from '../components/Shared/PageTitle';
 
 
 
@@ -15,6 +16,7 @@ const ContactPage = () => {
     const theme = useTheme();
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Contact' />
             <Cover light={ContactBackground} dark={ContactBackgroundDark} sx={{height:'auto', minHeight: '100vh', backgroundRepeat:'repeat-y'} }>
                 <Container maxWidth='xl' sx={{ width: '100%', height: '100%', my: '3%' }}>
                     <Grid container spacing={2}>

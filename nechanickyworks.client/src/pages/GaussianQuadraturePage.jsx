@@ -14,6 +14,7 @@ import Cover from '../components/Display/Cover';
 import GraphDescription from '../components/Display/GraphDescription';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
 import GQLineGraph from '../components/Display/GQLineGraph';
+import PageTitle from '../components/Shared/PageTitle';
 
 const GaussianQuadraturePage = () => {
     const currentPath = useLocation();
@@ -178,6 +179,7 @@ const GaussianQuadraturePage = () => {
 
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Gaussian Quadrature' />
             <Cover light={GaussianQuadratureBackground} dark={GaussianQuadratureBackgroundDark}>
                 <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
