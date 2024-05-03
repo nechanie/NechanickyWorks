@@ -348,7 +348,7 @@ const TrustWorthyMLProjectPage = () => {
     return (
         <React.Fragment>
             <Cover light={TMLBackground} dark={TMLBackgroundDark }>
-                <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
+                <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around'}}>
                         <Typography variant='h4' gutterBottom sx={{fontSynthesisWeight: 'auto', fontWeight:600}}>Welcome to the Trustworthy Machine Learning Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p:'2%' }}>

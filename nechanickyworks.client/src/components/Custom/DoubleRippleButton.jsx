@@ -1,51 +1,63 @@
 import * as React from 'react';
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 
-const DoubleRippleButton = ({ rippleColor, startingColor, ...props }) => {
-    const [backgroundPos, setBackgroundPos] = React.useState(null);
-    const [isMouseOver, setIsMouseOver] = React.useState(false);
-
-
-    const handleMouseEnter = (event) => {
-        if (!isMouseOver) {
-            setIsMouseOver(true); // Set the flag to true when mouse enters
-            const rect = event.target.getBoundingClientRect();
-            // Calculate the x and y positions as a percentage of the element's width and height
-            const x = ((event.clientX - rect.left) / rect.width) * 100;
-            const y = ((event.clientY - rect.top) / rect.height) * 100;
-            setBackgroundPos(`${x.toFixed(2)}% ${y.toFixed(2)}%`);
+// Define the styled component using a function to handle custom styling
+const createCoverButton = (startingColor, rippleColor, hoverColor, backgroundColor) => styled(Button)({
+    position: 'relative',
+    width: 'fit-content',
+    overflow: 'hidden', // Ensure the ripple effect is contained within the button boundaries
+    transition: 'background-color 0.3s',
+    backgroundColor: backgroundColor,
+    zIndex: 1,
+    '&:hover': {
+        color: `${hoverColor} !important`,
+        borderColor: hoverColor,
+        backgroundColor: backgroundColor,
+        '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundPosition: 'var(--backgroundPos)',
+            backgroundImage: `radial-gradient(circle at var(--backgroundPos), ${rippleColor} 10%, transparent 20%)`,
+            backgroundSize: '0 0',
+            animation: 'ripple 1s forwards',
+            backgroundRepeat: 'no-repeat',
+            zIndex: -1,
         }
-    };
+    },
+    '@keyframes ripple': {
+        from: {
+            backgroundSize: '0 0',
+        },
+        to: {
+            backgroundSize: '1000% 1000%', // Adjust scale to ensure coverage
+        },
+    }
+});
 
-    const handleMouseLeave = () => {
-        setIsMouseOver(false); // Reset the flag when mouse leaves
-    };
-
-    const CoverButton = styled(Button)`
-        &:hover {
-            background-color: ${startingColor};
-            background-repeat: no-repeat;
-            background-image: radial-gradient(circle at ${backgroundPos}, ${rippleColor} 10%, transparent 10%);
-            background-position: ${backgroundPos};
-            animation: ripple 0.5s forwards;
-        }
-        @keyframes ripple{
-            from {
-                background-size: 0 0;
-            }
-            to {
-                background-size: 1000% 1000%;
-            }
-        }
-    `;
+const DoubleRippleButton = ({ rippleColor, startingColor, hoverColor = 'unset', addBackground = null, ...props }) => {
+    const [backgroundPos, setBackgroundPos] = React.useState('50% 50%');
+    // Create a styled button dynamically based on the colors
+    const theme = useTheme();
+    const backgroundColor = addBackground ? addBackground : startingColor;
+    const CoverButton = React.useMemo(() => createCoverButton(startingColor, rippleColor, hoverColor, backgroundColor), [startingColor, rippleColor, hoverColor, backgroundColor]);
+    const handleMouseEnter = React.useCallback((event) => {
+        const rect = event.target.getBoundingClientRect();
+        const x = ((event.clientX - rect.left) / rect.width) * 100;
+        const y = ((event.clientY - rect.top) / rect.height) * 100;
+        setBackgroundPos(`${Math.abs(x)}% ${Math.abs(y)}%`);
+    }, []);
 
     return (
         <CoverButton
+            style={{ '--backgroundPos': backgroundPos }}
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
             {...props}
-            >
+        >
             {props.children}
         </CoverButton>
     );

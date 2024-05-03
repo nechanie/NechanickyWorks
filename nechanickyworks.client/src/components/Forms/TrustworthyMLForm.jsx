@@ -246,7 +246,7 @@ const TrustworthyMLForm = ({ onSubmit, isDisabled }) => {
                                 </Box>
                             )}
                         </Box>
-                        <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={ theme.palette.primary.main } type="submit" variant="contained"  disabled={isDisabled || isAltDisabled}>
+                        <DoubleRippleButton hoverColor={theme.palette.common.white} rippleColor={theme.palette.primary.dark} startingColor={ theme.palette.primary.main } type="submit" variant="contained"  disabled={isDisabled || isAltDisabled}>
                             Submit
                         </DoubleRippleButton>
                     </form>

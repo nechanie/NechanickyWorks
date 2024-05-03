@@ -60,7 +60,8 @@ const AboutMePage = () => {
     ];
     return (
         <React.Fragment>
-            <Cover light={AboutMeBackground} dark={AboutMeBackgroundDark }>
+            <Cover light={AboutMeBackground} dark={AboutMeBackgroundDark}>
+                <Stack direction='column' sx={{ justifyContent: 'space-around' }}>
                 <Container maxWidth='sm' align='center'>
                     <Box sx={{ my: 4, textAlign: 'center' }} align='center'>
                         <Avatar
@@ -98,7 +99,7 @@ const AboutMePage = () => {
                         </Typography>
                     </Paper>
                 </Container>
-
+                </Stack>
                 </Cover>
                 <Stack spacing={4} sx={{ my: 4, padding: '5%' }} alignItems='center'>
 

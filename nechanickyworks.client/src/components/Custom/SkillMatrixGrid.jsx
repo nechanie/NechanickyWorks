@@ -9,62 +9,29 @@ import FontAwesomeSvgIcon from '../utils/FontAwesomeSvgIcon';
 import WebIcon from '@mui/icons-material/Web';
 import { NodeIcon, AdIcon, PythonIcon, CSharpIcon, TensorFlowIcon, PyTorchIcon, CppIcon, FastApiIcon, SqlIcon, KotlinIcon, MariaDbIcon, DevOpsIcon, ReactIcon, LinuxIcon, HTML5Icon, JsIcon, AndroidIcon } from '../MatrixIcons';
 import { useCurrentBreakpointInverse } from '../utils/BreakpointTracker';
+import DoubleRippleButton from './DoubleRippleButton';
 
 const SkillsMatrix = styled(Container)(({ theme }) => ({
     padding: theme.spacing(3),
     backgroundColor: theme.palette.background.default, // Soft background color
 }));
 
-const CategoryContainer = styled(Box)(({ theme, categoryColor }) => ({
-    all: 'unset',
+const CategoryContainer = styled(DoubleRippleButton)(({ theme, categoryColor }) => ({
+
     width: '100%',
     paddingTop: '100%',
     position: 'relative',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius, // Added rounded corners
-    overflow: 'hidden', // Ensures no overflow from the inner contents
-    cursor: 'pointer',
-    boxShadow: theme.shadows[1], // Softer shadow for a more subtle depth effect
-    transition: 'transform 0.3s ease, box-shadow 0.3s ease, background-color 0.2s ease',
-    background: categoryColor, // Dynamic background based on category
-    // Gradient overlay for a more dynamic look
-    '&::before': {
-        content: '""',
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: 'linear-gradient(145deg, transparent, rgba(255,255,255,0.1))',
-        transition: 'opacity 0.3s ease',
-        opacity: 0,
-    },
-
-    // Hover State
-    '&:hover': {
-        transform: 'scale(1.05)',
-        boxShadow: `0px 8px 16px ${theme.palette.grey[500]}`,
-        '&::before': {
-            opacity: 1, // Reveal the gradient overlay on hover
-        },
-    },
-
-    // Active State
+    backgroundColor: categoryColor,
+    borderRadius: '5%',
     '&:active': {
-        transform: 'scale(0.95)',
-        boxShadow: `0px 5px 10px ${theme.palette.grey[800]}`, // More prominent shadow when pressed
-    },
-
-    // Focus State
-    '&:focus-visible': {
-        outline: `2px solid ${theme.palette.primary.main}`,
-        outlineOffset: 2,
+        transform: 'scale(0.95)'
     }
+    
+    
 }));
-
 
 const IconWrapper = styled('div')(({ theme }) => ({
     position: 'absolute',
@@ -175,11 +142,13 @@ const SkillMatrixGrid = () => {
                 {Object.entries(categories).map(([category, icon]) => (
                     <Grid item xs={4} key={category}>
                         <Tooltip title={category} placement="top">
-                            <CategoryContainer categoryColor={categoryColors[category]} onClick={(e) => handlePopoverOpen(e, category)} > {/*sx={{ borderWidth: { 'xs': '2px', 'sm': '3px', 'md': '4px', 'lg': '5px', 'xl': '6px' } } }*/}
-                                <IconWrapper>
-                                    <FontAwesomeSvgIcon icon={icon} style={{ maxHeight: '25%', maxWidth:'25%', width:'100%', height:'100%' }} />
-                                </IconWrapper>
-                            </CategoryContainer>
+                            <Box>
+                                <CategoryContainer hoverColor={theme.palette.common.white} rippleColor={theme.palette.accent.secondary} startingColor={categoryColors[category]} categoryColor={categoryColors[category]} onClick={(e) => handlePopoverOpen(e, category)} > {/*sx={{ borderWidth: { 'xs': '2px', 'sm': '3px', 'md': '4px', 'lg': '5px', 'xl': '6px' } } }*/}
+                                    <IconWrapper>
+                                        <FontAwesomeSvgIcon icon={icon} style={{ maxHeight: '25%', maxWidth:'25%', width:'100%', height:'100%' }} />
+                                    </IconWrapper>
+                                </CategoryContainer>
+                            </Box>
                         </Tooltip>
                     </Grid>
                 ))}

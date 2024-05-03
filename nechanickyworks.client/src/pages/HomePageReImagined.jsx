@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Link, Paper, Stack, useTheme, Card, CardActionArea, Divider } from '@mui/material';
+import { Container, Grid, Typography, Box, CardContent, CardMedia, CardActions, Button, Link, Paper, Stack, useTheme, Card, CardActionArea, Divider, alpha } from '@mui/material';
 import { styled } from '@mui/system';
 import InfoGraphic from '../components/Display/InfoGraphic';
 import GaussImage from "../assets/imgs/gauss.jpg";
@@ -18,17 +18,10 @@ import learningImage from '../assets/imgs/CardImgs/Learning.webp';
 import interactiveDemo from '../assets/imgs/CardImgs/InteractiveDemo.webp';
 import allProjects from '../assets/imgs/CardImgs/AllProjects.webp';
 import presentation from '../assets/imgs/CardImgs/Presentation.webp';
-import ContrastButton from '../components/Shared/ContrastButton';
 import InteractiveCardMedia from '../components/Shared/InteractiveCardMedia';
 import SiteFooter from '../components/Shared/Footer';
+import DoubleRippleButton from '../components/Custom/DoubleRippleButton';
 
-// Customized components for styling
-const StyledFooter = styled('footer')(({ theme }) => ({
-    padding: theme.spacing(3),
-    marginTop: '2%',
-    background: theme.palette.background.footer,
-    color: theme.palette.primary.main
-}));
 
 const HomePageReImagined = () => {
     const theme = useTheme();
@@ -47,18 +40,19 @@ const HomePageReImagined = () => {
         <React.Fragment>
             <Cover light={bgImage} dark={bgImageDark} dynaColor={false }>
                 <Box sx={{
-                    height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    justifyContent: 'flex-end',
+                    justifyContent: 'space-around',
                     px: '15%',
                     paddingBottom: '15%',
                     color:'inherit'
                 }}>
-                    <Stack direction='column' spacing={2 }>
-                        <Typography variant='h2' color='white'>Nechanicky Works</Typography>
-                        <Typography color='white'>Ethan Nechanicky Portfolio</Typography>
-                        <ContrastButton onClick={handleExploreClick} variant='outlined'>Explore</ContrastButton>
+                    <Stack direction='column' spacing={2} justifyContent='space-around' flexGrow={1} >
+                        <Typography variant='h2' color='white' align='center'>Nechanicky Works</Typography>
+                        <Stack spacing={2} align='center' alignItems='center'>
+                            <Typography sx={{ fontSize: {xs: '3rem'}, fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem' }} variant="h6">Ethan Nechanicky Portfolio</Typography>
+                            <DoubleRippleButton size='large' addBackground={alpha(theme.palette.background.paper, 0.2)} component={Link} rippleColor={alpha(theme.palette.primary.dark, 0.5)} hoverColor={theme.palette.common.white} sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem', fontSize: { xs: '1.2rem' } }} startingColor='transparent' onClick={handleExploreClick} variant='outlined'>Explore</DoubleRippleButton>
+                        </Stack>
                     </Stack>
                 </Box>
             </Cover>
@@ -156,7 +150,7 @@ const HomePageReImagined = () => {
                 height: 'fit-content',
                 color: theme.palette.text.primary
             }}>
-                <Container maxWidth='md' align='center' sx={{ py: '5%', px: 0, border: 'solid', borderWidth: 2 }}>
+                <Container maxWidth='md' align='center' sx={{ py: '5%', px: 0, border: 'solid', borderColor: theme.palette.secondary.dark, borderWidth: 'thick', borderStyle: 'double', borderRadius: "10px" }}>
                     <Stack direction='column' spacing={2} sx={{ mx: 10 }}>
                         <Typography variant='h3' align='center'>Who Am I?</Typography>
                         <Typography variant='p' align='center'>
@@ -167,7 +161,7 @@ const HomePageReImagined = () => {
                         <Box sx={{
                             width:'100%'
                         }} align='center'>
-                            <Button size="large" variant='outlined' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} disabled={true}>Read About Me (Coming Soon)</Button>
+                            <DoubleRippleButton size="large" variant='outlined' rippleColor={ alpha(theme.palette.accent.alternate, 0.5) } startingColor='transparent' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} to="/about-me">Read About Me</DoubleRippleButton>
                         </Box>
                     </Stack>
                 </Container>
@@ -180,7 +174,7 @@ const HomePageReImagined = () => {
                 height: 'fit-content',
                 color: theme.palette.text.primary
             }}>
-                <Container maxWidth='lg' align='center' sx={{py:'5%', px:0, border:'solid', borderColor: theme.palette.primary.main, borderWidth:2} }>
+                <Container maxWidth='lg' align='center' sx={{ py: '5%', px: 0, border: 'solid', borderColor: theme.palette.primary.dark, borderWidth: 'thick', borderStyle: 'double', borderRadius: "10px" } }>
                     <Stack direction='column' spacing={2} sx={{mx:10}}>
                         <Typography variant='h3' align='center'>Read about this site.</Typography>
                         <Typography variant='p' align='center'>My work spans academic challenges, professional achievements, and personal projects.

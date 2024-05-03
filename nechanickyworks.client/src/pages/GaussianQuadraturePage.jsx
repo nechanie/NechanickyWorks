@@ -179,7 +179,7 @@ const GaussianQuadraturePage = () => {
     return (
         <React.Fragment>
             <Cover light={GaussianQuadratureBackground} dark={GaussianQuadratureBackgroundDark}>
-                <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
+                <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
                         <Typography variant='h4' gutterBottom sx={{ fontSynthesisWeight: 'auto', fontWeight: 600, color:'common.white' }}>Welcome to the Gaussian Quadrature Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p: '2%' }}>

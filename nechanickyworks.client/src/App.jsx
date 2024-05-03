@@ -532,61 +532,29 @@ const getDesignTokens = (mode) => ({
     "palette": {
         mode, // Toggle this to switch themes
         ...(mode === 'light' ? {
-            "common": {
-                "black": "#333333",
-                "white": "#FCFCFC"
-            },
             "primary": {
-                "main": "#546E7A",
-                "light": "#819CA9",
-                "dark": "#29434E",
-                "contrastText": "#FFFFFF"
+                "main": "#5B93D3"
             },
             "secondary": {
-                "main": "#FF8A65",
-                "light": "#FFBB93",
-                "dark": "#C75B39",
-                "contrastText": "#FCFCFC"
+                "main": "#d39b5b",
             },
             "error": {
-                "main": "#D32F2F",
-                "light": "#FF6659",
-                "dark": "#9A0007",
-                "contrastText": "#FFFFFF"
+                "main": "#DC3545",
             },
             "warning": {
-                "main": "#FFA000",
-                "light": "#FFC046",
-                "dark": "#C67100",
-                "contrastText": "#333333"
+                "main": "#FFC107",
             },
             "info": {
-                "main": "#29B6F6",
-                "light": "#73E8FF",
-                "dark": "#0086C3",
-                "contrastText": "#FCFCFC"
+                "main": "#17A2B8",
             },
             "success": {
-                "main": "#388E3C",
-                "light": "#6ABF69",
-                "dark": "#00600F",
-                "contrastText": "#FFFFFF"
+                "main": "#28A745",
             },
-            "grey": {
-                "50": "#FAFAFA",
-                "100": "#F5F5F5",
-                "200": "#EEEEEE",
-                "300": "#E0E0E0",
-                "400": "#BDBDBD",
-                "500": "#9E9E9E",
-                "600": "#757575",
-                "700": "#616161",
-                "800": "#424242",
-                "900": "#212121",
-                "A100": "#D5D5D5",
-                "A200": "#AAAAAA",
-                "A400": "#303030",
-                "A700": "#616161"
+            "accent": {
+                "primary": "#FFC107",
+                "secondary": "#17A2B8",
+                "tertiary": "#28A745",
+                "alternate": "#DC3545",
             },
             "text": {
                 "primary": "#333333",
@@ -597,74 +565,35 @@ const getDesignTokens = (mode) => ({
             },
             "background": {
                 "main": "linear-gradient(#FCFCFC, #ECEFF1)",
-                "colored": "#ECEFF1",
-                "paper": "#FFFFFF",
+                "paper": "#F8F9FA",
                 "paperOpaque": "rgba(255, 255, 255, 0.5)",
                 "paperOpaqueContrast": "rgba(51, 51, 51, 0.5)",
                 "footer": "#29434E"
-            },
-            "action": {
-                "active": "rgba(51, 51, 51, 0.54)",
-                "hover": "rgba(51, 51, 51, 0.04)",
-                "selected": "rgba(51, 51, 51, 0.08)",
-                "disabled": "rgba(51, 51, 51, 0.26)"
             }
         } : {
-            "common": {
-                "black": "#333333",
-                "white": "#FCFCFC"
-            },
             "primary": {
-                "main": "#546E7A",
-                "light": "#819CA9",
-                "dark": "#29434E",
-                "contrastText": "#FCFCFC"
+                "main": "#457B9D"
             },
             "secondary": {
-                "main": "#FF8A65",
-                "light": "#FFBB93",
-                "dark": "#C75B39",
-                "contrastText": "#FCFCFC"
+                "main": "#9d6745"
             },
             "error": {
-                "main": "#D32F2F",
-                "light": "#FF6659",
-                "dark": "#9A0007",
-                "contrastText": "#FCFCFC"
+                "main": "#E74C3C"
             },
             "warning": {
-                "main": "#FFA000",
-                "light": "#FFC046",
-                "dark": "#C67100",
-                "contrastText": "#FCFCFC"
+                "main": "#FFCA28"
             },
             "info": {
-                "main": "#29B6F6",
-                "light": "#73E8FF",
-                "dark": "#0086C3",
-                "contrastText": "#FCFCFC"
+                "main": "#1ABC9C"
             },
             "success": {
-                "main": "#388E3C",
-                "light": "#6ABF69",
-                "dark": "#00600F",
-                "contrastText": "#FCFCFC"
-            },
-            "grey": {
-                "50": "#212121",
-                "100": "#424242",
-                "200": "#616161",
-                "300": "#757575",
-                "400": "#9E9E9E",
-                "500": "#BDBDBD",
-                "600": "#D5D5D5",
-                "700": "#EEEEEE",
-                "800": "#F5F5F5",
-                "900": "#FAFAFA",
-                "A100": "#A4A4A4",
-                "A200": "#8D8D8D",
-                "A400": "#737373",
-                "A700": "#616161"
+                "main": "#2ECC71"
+                },
+            "accent": {
+                "primary": "#FFCA28",
+                "secondary": "#1ABC9C",
+                "tertiary": "#2ECC71",
+                "alternate": "#E74C3C",
             },
             "text": {
                 "primary": "#FCFCFC",
@@ -674,18 +603,11 @@ const getDesignTokens = (mode) => ({
                 "footer": "#FCFCFC"
             },
             "background": {
-                "paper": "#424242",
+                "paper": "#121212",
                 "paperOpaque": "rgba(192, 192, 192, 0.5)",
                 "paperOpaqueContrast": "rgba(64, 64, 64, 0.5)",
                 "footer": "#3E2723",
-                "main": "linear-gradient(#303030, #263238)",
-                "colored": "#1A237E"
-            },
-            "action": {
-                "active": "rgba(255, 255, 255, 0.7)",
-                "hover": "rgba(255, 255, 255, 0.08)",
-                "selected": "rgba(255, 255, 255, 0.16)",
-                "disabled": "rgba(255, 255, 255, 0.3)"
+                "main": "linear-gradient(#303030, #263238)"
             }
         })
     },

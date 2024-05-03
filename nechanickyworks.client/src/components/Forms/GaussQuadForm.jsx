@@ -107,8 +107,8 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
     };
 
     return (
-        <Container maxWidth="md" sx={{ m: 3 }}>
-            <Paper sx={{ p: 3 }}>
+        <Container maxWidth="md" sx={{ my: '3%' }}>
+            <Paper sx={{ p: 3 }} elevation={3}>
                 {isBackendHealthy && (
                     <Box sx={{ position: 'relative', display: 'flex', width: "100%", height: 'fit-content', justifyContent: 'end' }}> {/* Positioning the icon */}
                         <CheckCircleOutlineIcon color="success" />
