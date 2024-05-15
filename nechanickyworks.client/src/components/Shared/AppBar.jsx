@@ -120,8 +120,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/GaussianQuadrature" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Gaussian Quadrature' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
-                                <ListItemText primary='OSU Senior Capstone (Coming Soon)' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
+                                <ListItemText primary='OSU Senior Capstone' />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Diffusion Denoised Robustification (Coming Soon)' />
@@ -217,7 +217,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 <MenuItem onClick={handleClose} component={Link} to="/projects">Browse Projects</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/TrustWorthyMachineLearning">Trustworthy Machine Learning</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/GaussianQuadrature">Gaussian Quadrature</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/OSUCapstoneProject">OSU Senior Capstone (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleClose} component={Link} to="/projects/OSUCapstoneProject">OSU Senior Capstone</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/WarehouseRequestForm">Warehouse Order Form (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/RecruitmentRequestForm">New Hire Request Form (Coming Soon)</MenuItem>

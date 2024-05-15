@@ -115,7 +115,6 @@ const TrustWorthyMLProjectPage = () => {
             }
             if (msg.type === 'batch_info') {
                 if (showBatchGraph === false) {
-
                     setStatusMessage("Training Model...");
                     setShowBatchGraph(true);
                 }

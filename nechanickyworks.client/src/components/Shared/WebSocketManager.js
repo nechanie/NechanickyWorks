@@ -89,6 +89,7 @@ class WebSocketManager {
         };
 
         this.currentWebSocket.onclose = () => {
+            console.log("Websocket Closed");
             if (this.onClose) this.onClose();
             this.currentWebSocket = null;
             this.currentTask.taskStatus = TaskStatus.COMPLETED;
