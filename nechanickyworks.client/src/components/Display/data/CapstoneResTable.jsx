@@ -5,6 +5,7 @@ const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemT
     const [paddingRows, setPaddingRows] = React.useState([]);
 
     React.useEffect(() => {
+        console.log(rows);
         setPaddingRows((prevState) => {
             let tablePaddingRows = [];
             for (let i = 0; i < rows.count - 3 && i < 10; i++) {
@@ -35,10 +36,10 @@ const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemT
                 <TableBody>
                     <TableRow>
                         <TableCell align='center'>Time Taken (s)</TableCell>
-                        <TableCell align='center'>{setupTime ? (setupTime) : (<Skeleton variant='rectangular' />)}</TableCell>
-                        <TableCell align='center'>{modelTime ? (modelTime) : (<Skeleton variant='rectangular' />)}</TableCell>
-                        <TableCell align='center'>{upsertTime ? (upsertTime) : (<Skeleton variant='rectangular' />)}</TableCell>
-                        <TableCell align='center'>{queryTime ? (queryTime) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{setupTime ? (setupTime.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{modelTime ? (modelTime.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{upsertTime ? (upsertTime.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{queryTime ? (queryTime.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell colSpan={3}>
@@ -60,11 +61,11 @@ const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemT
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        { rows ? (rows.map((row) => (
+                                        { rows.count !== 0 ? (rows.map((row) => (
                                             <TableRow hover key={row.person_id}>
                                                 <TableCell>{row.person_id}</TableCell>
                                                 <TableCell align="right">{row.description}</TableCell>
-                                                <TableCell align="right">{ row.kScore }</TableCell>
+                                                <TableCell align="right">{ row.kScore.toFixed(2) }</TableCell>
                                             </TableRow>
                                         ))) : (
                                             <TableRow><TableCell rowSpan={1} colSpan={3}><Skeleton variant='rectangular' animation="wave" /></TableCell></TableRow>)}
@@ -73,19 +74,19 @@ const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemT
                             </TableContainer>
                         </TableCell>
                         <TableCell align='center'>Time Taken (s)</TableCell>
-                        <TableCell align='center'>{systemTime ? (systemTime) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{systemTime ? (systemTime.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>Smallest K Score</TableCell>
-                        <TableCell align='center'>{kMin ? (kMin) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{kMin ? (kMin.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>Largest K Score</TableCell>
-                        <TableCell align='center'>{kMax ? (kMax) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{kMax ? (kMax.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell align='center'>Average K Score</TableCell>
-                        <TableCell align='center'>{kAvg ? (kAvg) : (<Skeleton variant='rectangular' />)}</TableCell>
+                        <TableCell align='center'>{kAvg ? (kAvg.toFixed(2)) : (<Skeleton variant='rectangular' />)}</TableCell>
                     </TableRow>
                     {rows.count > 3 ? (
                         paddingRows.map((value) => (

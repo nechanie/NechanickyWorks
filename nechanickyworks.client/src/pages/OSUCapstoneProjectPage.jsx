@@ -1,5 +1,5 @@
 import { Box, Container, Paper, Stack, TextField, Typography, useTheme, Grid, LinearProgress, CircularProgress, Fade } from '@mui/material';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import OSUCapstoneForm from '../components/Forms/OSUCapstoneForm';
 import PageRef from '../components/Shared/Data/PageRefs';
@@ -15,7 +15,7 @@ import CapstoneResTable from '../components/Display/data/CapstoneResTable';
 
 const OSUCapstoneProjectPage = () => {
     const currentPath = useLocation();
-    const socketPageRef = PageRef.TML;
+    const socketPageRef = PageRef.CAPSTONE;
     const [isFormDisabled, setIsFormDisabled] = useState(false);
     const [logMessages, setLogMessages] = useState("");
     const [showLog, setShowLog] = useState(false);
@@ -37,6 +37,7 @@ const OSUCapstoneProjectPage = () => {
     const [kMax, setKMax] = useState(null);
     const [kAvg, setKAvg] = useState(null);
     const [results, setResults] = useState([]);
+    const [selectedProfile, setSelectedProfile] = useState(null);
     const theme = useTheme();
 
     // Use the `useWebSocket` hook to use shared websocket connection
@@ -75,6 +76,7 @@ const OSUCapstoneProjectPage = () => {
     useEffect(() => {
         const handleMessage = (message) => {
             const msg = JSON.parse(message);
+            console.log(msg);
             setLogMessages(prev => prev + message + "\n");
             if (msg.type === 'logging_info') {
                 switch (msg.data.type) {
@@ -91,20 +93,22 @@ const OSUCapstoneProjectPage = () => {
                         setQueryTime(msg.data.query_time);
                         break;
                     case "final":
-                        setSystemTime(msg.data.query_time);
+                        setSystemTime(msg.data.system_time);
                         setKMin(msg.data.kmin);
                         setKMax(msg.data.kmax);
                         setKAvg(msg.data.kavg);
+                        setResults(msg.data.results);
+                        setSelectedProfile(msg.data.base_profile);
                         break;
                 }
             }
             if (msg.type === 'process_info') {
                 if (msg.data.message === "setup_start") {
+                    setIsCircular(true);
                     setShowSecondaryProgress(true);
                     setStatusMessage("Setup Started.");
                 }
                 else if (msg.data.message === "setup_complete") {
-                    setShowSecondaryProgress(false);
                     setStatusMessage("Waiting for turn in queue.");
                 }
                 else if (msg.data.message === "task_starting") {
@@ -120,14 +124,18 @@ const OSUCapstoneProjectPage = () => {
                 }
             }
             if (msg.type === 'embedding_info') {
+                if (statusMessage !== "Creating Embeddings...") {
+                    setStatusMessage("Creating Embeddings...");
+                }
                 setSecondaryProgress((prevState) => {
                     const result = 100 * msg.data.embedding_num / msg.data.embedding_total;
                     return result;
                 });
                 setPrimaryProgress((prevState) => {
                     let multiplier = 75;
-                    let addition = multiplier * ((msg.data.embedding_num - lastEmbedNum) / msg.data.embedding_total);
-                    return prevState + addition;
+                    let result = multiplier * ((msg.data.embedding_num) / msg.data.embedding_total);
+                    console.log(prevState);
+                    return result;
                 });
                 if (msg.data.batch_num !== msg.data.total_batches) {
                     setLastEmbedNum(msg.data.embedding_num);
@@ -138,14 +146,15 @@ const OSUCapstoneProjectPage = () => {
             }
             if (msg.type === 'upsert_info') {
                 if (statusMessage !== "Uploading Embeddings...") {
+                    setSecondaryProgress(0);
                     setStatusMessage("Uploading Embeddings...");
                 }
                 setSecondaryProgress((prevState) => {
-                    const result = 100 * msg.data.current / msg.data.total;
+                    const result = prevState + (100 * msg.data.current / msg.data.total);
                     return result;
                 });
                 setPrimaryProgress((prevState) => {
-                    let chunk_diff = msg.data.current - lastChunkNum;
+                    let chunk_diff = msg.data.current;
                     const result = prevState + (25 * chunk_diff / msg.data.total);
                     return result;
                 });
@@ -174,7 +183,6 @@ const OSUCapstoneProjectPage = () => {
         setPrimaryProgress(0);
         setShowSecondaryProgress(false);
         setSecondaryProgress(0);
-        setBannerOpen(false);
         setIsCircular(false);
         setStatusMessage(null);
         setLastEmbedNum(0);
@@ -188,6 +196,7 @@ const OSUCapstoneProjectPage = () => {
         setKMax(null);
         setKAvg(null);
         setResults([]);
+        setSelectedProfile(null);
         const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/CapstoneV1", "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = {
