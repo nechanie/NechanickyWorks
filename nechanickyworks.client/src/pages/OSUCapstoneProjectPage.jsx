@@ -38,11 +38,17 @@ const OSUCapstoneProjectPage = () => {
     const [kAvg, setKAvg] = useState(null);
     const [results, setResults] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState(null);
+    const [showTable, setShowTable] = useState(false);
     const theme = useTheme();
 
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
     const webSocketRef = useRef(null);
+    const demoRunningRef = useRef(null);
+
+    React.useEffect(() => {
+        demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
+    }, [demoRunningRef.current])
 
     useEffect(() => {
         if (webSocketManager.currentTask &&
@@ -106,6 +112,7 @@ const OSUCapstoneProjectPage = () => {
                 if (msg.data.message === "setup_start") {
                     setIsCircular(true);
                     setShowSecondaryProgress(true);
+                    setShowTable(true);
                     setStatusMessage("Setup Started.");
                 }
                 else if (msg.data.message === "setup_complete") {
@@ -197,10 +204,14 @@ const OSUCapstoneProjectPage = () => {
         setKAvg(null);
         setResults([]);
         setSelectedProfile(null);
+        setShowTable(false);
         const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/CapstoneV1", "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = {
             profile: formData.selectedProfile,
+            model: formData.selectedModel,
+            dim: formData.embeddingDim,
+            metric: formData.selectedMetric,
             embeddingCount: formData.numProfilesToGenerate,
             resultsCount: formData.numSimilarResults
         };
@@ -215,7 +226,7 @@ const OSUCapstoneProjectPage = () => {
             <Cover light={OSUCapstoneBackgroundImage} dark={OSUCapstoneBackgroundImageDark}>
                 <Container maxWidth='md' align='center' sx={{ py: "2%" }} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
-                        <Typography variant='h4' gutterBottom sx={{ fontSynthesisWeight: 'auto', fontWeight: 600, color: 'common.white' }}>Welcome to the OSU Senior Capstone Project Page.</Typography>
+                        <Typography variant='h4' gutterBottom sx={{  fontWeight: 900}}>Welcome to the OSU Senior Capstone Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p: '2%' }}>
                             {/* Key Features Section */}
                             <Typography variant="h5" align="center" component="h1" color='inherit' gutterBottom>
@@ -325,13 +336,15 @@ const OSUCapstoneProjectPage = () => {
                             <OSUCapstoneForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
                         </Grid>
                     </Grid>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Paper elevation={3} sx={{ p: 3 }}>
-                                <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={ results } />
-                            </Paper>
+                    {showTable && (
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Paper elevation={3} sx={{ p: 3 }} ref={demoRunningRef}>
+                                    <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={results} />
+                                </Paper>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    )}
                 </Container>
             </Container>
             <Fade appear={false} in={bannerOpen}>

@@ -612,46 +612,63 @@ const getDesignTokens = (mode) => ({
         })
     },
     typography: {
-        fontFamily: 'Klotee, Artega',
-        body1: {
-            fontFamily: 'Easy'
+        fontFamily: 'acumin-pro, sans-serif',
+        h1: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
         },
-        tag: {
-            FontFamily: "Easy",
-            fontWeight: 400,
-            fontSize: "0.7rem",
-        }
+        h2: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
+        },
+        h3: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
+        },
+        h4: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        h5: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        h6: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        body1: {
+            fontFamily: 'acumin-pro, sans-serif',
+        },
+        body2: {
+            fontFamily: 'acumin-pro, sans-serif',
+        },
     },
     components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-        @font-face {
-          font-family: 'Klotee';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Klotee"), url(${Klotee}) format('opentype');
-        }
-        @font-face {
-          font-family: 'Artega';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Artega"), url(${Artega}) format('opentype');
-        }
-        @font-face {
-          font-family: 'Easy';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Easy"), url(${Easy}) format('opentype');
-        }
-      `,
-        },
         MuiChip: {
             styleOverrides: {
                 root: {
-                    fontFamily: 'Easy',
+                    fontFamily: 'acumin-pro',
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'frank-ruhl-libre-variable, serif',
+                    textTransform: 'uppercase',
+                    fontWeight: 900
+                }
+            }
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'frank-ruhl-libre-variable, serif',
+                    textTransform: 'uppercase',
                 }
             }
         }

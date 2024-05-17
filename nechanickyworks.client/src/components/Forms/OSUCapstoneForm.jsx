@@ -3,7 +3,7 @@ import {
     Container, Paper, Typography, Box, TextField, Button, FormControlLabel,
     Checkbox, Dialog, DialogTitle, DialogContent, DialogActions, Table,
     TableBody, TableCell, TableContainer, TableHead, TableRow, TableSortLabel,
-    IconButton, InputAdornment, useTheme
+    IconButton, InputAdornment, useTheme, FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
 import axios from 'axios';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -20,10 +20,13 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
     const [profiles, setProfiles] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [embedEntireDatabase, setEmbedEntireDatabase] = useState(false);
+    const [selectedModel, setSelectedModel] = useState("");
+    const [embeddingDim, setEmbeddingDim] = useState(null);
     const [open, setOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('person_id');
+    const [selectedMetric, setSelectedMetric] = useState("");
     const theme = useTheme();
     useEffect(() => {
         const checkBackendHealth = async () => {
@@ -68,11 +71,25 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
         event.preventDefault();
         const formData = {
             selectedProfile,
+            selectedModel,
+            selectedMetric,
+            embeddingDim,
             numProfilesToGenerate: embedEntireDatabase ? 'ALL' : numProfilesToGenerate,
-            numSimilarResults,
+            numSimilarResults
         };
         onSubmit(formData);
     };
+
+    const onSelectedModelChanged = (event) => {
+        event.preventDefault();
+        setSelectedModel(event.target.value);
+        if (event.target.value === "MiniLM") {
+            setEmbeddingDim(384);
+        }
+        else if (event.target.value === "Mistral") {
+            setEmbeddingDim(768);
+        }
+    }
 
     const handleOpen = () => {
         setOpen(true);
@@ -127,7 +144,39 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                 </Typography>
                             )}
                         </Box>
-
+                        <Box sx={{ marginBottom: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="model-select-label">Choose Model</InputLabel>
+                                <Select
+                                    labelId="model-select-label"
+                                    id="model-select"
+                                    value={selectedModel}
+                                    label="Choose Model"
+                                    onChange={e => onSelectedModelChanged(e)}
+                                    disabled={isDisabled || isAltDisabled}
+                                >
+                                    <MenuItem value="MiniLM">MiniLM</MenuItem>
+                                    <MenuItem value="Mistral">Mistral</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <Box sx={{ marginBottom: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="model-select-label">Similarity Metric</InputLabel>
+                                <Select
+                                    labelId="metric-select-label"
+                                    id="metric-select"
+                                    value={selectedMetric}
+                                    label="Choose a Similarity Metric"
+                                    onChange={e => setSelectedMetric(e.target.value)}
+                                    disabled={isDisabled || isAltDisabled}
+                                >
+                                    <MenuItem value="cosine">Cosine</MenuItem>
+                                    <MenuItem value="euclidean">Euclidean</MenuItem>
+                                    <MenuItem value="dotproduct">Dot Product</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
                         <Box sx={{ marginBottom: 2 }}>
                             <FormControlLabel
                                 control={
