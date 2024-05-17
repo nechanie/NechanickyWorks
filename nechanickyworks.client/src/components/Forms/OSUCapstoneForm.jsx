@@ -27,6 +27,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('person_id');
     const [selectedMetric, setSelectedMetric] = useState("");
+    const [errors, setErrors] = useState({});
     const theme = useTheme();
     useEffect(() => {
         const checkBackendHealth = async () => {
@@ -52,7 +53,6 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
         try {
             const response = await fetch('https://access.nechanickyworks.com/api/profilesrandom');
             const data = await response.json();
-            console.log(data);
             setProfiles(data.data); // Update to match the response structure
         } catch (error) {
             console.error('Error fetching profiles:', error);
@@ -67,17 +67,32 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
         fetchProfiles();
     };
 
+    const validate = () => {
+        const newErrors = {};
+        if (!selectedProfile) newErrors.selectedProfile = 'Profile is required';
+        if (!selectedModel) newErrors.selectedModel = 'Model is required';
+        if (!selectedMetric) newErrors.selectedMetric = 'Metric is required';
+        if (!embedEntireDatabase && !numProfilesToGenerate) newErrors.numProfilesToGenerate = 'Number of profiles is required';
+        if (!numSimilarResults) newErrors.numSimilarResults = 'Number of similar results is required';
+        return newErrors;
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        const formData = {
-            selectedProfile,
-            selectedModel,
-            selectedMetric,
-            embeddingDim,
-            numProfilesToGenerate: embedEntireDatabase ? 'ALL' : numProfilesToGenerate,
-            numSimilarResults
-        };
-        onSubmit(formData);
+        const newErrors = validate();
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+        } else {
+            const formData = {
+                selectedProfile,
+                selectedModel,
+                selectedMetric,
+                embeddingDim,
+                numProfilesToGenerate: embedEntireDatabase ? 'ALL' : numProfilesToGenerate,
+                numSimilarResults
+            };
+            onSubmit(formData);
+        }
     };
 
     const onSelectedModelChanged = (event) => {
@@ -86,7 +101,13 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
         if (event.target.value === "MiniLM") {
             setEmbeddingDim(384);
         }
-        else if (event.target.value === "Mistral") {
+        else if (event.target.value === "Ember") {
+            setEmbeddingDim(1024);
+        }
+        else if (event.target.value === "UAE") {
+            setEmbeddingDim(1024);
+        }
+        else if (event.target.value === "Roberta") {
             setEmbeddingDim(768);
         }
     }
@@ -121,10 +142,10 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
     });
 
     return (
-        <Container maxWidth="md" sx={{ m: 3 }}>
+        <Container maxWidth="md" sx={{ my: 3 }}>
             <Paper sx={{ p: 3 }}>
                 {isBackendHealthy && (
-                    <Box sx={{ position: 'relative', display: 'flex', width: "100%", height: 'fit-content', justifyContent: 'end' }}> {/* Positioning the icon */}
+                    <Box sx={{ position: 'relative', display: 'flex', width: '100%', height: 'fit-content', justifyContent: 'end' }}>
                         <CheckCircleOutlineIcon color='success' />
                     </Box>
                 )}
@@ -143,38 +164,46 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                     Selected Profile: {selectedProfile}
                                 </Typography>
                             )}
+                            {errors.selectedProfile && <Typography color="error">{errors.selectedProfile}</Typography>}
                         </Box>
                         <Box sx={{ marginBottom: 2 }}>
-                            <FormControl fullWidth>
+                            <FormControl fullWidth error={!!errors.selectedModel}>
                                 <InputLabel id="model-select-label">Choose Model</InputLabel>
                                 <Select
                                     labelId="model-select-label"
                                     id="model-select"
                                     value={selectedModel}
                                     label="Choose Model"
-                                    onChange={e => onSelectedModelChanged(e)}
+                                    onChange={onSelectedModelChanged}
                                     disabled={isDisabled || isAltDisabled}
                                 >
                                     <MenuItem value="MiniLM">MiniLM</MenuItem>
-                                    <MenuItem value="Mistral">Mistral</MenuItem>
+                                    <MenuItem value="Ember">Ember</MenuItem>
+                                    <MenuItem value="UAE">UAE</MenuItem>
+                                    <MenuItem value="Roberta">Roberta</MenuItem>
                                 </Select>
+                                {errors.selectedModel && <Typography color="error">{errors.selectedModel}</Typography>}
                             </FormControl>
                         </Box>
                         <Box sx={{ marginBottom: 2 }}>
-                            <FormControl fullWidth>
-                                <InputLabel id="model-select-label">Similarity Metric</InputLabel>
+                            <FormControl fullWidth error={!!errors.selectedMetric}>
+                                <InputLabel id="metric-select-label">Similarity Metric</InputLabel>
                                 <Select
                                     labelId="metric-select-label"
                                     id="metric-select"
                                     value={selectedMetric}
                                     label="Choose a Similarity Metric"
-                                    onChange={e => setSelectedMetric(e.target.value)}
+                                    onChange={e => {
+                                        setSelectedMetric(e.target.value);
+                                        setErrors((prevErrors) => ({ ...prevErrors, selectedMetric: '' }));
+                                    }}
                                     disabled={isDisabled || isAltDisabled}
                                 >
                                     <MenuItem value="cosine">Cosine</MenuItem>
                                     <MenuItem value="euclidean">Euclidean</MenuItem>
                                     <MenuItem value="dotproduct">Dot Product</MenuItem>
                                 </Select>
+                                {errors.selectedMetric && <Typography color="error">{errors.selectedMetric}</Typography>}
                             </FormControl>
                         </Box>
                         <Box sx={{ marginBottom: 2 }}>
@@ -182,7 +211,10 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                 control={
                                     <Checkbox
                                         checked={embedEntireDatabase}
-                                        onChange={e => setEmbedEntireDatabase(e.target.checked)}
+                                        onChange={e => {
+                                            setEmbedEntireDatabase(e.target.checked);
+                                            setErrors((prevErrors) => ({ ...prevErrors, numProfilesToGenerate: '' }));
+                                        }}
                                         disabled={isDisabled || isAltDisabled}
                                     />
                                 }
@@ -194,9 +226,14 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                     label="Number of Profiles to Generate Embeddings For"
                                     type="number"
                                     value={numProfilesToGenerate}
-                                    onChange={e => setNumProfilesToGenerate(e.target.value)}
+                                    onChange={e => {
+                                        setNumProfilesToGenerate(e.target.value);
+                                        setErrors((prevErrors) => ({ ...prevErrors, numProfilesToGenerate: '' }));
+                                    }}
                                     disabled={isDisabled || isAltDisabled}
                                     inputProps={{ min: 1000, max: 50000 }}
+                                    error={!!errors.numProfilesToGenerate}
+                                    helperText={errors.numProfilesToGenerate}
                                     sx={{ marginTop: 2 }}
                                 />
                             )}
@@ -208,9 +245,14 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                 label="Number of Similar Profiles to Return (1-100)"
                                 type="number"
                                 value={numSimilarResults}
-                                onChange={e => setNumSimilarResults(e.target.value)}
+                                onChange={e => {
+                                    setNumSimilarResults(e.target.value);
+                                    setErrors((prevErrors) => ({ ...prevErrors, numSimilarResults: '' }));
+                                }}
                                 disabled={isDisabled || isAltDisabled}
                                 inputProps={{ min: 1, max: 100 }}
+                                error={!!errors.numSimilarResults}
+                                helperText={errors.numSimilarResults}
                             />
                         </Box>
 
@@ -256,9 +298,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                             Person ID
                                         </TableSortLabel>
                                     </TableCell>
-                                    <TableCell>
-                                        Description
-                                    </TableCell>
+                                    <TableCell>Description</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -268,6 +308,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                                         hover
                                         onClick={() => {
                                             setSelectedProfile(profile.person_id);
+                                            setErrors((prevErrors) => ({ ...prevErrors, selectedProfile: '' }));
                                             handleClose();
                                         }}
                                         style={{ cursor: 'pointer' }}

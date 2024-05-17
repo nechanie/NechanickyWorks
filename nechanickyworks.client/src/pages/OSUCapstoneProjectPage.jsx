@@ -82,7 +82,6 @@ const OSUCapstoneProjectPage = () => {
     useEffect(() => {
         const handleMessage = (message) => {
             const msg = JSON.parse(message);
-            console.log(msg);
             setLogMessages(prev => prev + message + "\n");
             if (msg.type === 'logging_info') {
                 switch (msg.data.type) {
@@ -104,7 +103,7 @@ const OSUCapstoneProjectPage = () => {
                         setKMax(msg.data.kmax);
                         setKAvg(msg.data.kavg);
                         setResults(msg.data.results);
-                        setSelectedProfile(msg.data.base_profile);
+                        setSelectedProfile(msg.data.base_profile[0]);
                         break;
                 }
             }
@@ -141,7 +140,6 @@ const OSUCapstoneProjectPage = () => {
                 setPrimaryProgress((prevState) => {
                     let multiplier = 75;
                     let result = multiplier * ((msg.data.embedding_num) / msg.data.embedding_total);
-                    console.log(prevState);
                     return result;
                 });
                 if (msg.data.batch_num !== msg.data.total_batches) {
@@ -226,13 +224,13 @@ const OSUCapstoneProjectPage = () => {
             <Cover light={OSUCapstoneBackgroundImage} dark={OSUCapstoneBackgroundImageDark}>
                 <Container maxWidth='md' align='center' sx={{ py: "2%" }} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
-                        <Typography variant='h4' gutterBottom sx={{  fontWeight: 900}}>Welcome to the OSU Senior Capstone Project Page.</Typography>
+                        <Typography variant='h3' gutterBottom>Welcome to the OSU Senior Capstone Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p: '2%' }}>
                             {/* Key Features Section */}
-                            <Typography variant="h5" align="center" component="h1" color='inherit' gutterBottom>
+                            <Typography variant="h4" align="center" component="h1" color='inherit' gutterBottom>
                                 Introduction
                             </Typography>
-                            <Typography variant="body1" align="center" sx={{ margin: '20px 0' }}>
+                            <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight:'bold' }}>
                                 This project harnesses advanced Natural Language Processing (NLP) techniques alongside vector database technology
                                 to profile individuals based on their social media data. Employing transformer-based models, it finds users similar
                                 to a given profile, expanding profiling capabilities beyond traditional analysis. The integration of Pinecone,
@@ -285,10 +283,54 @@ const OSUCapstoneProjectPage = () => {
                                     </Typography>
                                     <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
                                         <ul>
-                                            <li>Integrate polynomial and exponential functions using several programmatic methods.</li>
-                                            <li>Create your own polynomial and exponential functions to integrate.</li>
-                                            <li>Observe the difference in performance between Gaussian Quadrature and other more naive approaches to integration.</li>
-                                            <li>Understand the implications of efficiency and margin of error in numerical integration.</li>
+                                            <li>Advanced NLP Techniques:
+                                                <ul>
+                                                    <li>Leverage state-of-the-art transformer-based models for high-accuracy text embeddings.</li>
+                                                    <li>Models include MiniLM, Ember, UAE, and Roberta, each with unique strengths for different use cases.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Efficient Vector Database Integration:
+                                                <ul>
+                                                    <li>Seamless integration with Pinecone, a high-performance vector database, for efficient storage and querying of embeddings.</li>
+                                                    <li>Supports large-scale data handling, making it suitable for extensive datasets.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Customizable Similarity Search:
+                                                <ul>
+                                                    <li>Multiple similarity metrics available, including cosine, euclidean, and dot product.</li>
+                                                    <li>Users can specify the number of similar profiles to generate and display, allowing for flexible analysis depth.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Dynamic Embedding Options:
+                                                <ul>
+                                                    <li>Option to embed the entire database or a specified subset of profiles.</li>
+                                                    <li>Control over the number of profiles to generate embeddings for, balancing between resource utilization and processing time.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Real-time Analytics and Feedback:
+                                                <ul>
+                                                    <li>Detailed runtime metrics for embedding, database transactions, and overall processing time.</li>
+                                                    <li>Provides insights into the efficiency of the profiling process and the computational demands of various configurations.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Interactive User Interface:
+                                                <ul>
+                                                    <li>User-friendly interface for selecting profiles, models, and similarity metrics.</li>
+                                                    <li>Real-time progress updates and status messages during the embedding and querying processes.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Scalable and Responsive System:
+                                                <ul>
+                                                    <li>Designed to handle varying loads and configurations, ensuring scalability and responsiveness.</li>
+                                                    <li>Efficient query handling even with extensive datasets, providing fast and accurate results.</li>
+                                                </ul>
+                                            </li>
+                                            <li>Insightful Similarity Analysis:
+                                                <ul>
+                                                    <li>Presents a list of similar profiles with ranking values, indicating the degree of similarity.</li>
+                                                    <li>Allows review of profile descriptions and analytics for deeper insights into the similarity results.</li>
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </Typography>
                                 </Stack>
@@ -300,7 +342,7 @@ const OSUCapstoneProjectPage = () => {
                                     </Typography>
                                     <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
                                         <ul>
-                                            <li><strong>Similarity Ranking:</strong> Pay attention to the similarity rankings of the profiles presented. Higher rankings indicate a closer match to the chosen profile. Reflect on how these rankings align with your perceptions of similarity.</li>
+                                            <li><strong>Similarity Ranking:</strong> Pay attention to the similarity rankings of the profiles presented. The k value rankings indicate how close of a match a profile is to the chosen profile. Reflect on how these rankings align with your perceptions of similarity.</li>
                                             <li><strong>Profile Descriptions:</strong> Review the descriptions of the original and similar profiles. Identifying commonalities or differences in these descriptions can provide insights into the accuracy and relevance of the similarity results.</li>
                                             <li><strong>Analytics:</strong> Analyze the provided analytics, including runtime metrics and similarity compilations. These metrics offer a behind-the-scenes look at the efficiency of the profiling process and the computational demands of various configurations.</li>
                                             <li><strong>Configuration Effects:</strong> Experiment with different numbers of profiles to generate embeddings for and vary the number of similar results to display. Observing how these configurations impact the results can give you a deeper understanding of the system's scalability and responsiveness.</li>
@@ -320,13 +362,16 @@ const OSUCapstoneProjectPage = () => {
                                     </Typography>
                                     <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
                                         <ul>
-                                            <li>Choose a profile by specifying a number between 1 and 50,000. This number corresponds to a profile's index in our database, which will be used as the basis for finding similar profiles.</li>
-                                            <li>The description of the chosen profile will be displayed to give you clarity on the data being analyzed.</li>
-                                            <li>Next, you'll specify how many profiles to generate embeddings for — a crucial step in processing and analyzing the data.</li>
-                                            <li>Decide on the number of similar results you wish to generate and display. This allows you to control the depth of your analysis.</li>
-                                            <li>The demo will then present you with a list of similar profiles, including the original profile for comparison. Each similar result will feature a ranking value, indicating the degree of similarity to the chosen profile.</li>
-                                            <li>In addition to the similar profiles, various analytics will be provided, such as runtime for embedding, database transactions, and overall processing time. Compiled metrics for the similarity results offer further insights into the analysis.</li>
-                                            <li>The form will allow new submissions once the current job completes. Feel free to experiment with, and compare, different configurations.</li>
+                                            <li>Choose a profile using the tool provided in the form. The tool randomly selects several profiles from the database to choose from. If you would like different options, you can use the provided refresh button to get a new random set of profiles. Some profiles may be blank.</li>
+                                            <li>The profile number of the chosen profile will be displayed on the form.</li>
+                                            <li>Next, select a model from the available options. Different models have different capabilities, and this choice will influence the embedding process.</li>
+                                            <li>Specify the similarity metric you want to use for comparing profiles. This will determine how the similarity is calculated.</li>
+                                            <li>Decide whether to embed the entire database or only a subset. If you choose a subset, specify the number of profiles to generate embeddings for. This step is crucial for processing and analyzing the data efficiently. Profiles in subsets will be chosen randomly, this means that each time you submit the form, you will likely get a variety of results.</li>
+                                            <li>Determine the number of similar results you wish to generate and display. This number determines the maximum number of top most similar profiles to show.</li>
+                                            <li>Click the "Find Similar Profiles" button to start the embedding process.</li>
+                                            <li>The demo will present you with a list of similar profiles, including the original profile for comparison. Each similar result will feature a ranking value (K value), indicating the degree of similarity to the chosen profile. Note that the K values take different forms depending on your choice of similarity metric, however, the displayed results will always be ordered from most similar to least similar.</li>
+                                            <li>Review the analytics provided, such as runtime for embedding, database transactions, and overall processing time. Compiled metrics for the similarity results offer further insights into the analysis.</li>
+                                            <li>Once the current job completes, the form will allow new submissions. Feel free to experiment with different configurations to explore the system's capabilities.</li>
                                         </ul>
                                     </Typography>
                                 </Paper>
@@ -340,7 +385,7 @@ const OSUCapstoneProjectPage = () => {
                         <Grid container>
                             <Grid item xs={12}>
                                 <Paper elevation={3} sx={{ p: 3 }} ref={demoRunningRef}>
-                                    <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={results} />
+                                    <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={results} selectedProfile={selectedProfile} />
                                 </Paper>
                             </Grid>
                         </Grid>

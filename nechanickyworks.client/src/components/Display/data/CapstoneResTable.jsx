@@ -1,103 +1,136 @@
 import * as React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, useTheme, Box } from "@mui/material"
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, useTheme, Box, Grid, Paper, Typography, TablePagination } from "@mui/material"
 
-const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemTime, kMin, kMax, kAvg, rows }) => {
-    const [paddingRows, setPaddingRows] = React.useState([]);
+const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemTime, kMin, kMax, kAvg, rows, selectedProfile }) => {
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [showTable, setShowTable] = React.useState(false);
     const theme = useTheme();
     React.useEffect(() => {
-        console.log(rows);
-        setPaddingRows((prevState) => {
-            let tablePaddingRows = [];
-            for (let i = 0; i < rows.count - 3 && i < 10; i++) {
-                tablePaddingRows.push(i);
-            }
-            return tablePaddingRows;
-        });
+        setShowTable((rows.length) > 0 ? true : false);
     }, [rows])
 
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+
     return (
-        <TableContainer>
-            <Table aria-label="spanning table" size="small">
-                <TableHead>
-                    <TableRow>
-                        <TableCell align="right" sx={{ borderBottom: 'None' }}></TableCell>
-                        <TableCell align="center" colSpan={4} sx={{ color: theme.palette.text.primary, backgroundColor: theme.palette.primary.main, borderTopLeftRadius:10, borderTopRightRadius:10 }}>
-                                <strong>Sub-Task</strong>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow sx={{ backgroundColor: theme.palette.background.main }}>
-                        <TableCell align='center' sx={{ borderBottom: 'None' }}></TableCell>
-                        <TableCell align='center' sx={{ borderLeft: '1px solid rgb(224 224 224)', borderBottom: '1px solid rgb(224 224 224)' }}><strong style={{ color: theme.palette.text.primary }}>Initial Setup</strong></TableCell>
-                        <TableCell align='center' sx={{ borderBottom: '1px solid rgb(224 224 224)' } }><strong style={{ color: theme.palette.text.primary }}>Embedding Profiles</strong></TableCell>
-                        <TableCell align='center' sx={{ borderBottom: '1px solid rgb(224 224 224)' }}><strong style={{ color: theme.palette.text.primary }}>Uploading Embeddings</strong></TableCell>
-                        <TableCell align='center' sx={{ borderRight: '1px solid rgb(224 224 224)', borderBottom: '1px solid rgb(224 224 224)' }}><strong style={{ color: theme.palette.text.primary }}>Similar Profile Search</strong></TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <TableCell align='center' sx={{ border: '1px solid rgb(224 224 224)' } }><strong style={{ color: theme.palette.text.primary }}>Time Taken (s)</strong></TableCell>
-                        <TableCell align='center' sx={{ borderLeft: '1px solid rgb(224 224 224)' }}>{setupTime ? setupTime.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                        <TableCell align='center'>{modelTime ? modelTime.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                        <TableCell align='center'>{upsertTime ? upsertTime.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                        <TableCell align='center' sx={{ borderRight: '1px solid rgb(224 224 224)' }}>{queryTime ? queryTime.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell align='center' colSpan={5} sx={{borderBottom: 'None', borderTop: 'None'}}></TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={3} align='center' sx={{ borderRadius: 10, backgroundColor: theme.palette.primary.light, borderBottom: 'None', borderTop: 'None' }}>
-                            <strong style={{ color: theme.palette.text.primary }}>Similar Profiles</strong>
-                        </TableCell>
-                        <TableCell colSpan={2} align='center' sx={{ borderRadius: 10, backgroundColor: theme.palette.primary.light, borderBottom: 'None', borderTop: 'None' }}>
-                            <strong style={{ color: theme.palette.text.primary }}>Results</strong>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell rowSpan={rows.count ? rows.count : 4} colSpan={3}>
-                            <TableContainer sx={{ maxHeight: 440, boxShadow: 1, borderRadius: 1, background: theme.palette.background.paper }}>
-                                <Table stickyHeader size="small">
-                                    <TableHead>
-                                        <TableRow sx={{ backgroundColor: theme.palette.background.main }}>
-                                            <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Profile</strong></TableCell>
-                                            <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Description</strong></TableCell>
-                                            <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>K Score</strong></TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {rows.count !== 0 ? (rows.map((row) => (
-                                            <TableRow hover key={row.person_id}>
-                                                <TableCell>{row.person_id}</TableCell>
-                                                <TableCell align="right">{row.description}</TableCell>
-                                                <TableCell align="right">{row.kScore.toFixed(2)}</TableCell>
-                                            </TableRow>
-                                        ))) : (
-                                            <TableRow><TableCell rowSpan={1} colSpan={3}><Skeleton variant='rectangular' animation="wave" /></TableCell></TableRow>
-                                        )}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
-                        </TableCell>
-                        <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Time Taken (s)</strong></TableCell>
-                        <TableCell align='center'>{systemTime ? systemTime.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Smallest K Score</strong></TableCell>
-                        <TableCell align='center'>{kMin ? kMin.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Largest K Score</strong></TableCell>
-                        <TableCell align='center'>{kMax ? kMax.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Average K Score</strong></TableCell>
-                        <TableCell align='center'>{kAvg ? kAvg.toFixed(2) : <Skeleton variant='rectangular' />}</TableCell>
-                    </TableRow>
-                    {rows.count > 3 && paddingRows.map((value) => (
-                        <TableRow key={value}><TableCell colSpan={2}></TableCell></TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.primary.main, color: theme.palette.text.primary, borderRadius: 1 }}>
+                    <Typography variant="h6"><strong>Sub-Task</strong></Typography>
+                </Paper>
+            </Grid>
+
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.background.main }}>
+                    <Typography variant="body1"><strong>Initial Setup</strong></Typography>
+                    {setupTime ? (`${setupTime.toFixed(2)} seconds`) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.background.main }}>
+                    <Typography variant="body1"><strong>Embedding Profiles</strong></Typography>
+                    {modelTime ? (`${modelTime.toFixed(2)} seconds`) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.background.main }}>
+                    <Typography variant="body1"><strong>Uploading Embeddings</strong></Typography>
+                    {upsertTime ? (`${upsertTime.toFixed(2)} seconds`) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.background.main }}>
+                    <Typography variant="body1"><strong>Similar Profile Search</strong></Typography>
+                    {queryTime ? (`${queryTime.toFixed(2)} seconds`) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.primary.light, color: theme.palette.text.primary, borderRadius: 1 }}>
+                    <Typography variant="h6"><strong>Selected Profile</strong></Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center' }}>
+                    {selectedProfile ? selectedProfile.description : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.primary.light, color: theme.palette.text.primary, borderRadius: 1 }}>
+                    <Typography variant="h6"><strong>Similar Profiles</strong></Typography>
+                </Paper>
+            </Grid>
+
+            <Grid item xs={12}>
+                {showTable ? (
+                    <React.Fragment>
+                    <TableContainer component={Paper} sx={{ maxHeight: 440, boxShadow: 1, borderRadius: 1, background: theme.palette.background.paper }}>
+                    <Table stickyHeader size="small">
+                        <TableHead>
+                            <TableRow sx={{ backgroundColor: theme.palette.background.main }}>
+                                <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Profile</strong></TableCell>
+                                <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>Description</strong></TableCell>
+                                <TableCell align='center'><strong style={{ color: theme.palette.text.primary }}>K Score</strong></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                    <TableRow hover key={row.person_id}>
+                                        <TableCell>{row.person_id}</TableCell>
+                                        <TableCell align="right">{row.description}</TableCell>
+                                        <TableCell align="right">{row.kScore.toFixed(2)}</TableCell>
+                                    </TableRow>
+                                ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                            rowsPerPageOptions={[5, 10, 25]}
+                            component="div"
+                            count={rows.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            sx={{ background: theme.palette.background.paper,  boxShadow: 1, borderRadius: 1, } }
+                        /></React.Fragment>) : (<Skeleton variant='rectangular' animation="wave" />)}
+            </Grid>
+            <Grid item xs={12}>
+                <Paper elevation={3} sx={{ p: 2, textAlign: 'center', backgroundColor: theme.palette.primary.light, color: theme.palette.text.primary, borderRadius: 1 }}>
+                    <Typography variant="h6"><strong>Results</strong></Typography>
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body1"><strong>Total Time</strong></Typography>
+                    {systemTime ? (`${systemTime.toFixed(2)} seconds`) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body1"><strong>Smallest K Score</strong></Typography>
+                    {kMin ? kMin.toFixed(2) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body1"><strong>Largest K Score</strong></Typography>
+                    {kMax ? kMax.toFixed(2) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <Paper elevation={1} sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body1"><strong>Average K Score</strong></Typography>
+                    {kAvg ? kAvg.toFixed(2) : <Skeleton variant='rectangular' />}
+                </Paper>
+            </Grid>
+        </Grid>
     );
 }
 
