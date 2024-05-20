@@ -63,7 +63,7 @@ const SiteFooter = () => {
                         <Stack direction='column' sx={{ marginBottom: "3%" }} alignItems='center'>
                             <Typography variant='body1'><u>About</u></Typography>
                             <Typography component={Link} to="/about-me" variant='overline'>About Me</Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>About This Website (Coming Soon)</Typography>
+                            <Typography component={Link} to='/about-this-site' variant='overline'>About This Website</Typography>
                         </Stack>
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Contact</u></Typography>

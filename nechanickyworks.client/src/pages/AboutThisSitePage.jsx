@@ -1,102 +1,400 @@
-import React from 'react';
-import { Container, Typography, Box, List, ListItem, ListItemText, Paper, Divider, Grid, Card, CardContent, useTheme } from '@mui/material';
+import React, { useState } from 'react';
+import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { styled } from '@mui/system';
+import PageTitle from '../components/Shared/PageTitle';
+import Cover from '../components/Display/Cover';
+import AboutThisSiteBackground from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackground.webp";
+import AboutThisSiteBackgroundDark from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackgroundDark.webp";
+import SiteFooter from '../components/Shared/Footer';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import CodeIcon from '@mui/icons-material/Code';
+import BuildIcon from '@mui/icons-material/Build';
+import ComputerIcon from '@mui/icons-material/Computer';
+import TrendingUpIcon from '@mui/icons-material/TrendingUp';
+import TimelineIcon from '@mui/icons-material/Timeline';
+
+const ContentBox = styled(Box)({
+    margin: '20px 0',
+});
+
+const TocLink = styled(Mlink)({
+    color: 'inherit',
+    '&:hover': {
+        textDecoration: 'underline !important'
+    }
+});
+
+
+const StyledCard = styled(Card)({
+    marginBottom: '20px',
+    border: '1px solid #ddd',
+    borderRadius: '8px',
+    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
+});
+
+const StyledCardContent = styled(CardContent)({
+    display: 'flex',
+    alignItems: 'center',
+    padding: '16px',
+});
 
 const AboutThisSitePage = () => {
     const theme = useTheme();
+    const [highlights, setHighlights] = useState(theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5));
+    const [transitionalBg, setTransitionalBg] = useState(theme.palette.background.Paper);
+    React.useEffect(() => {
+        setHighlights((prevState) => {
+            const newColor = theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5);
+            return newColor;
+        });
+        setTransitionalBg(theme.palette.background.Paper);
+    }, [theme.palette.mode]);
+
 
     return (
-        <Container maxWidth="lg" sx={{ mt: 4 }}>
-            <Paper elevation={3} sx={{ p: 4, backgroundColor: theme.palette.grey[100] }}>
-                <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>
-                    About This Site
-                </Typography>
+        <React.Fragment>
+            <PageTitle pageTitle="About This Site" />
+            <Cover light={AboutThisSiteBackground} dark={AboutThisSiteBackgroundDark} dynaColor={true}>
+                <Container maxWidth='md' align='center' sx={{ py: '2%' }}>
 
-                <Divider sx={{ my: 3 }} />
-
-                {/* Project Overview */}
-                <Box mt={4}>
-                    <Typography variant="h4" gutterBottom>
-                        Project Overview
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                        This web application is the culmination of my cumulative learning and experiences. It's designed to showcase the integration of a React frontend with a .NET Core backend, hosted on Microsoft Azure for global accessibility. This project serves as a testament to my skills in developing and deploying full-stack web applications.
-                    </Typography>
-                </Box>
-
-                <Divider sx={{ my: 3 }} />
-
-                {/* Technical Specifications */}
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <Typography variant="h4" gutterBottom>
-                            Technical Specifications
+                    <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
+                    <Typography variant='h3' gutterBottom>About This Site</Typography>
+                    <Paper sx={{ backgroundColor: theme.palette.background.Paper, p: '2%' }}>
+                        {/* Key Features Section */}
+                        <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight: 'bold' }}>
+                            Just like the other projects presented throughout this site, the website itself is a project worth exploring; and this page is dedicated to just that. Throughout this page you will
+                            get to explore the various pieces that make up this site and all of its capabilities. The content of this page is meant to give you an inside look into the entire process of creating
+                            and managing this site. The content on this page does not have to be explored sequentially, feel free to jump around and read about anything that sounds interesting. Additionally, if
+                                you have questions or suggestions, do not hesitate to reach out. You can find any necessary contact information <Link to="/contact" rel="noopener noreferrer"><u>on the contact page</u></Link>.
+                            My intention for this site is to provide an equally meaningful experience for all users, regardless of their previous level of knowledge around the topics. Contacting me with questions or
+                            suggestions will often provide actionable insights on improvements for the site. With that said, take a look at the table of contents below and jump in!
                         </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Card raised sx={{ p: 2, backgroundColor: theme.palette.grey[200] }}>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Architecture & Hosting
-                                </Typography>
-                                <List dense>
-                                    <ListItem>
-                                        <ListItemText primary="Frontend developed with React, offering a dynamic and responsive user interface." />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText primary="Backend powered by .NET Core, providing robust server-side logic." />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText primary="Hosted as a Web App Service on Microsoft Azure, ensuring scalability and reliability." />
-                                    </ListItem>
-                                </List>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Card raised sx={{ p: 2, backgroundColor: theme.palette.grey[200] }}>
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Compute Server & API
-                                </Typography>
-                                <List dense>
-                                    <ListItem>
-                                        <ListItemText primary="Compute server built with an Nvidia RTX 3050 GPU and Ryzen 9 5950x CPU on Ubuntu Server OS." />
-                                    </ListItem>
-                                    <ListItem>
-                                        <ListItemText primary="Python FastAPI for efficient real-time communication via websockets, hosted in Docker containers." />
-                                    </ListItem>
-                                </List>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                </Grid>
+                        </Paper>
+                    </Stack>
+                </Container>
+            </Cover>
+            <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color:theme.palette.secondary.contrastText }}>
 
-                <Divider sx={{ my: 3 }} />
+                <TableOfContents bordering={highlights} background={transitionalBg } />
+                
+                <Section id="inspiration" title="Inspiration for the Site" icon={<MenuBookIcon />} backgroundColor="#f0f4c3">
+                    <SubSection id="reasoning" title="Reasoning">
+                        <Typography>Explain the reasoning behind creating the portfolio.</Typography>
+                    </SubSection>
+                    <SubSection id="expectation" title="Expectation">
+                        <Typography>Outline your expectations from creating the portfolio.</Typography>
+                    </SubSection>
+                </Section>
 
-                {/* Challenges and Solutions */}
-                <Box mt={4}>
-                    <Typography variant="h4" gutterBottom>
-                        Challenges and Solutions
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                        The project faced multiple challenges, especially in managing resource allocation for the compute server and ensuring real-time communication between the server and client. A queuing system was devised for the GPU to ensure fair and efficient processing of requests, and websockets were utilized over HTTP for more efficient communication, minimizing latency and enhancing user experience.
-                    </Typography>
-                </Box>
+                <Section id="planning" title="Planning of the Site" icon={<TimelineIcon />} backgroundColor="#ffecb3">
+                    <SubSection id="format" title="Format">
+                        <Typography>Explain why you chose a web format for your portfolio.</Typography>
+                    </SubSection>
+                    <SubSection id="goals" title="Goals">
+                        <Typography>Detail the goals you aimed to achieve with the portfolio.</Typography>
+                    </SubSection>
+                    <SubSection id="content" title="Content Choices">
+                        <Typography>Describe why you chose the projects/content included in the portfolio.</Typography>
+                    </SubSection>
+                    <SubSection id="process" title="Process">
+                        <Typography>Discuss the planning and implementation process of the portfolio.</Typography>
+                    </SubSection>
+                </Section>
 
-                <Divider sx={{ my: 3 }} />
+                <Section id="frontend" title="Construction of the Site - Front End" icon={<CodeIcon />} backgroundColor="#d1c4e9">
+                    <SubSection id="feframework" title="Framework">
+                        <Typography>Explain the front end frameworks you used.</Typography>
+                    </SubSection>
+                    <SubSection id="felanguage" title="Languages">
+                        <Typography>Detail the front end languages you used.</Typography>
+                    </SubSection>
+                    <SubSection id="fedesign" title="Design Choices">
+                        <Typography>Describe the design choices for the front end.</Typography>
+                    </SubSection>
+                    <SubSection id="fehosting" title="Hosting">
+                        <Typography>Explain the hosting solution for the front end.</Typography>
+                    </SubSection>
+                    <SubSection id="fecost" title="Cost">
+                        <Typography>Detail the cost considerations for the front end.</Typography>
+                    </SubSection>
+                    <SubSection id="feresources" title="Tools, Libraries, and Resources">
+                        <Typography>List the tools, libraries, and resources used for the front end.</Typography>
+                    </SubSection>
+                </Section>
 
-                {/* Reflections */}
-                <Box mt={4}>
-                    <Typography variant="h4" gutterBottom>
-                        Reflections
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                        This project reflects my journey and growth as a software engineer, showcasing my ability to not only conceptualize and develop a full-stack application but also tackle and overcome the various technical challenges encountered along the way. It stands as a portfolio piece that I am particularly proud of, demonstrating my skills, dedication, and passion for software development.
-                    </Typography>
-                </Box>
-            </Paper>
-        </Container>
+                <Section id="backend" title="Construction of the Site - Back End" icon={<BuildIcon />} backgroundColor="#b2dfdb">
+                    <SubSection id="beserver" title="Server and Server Specs">
+                        <Typography>Describe the server and its specifications for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="behosting" title="Hosting">
+                        <Typography>Explain the hosting solution for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="becontainerization" title="Containerization">
+                        <Typography>Discuss the containerization strategy for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="beframework" title="API and Frameworks">
+                        <Typography>Detail the API and frameworks used for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="bedatabase" title="Databases">
+                        <Typography>Describe the databases used for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="becompute" title="Compute Resources">
+                        <Typography>Explain the compute resources allocated for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="benetwork" title="Network">
+                        <Typography>Discuss the network setup for the back end.</Typography>
+                    </SubSection>
+                    <SubSection id="beresources" title="Tools, Libraries, and Resources">
+                        <Typography>List the tools, libraries, and resources used for the back end.</Typography>
+                    </SubSection>
+                </Section>
+
+                <Section id="challenges" title="Challenges" icon={<TrendingUpIcon />} backgroundColor="#ffe0b2">
+                    <ChallengesTabs />
+                </Section>
+
+                <Section id="product" title="Final/Current Product" icon={<ComputerIcon />} backgroundColor="#c8e6c9">
+                    <SubSection id="architecture" title="System Architecture">
+                        <Typography>Describe the system architecture with an architecture map.</Typography>
+                    </SubSection>
+                    <SubSection id="analytics" title="System Analytics">
+                        <Typography>Provide system analytics and full system specs across the entire architecture.</Typography>
+                    </SubSection>
+                    <SubSection id="roadmap" title="Roadmap">
+                        <Typography>Outline the future plans and roadmap for the website.</Typography>
+                    </SubSection>
+                </Section>
+            </Container>
+            <SiteFooter/>
+        </React.Fragment>
     );
 };
+
+const Section = ({ id, title, children, icon, backgroundColor }) => (
+    <ContentBox id={id} sx={{ backgroundColor: backgroundColor, borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
+        <StyledCard>
+            <StyledCardContent>
+                <IconButton sx={{ marginRight: '16px' }}>
+                    {icon}
+                </IconButton>
+                <Typography variant="h4" gutterBottom>{title}</Typography>
+            </StyledCardContent>
+            <CardContent>
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                        <Typography variant="h6">{title}</Typography>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        {children}
+                    </AccordionDetails>
+                </Accordion>
+            </CardContent>
+        </StyledCard>
+    </ContentBox>
+);
+
+const SubSection = ({ id, title, children }) => (
+    <Accordion sx={{ marginBottom: '10px' }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h6">{title}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+            {children}
+        </AccordionDetails>
+    </Accordion>
+);
+
+const AccordionSection = ({ title, children }) => (
+    <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+            <Typography variant="h5">{title}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+            {children}
+        </AccordionDetails>
+    </Accordion>
+);
+
+const AccordionDetailsContent = () => (
+    <Box>
+        <Typography>Details about frameworks, languages, design concepts, etc.</Typography>
+    </Box>
+);
+
+const ChallengesTabs = () => {
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+
+    return (
+        <Box>
+            <Tabs value={value} onChange={handleChange}>
+                <Tab label="GPU Resources" />
+                <Tab label="Networking" />
+                <Tab label="Other Challenges" />
+            </Tabs>
+            <TabPanel value={value} index={0}>
+                <Typography>Details about GPU resource challenges.</Typography>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+                <Typography>Details about networking challenges.</Typography>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <Typography>Details about other challenges.</Typography>
+            </TabPanel>
+        </Box>
+    );
+};
+
+const TabPanel = ({ children, value, index }) => (
+    <div role="tabpanel" hidden={value !== index}>
+        {value === index && (
+            <Box>
+                {children}
+            </Box>
+        )}
+    </div>
+);
+
+const Timeline = () => (
+    <Box>
+        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
+            <Typography variant="h6">Milestone 1</Typography>
+            <Typography>Date and description of the milestone.</Typography>
+        </Paper>
+        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
+            <Typography variant="h6">Milestone 2</Typography>
+            <Typography>Date and description of the milestone.</Typography>
+        </Paper>
+        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
+            <Typography variant="h6">Milestone 3</Typography>
+            <Typography>Date and description of the milestone.</Typography>
+        </Paper>
+    </Box>
+);
+
+const TableOfContents = ({ bordering, background }) => (
+    <Container maxWidth="sm">
+        <Paper elevation={2} sx={{ border: `3px groove ${bordering}`, boxShadow:'none', py: '2%', backgroundColor: background}}>
+        <Typography variant="h4"><u>Table of Contents</u></Typography>
+        <Box sx={{ width: '100%' }} >
+            <List dense={true} sx={{marginLeft: '10%', paddingRight: '10%'} }>
+            <ListItem sx={{display: 'list-item', listStyleType: 'circle'}}>
+                <ListItemText primary="Inspiration for the Site"  sx={{ fontStyle: 'italic' }} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#reasoning">
+                    <ListItemText inset primary="Reasoning" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#expectation">
+                    <ListItemText inset primary="Expectation" />
+                </ListItemButton>
+            </List>
+            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                <ListItemText primary="Planning of the Site"  sx={{ fontStyle: 'italic' }} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                <ListItemButton component={TocLink} underline='hover' href="#format">
+                    <ListItemText inset primary="Format"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#goals">
+                    <ListItemText inset primary="Goals" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#content">
+                    <ListItemText inset primary="Content Choices" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#process">
+                    <ListItemText inset primary="Process" />
+                </ListItemButton>
+            </List>
+            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                <ListItemText primary="Construction of the Site - Front End" sx={{ fontStyle: 'italic' }} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#feframework">
+                    <ListItemText inset primary="Framework"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#felanguage">
+                    <ListItemText inset primary="Languages" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#fedesign">
+                    <ListItemText inset primary="Design Choices" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#fehosting">
+                    <ListItemText inset primary="Hosting" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#fecost">
+                    <ListItemText inset primary="Cost"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#feresources">
+                    <ListItemText inset primary="Tools, Libraries, and Resources" />
+                </ListItemButton>
+            </List>
+            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                <ListItemText primary="Construction of the Site - Back End" sx={{ fontStyle: 'italic' }} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#beserver">
+                    <ListItemText inset primary="Server and Server Specs"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#behosting">
+                    <ListItemText inset primary="Hosting"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#becontainerization">
+                    <ListItemText inset primary="Containerization" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#beframework">
+                    <ListItemText inset primary="Api and Frameworks" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#bedatabase">
+                    <ListItemText inset primary="Databases"/>
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#becompute">
+                    <ListItemText inset primary="Compute Resources"  />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#benetwork">
+                    <ListItemText inset primary="Network" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#beresources" >
+                    <ListItemText inset primary="Tools, Libraries, and Resources"/>
+                </ListItemButton>
+            </List>
+            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                <ListItemText primary="Challenges"  sx={{ fontStyle: 'italic' }} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#affordability" >
+                    <ListItemText inset primary="Affordability"/>
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#networking" >
+                    <ListItemText inset primary="Networking" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#allocation" >
+                    <ListItemText inset primary="Resource Allocation" />
+                </ListItemButton>
+            </List>
+            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                <ListItemText primary="Final/Current Product" sx={{fontStyle: 'italic'}} />
+            </ListItem>
+            <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#architecture" >
+                    <ListItemText inset primary="System Architecture" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#analytics" >
+                    <ListItemText inset primary="System Analytics" />
+                </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#roadmap" >
+                    <ListItemText inset primary="Roadmap" />
+                </ListItemButton>
+            </List>
+            </List>
+        </Box>
+        </Paper>
+    </Container>
+);
 
 export default AboutThisSitePage;

@@ -150,8 +150,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/about-me" onClick={handleDrawerToggle}>
                                 <ListItemText primary='About Me' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/about-this-site" onClick={handleDrawerToggle}>
-                                <ListItemText primary='About This Site (Coming Soon)' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/about-this-site" onClick={handleDrawerToggle}>
+                                <ListItemText primary='About This Site' />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -247,7 +247,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             >
                                 {/* Replace these with your actual navigation links */}
                                 <MenuItem onClick={handleAboutClose} component={Link} to="/about-me">About Me</MenuItem>
-                                <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleAboutClose} component={Link} to="/about-this-site">About This Site</MenuItem>
                             </Menu>     
                             <Button color="inherit" variant="text" component={Link} to='/contact'>
                                 Contact Me

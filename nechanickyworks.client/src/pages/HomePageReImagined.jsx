@@ -40,7 +40,7 @@ const HomePageReImagined = () => {
     return (
         <React.Fragment>
             <PageTitle pageTitle='Nechanicky Works' />
-            <Cover light={bgImage} dark={bgImageDark} dynaColor={false }>
+            <Cover light={bgImage} dark={bgImageDark} dynaColor={false}>
                 <Box sx={{
                     display: 'flex',
                     flexDirection: 'column',
@@ -52,7 +52,7 @@ const HomePageReImagined = () => {
                     <Stack direction='column' spacing={2} justifyContent='space-around' flexGrow={1} >
                         <Typography variant='h2' color='white' align='center'>Nechanicky Works</Typography>
                         <Stack spacing={2} align='center' alignItems='center'>
-                            <Typography sx={{ fontSize: {xs: '3rem'}, fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem' }} variant="h6">Ethan Nechanicky Portfolio</Typography>
+                            <Typography sx={{ fontSize: {xs: '3rem'}, fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem' }} variant="h6"  color='white'>Ethan Nechanicky Portfolio</Typography>
                             <DoubleRippleButton size='large' addBackground={alpha(theme.palette.background.paper, 0.2)} component={Link} rippleColor={alpha(theme.palette.primary.dark, 0.5)} hoverColor={theme.palette.common.white} sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem', fontSize: { xs: '1.2rem' } }} startingColor='transparent' onClick={handleExploreClick} variant='outlined'>Explore</DoubleRippleButton>
                         </Stack>
                     </Stack>
