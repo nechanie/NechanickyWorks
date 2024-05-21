@@ -22,6 +22,7 @@ import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
 import HubIcon from '@mui/icons-material/Hub';
+import ShortcutIcon from '@mui/icons-material/Shortcut';
 
 const ContentBox = styled(Box)({
     margin: '20px 0',
@@ -96,7 +97,7 @@ const AboutThisSitePage = () => {
                     </Stack>
                 </Container>
             </Cover>
-            <StickyToc />
+            <StickyToc showStickyToc={showStickyToc} />
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
                 <div ref={tocRef}>
                     <TableOfContents bordering={highlights} background={transitionalBg} />
@@ -415,96 +416,57 @@ const TableOfContents = ({ bordering, background }) => (
 );
 
 const actions = [
-    { icon: <EmojiObjectsIcon />, name: 'Inspiration', subActions: [{ icon: <EmojiObjectsIcon />, name: 'Reasoning' }, { icon: <EmojiObjectsIcon />, name: 'Expectation' }] },
-    { icon: <DeveloperBoardIcon />, name: 'Planning', subActions: [{ icon: <DeveloperBoardIcon />, name: 'Format' }, { icon: <DeveloperBoardIcon />, name: 'Goals' }, { icon: <DeveloperBoardIcon />, name: 'Content' }, { icon: <DeveloperBoardIcon />, name: 'Process' }] },
-    { icon: <PanoramaIcon />, name: 'Front End', subActions: [{ icon: <PanoramaIcon />, name: 'Framework' }, { icon: <PanoramaIcon />, name: 'Language' }, { icon: <PanoramaIcon />, name: 'Design' }, { icon: <PanoramaIcon />, name: 'Hosting' }, { icon: <PanoramaIcon />, name: 'Cost' }, { icon: <PanoramaIcon />, name: 'Resources' }] },
-    { icon: <StorageIcon />, name: 'Back End', subActions: [{ icon: <StorageIcon />, name: 'Server' }, { icon: <StorageIcon />, name: 'Hosting' }, { icon: <StorageIcon />, name: 'Containerization' }, { icon: <StorageIcon />, name: 'Framework' }, { icon: <StorageIcon />, name: 'Database' }, { icon: <StorageIcon />, name: 'Compute' }, { icon: <StorageIcon />, name: 'Network' }, { icon: <StorageIcon />, name: 'Resources' }] },
-    { icon: <TroubleshootIcon />, name: 'Challenges', subActions: [] },
-    { icon: <HubIcon />, name: 'Culminating Overview', subActions: [{ icon: <HubIcon />, name: 'Architecture' }, { icon: <HubIcon />, name: 'Analytics' }, { icon: <HubIcon />, name: 'Roadmap' }] },
+    { icon: <EmojiObjectsIcon />, name: 'Inspiration', link: '#inspiration' },
+    { icon: <DeveloperBoardIcon />, name: 'Planning', link: '#planning' },
+    { icon: <PanoramaIcon />, name: 'Front End', link: '#frontend' },
+    { icon: <StorageIcon />, name: 'Back End', link: '#backend' },
+    { icon: <TroubleshootIcon />, name: 'Challenges', link: '#challenges' },
+    { icon: <HubIcon />, name: 'Final Product', link: '#product' },
 ];
 
-const CustomTooltip = styled(({ className, ...props }) => (
-    <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-    [`& .${tooltipClasses.tooltip}`]: {
-        maxWidth: 'none',
-        whiteSpace: 'nowrap',
-    },
-}));
-const NestedSpeedDial = ({ action, isHidden }) => {
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const theme = useTheme();
-
+function CustomFabContent({ icon, text }) {
     return (
-
-        <Tooltip open={!open && !isHidden} title={action.name} placement='right'>
-            <SpeedDial
-                ariaLabel={`${action.name} nested SpeedDial`}
-                sx={{ position: 'fixed', flexDirection: "row"}}
-                direction="right"
-                icon={action.icon}
-                onClose={handleClose}
-                onOpen={handleOpen}
-                open={open}
-                hidden={isHidden}
-            >
-                {action.subActions.map((subAction) => (
-                        <SpeedDialAction
-                        key={subAction.name}
-                        icon={subAction.icon}
-                        tooltipTitle={subAction.name}
-                        tooltipPlacement='bottom'
-                        onClick={handleClose}
-                        sx={{} }
-                        />
-                ))}
-            </SpeedDial>
-        </Tooltip>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            {icon}
+            <span style={{ marginLeft: 8 }}>{text}</span>
+        </div>
     );
-};
-
-const CustomActionSection = ({ containerSx, actions, ...props }) => (
-    <Stack direction="column" spacing={3} sx={containerSx}>
-    {
-            actions.map((action) => (
-                <Box
-                    key={action.name}
-                    sx={{height:'fit-content', minWidth: '56px', minHeight: '56px'} }>
-                        <NestedSpeedDial
-                            action={action}
-                            isHidden={!props.open}
-                            {...props}
-                        />
-                </Box>
-        ))
-        }
-    </Stack>
-)
+}
 
 const StickyToc = ({ showStickyToc }) => {
-    const [open, setOpen] = useState(true);
+    const [open, setOpen] = useState(false);
     const theme = useTheme();
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     return (
-        <Box sx={{ position: 'fixed', top: 0, left: 0, transform: 'translateZ(0px)', width: '100vw', height: '100vh' }}>
-            <Backdrop open={open}  onClick={handleClose} />
+            <Zoom in={showStickyToc}>
+        <Box sx={{ position: 'fixed', top: 0, left: 0, transform: 'translateZ(0px)', width: '100vw', height: '100vh', zIndex: 10 }}>
+            <Backdrop open={open} onClick={handleClose} />
+
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
-                sx={{ position: 'relative', top: theme.spacing(2), left: theme.spacing(2), marginTop: '64px', maxWidth: '56px'}}
+                sx={{ position: 'absolute', top: theme.spacing(2), left: theme.spacing(2), marginTop: '64px' }}
+                FabProps={{ sx: { position: 'relative', maxWidth: '56px', alignSelf: 'start' }, color: 'secondary' }}
                 icon={<TocIcon />}
                 onOpen={handleOpen}
                 onClose={handleClose}
                 open={open}
                 direction='down'
             >
-                <CustomActionSection actions={actions} containerSx={{position: 'relative', display: 'flex', flexDirection: 'column'}}/>
-            </SpeedDial>
-        </Box>
+                {open && actions.map((action) => (
+                    <SpeedDialAction
+                        key={action.name}
+                        onClick={handleClose}
+                        icon={<CustomFabContent icon={action.icon} text={action.name} />}
+                        FabProps={{ variant: 'extended', href: action.link }}
+                    />
+                ))}
+                </SpeedDial>
+
+            </Box>
+            </Zoom>
     );
 };
 export default AboutThisSitePage;
