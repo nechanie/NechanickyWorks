@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
+import React, { useState, useEffect, useRef } from 'react';
+import { Container, Typography, Collapse, Fab, Zoom, Tooltip, tooltipClasses, Backdrop, SpeedDial, SpeedDialAction, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
@@ -14,6 +14,14 @@ import BuildIcon from '@mui/icons-material/Build';
 import ComputerIcon from '@mui/icons-material/Computer';
 import TrendingUpIcon from '@mui/icons-material/TrendingUp';
 import TimelineIcon from '@mui/icons-material/Timeline';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
+import TocIcon from '@mui/icons-material/Toc';
+import PanoramaIcon from '@mui/icons-material/Panorama';
+import StorageIcon from '@mui/icons-material/Storage';
+import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
+import HubIcon from '@mui/icons-material/Hub';
 
 const ContentBox = styled(Box)({
     margin: '20px 0',
@@ -25,7 +33,6 @@ const TocLink = styled(Mlink)({
         textDecoration: 'underline !important'
     }
 });
-
 
 const StyledCard = styled(Card)({
     marginBottom: '20px',
@@ -44,7 +51,10 @@ const AboutThisSitePage = () => {
     const theme = useTheme();
     const [highlights, setHighlights] = useState(theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5));
     const [transitionalBg, setTransitionalBg] = useState(theme.palette.background.Paper);
-    React.useEffect(() => {
+    const [showStickyToc, setShowStickyToc] = useState(false);
+    const tocRef = useRef(null);
+
+    useEffect(() => {
         setHighlights((prevState) => {
             const newColor = theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5);
             return newColor;
@@ -52,33 +62,45 @@ const AboutThisSitePage = () => {
         setTransitionalBg(theme.palette.background.Paper);
     }, [theme.palette.mode]);
 
+    useEffect(() => {
+        const handleScroll = () => {
+            const tocPosition = tocRef.current?.getBoundingClientRect().bottom;
+            if (tocPosition < 0) {
+                setShowStickyToc(true);
+            } else {
+                setShowStickyToc(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     return (
         <React.Fragment>
             <PageTitle pageTitle="About This Site" />
             <Cover light={AboutThisSiteBackground} dark={AboutThisSiteBackgroundDark} dynaColor={true}>
                 <Container maxWidth='md' align='center' sx={{ py: '2%' }}>
-
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
-                    <Typography variant='h3' gutterBottom>About This Site</Typography>
-                    <Paper sx={{ backgroundColor: theme.palette.background.Paper, p: '2%' }}>
-                        {/* Key Features Section */}
-                        <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight: 'bold' }}>
-                            Just like the other projects presented throughout this site, the website itself is a project worth exploring; and this page is dedicated to just that. Throughout this page you will
-                            get to explore the various pieces that make up this site and all of its capabilities. The content of this page is meant to give you an inside look into the entire process of creating
-                            and managing this site. The content on this page does not have to be explored sequentially, feel free to jump around and read about anything that sounds interesting. Additionally, if
+                        <Typography variant='h3' gutterBottom>About This Site</Typography>
+                        <Paper sx={{ backgroundColor: theme.palette.background.Paper, p: '2%' }}>
+                            <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight: 'bold' }}>
+                                Just like the other projects presented throughout this site, the website itself is a project worth exploring; and this page is dedicated to just that. Throughout this page you will
+                                get to explore the various pieces that make up this site and all of its capabilities. The content of this page is meant to give you an inside look into the entire process of creating
+                                and managing this site. The content on this page does not have to be explored sequentially, feel free to jump around and read about anything that sounds interesting. Additionally, if
                                 you have questions or suggestions, do not hesitate to reach out. You can find any necessary contact information <Link to="/contact" rel="noopener noreferrer"><u>on the contact page</u></Link>.
-                            My intention for this site is to provide an equally meaningful experience for all users, regardless of their previous level of knowledge around the topics. Contacting me with questions or
-                            suggestions will often provide actionable insights on improvements for the site. With that said, take a look at the table of contents below and jump in!
-                        </Typography>
+                                My intention for this site is to provide an equally meaningful experience for all users, regardless of their previous level of knowledge around the topics. Contacting me with questions or
+                                suggestions will often provide actionable insights on improvements for the site. With that said, take a look at the table of contents below and jump in!
+                            </Typography>
                         </Paper>
                     </Stack>
                 </Container>
             </Cover>
-            <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color:theme.palette.secondary.contrastText }}>
-
-                <TableOfContents bordering={highlights} background={transitionalBg } />
-                
+            <StickyToc />
+            <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
+                <div ref={tocRef}>
+                    <TableOfContents bordering={highlights} background={transitionalBg} />
+                </div>
                 <Section id="inspiration" title="Inspiration for the Site" icon={<MenuBookIcon />} backgroundColor="#f0f4c3">
                     <SubSection id="reasoning" title="Reasoning">
                         <Typography>Explain the reasoning behind creating the portfolio.</Typography>
@@ -87,7 +109,6 @@ const AboutThisSitePage = () => {
                         <Typography>Outline your expectations from creating the portfolio.</Typography>
                     </SubSection>
                 </Section>
-
                 <Section id="planning" title="Planning of the Site" icon={<TimelineIcon />} backgroundColor="#ffecb3">
                     <SubSection id="format" title="Format">
                         <Typography>Explain why you chose a web format for your portfolio.</Typography>
@@ -102,7 +123,6 @@ const AboutThisSitePage = () => {
                         <Typography>Discuss the planning and implementation process of the portfolio.</Typography>
                     </SubSection>
                 </Section>
-
                 <Section id="frontend" title="Construction of the Site - Front End" icon={<CodeIcon />} backgroundColor="#d1c4e9">
                     <SubSection id="feframework" title="Framework">
                         <Typography>Explain the front end frameworks you used.</Typography>
@@ -123,7 +143,6 @@ const AboutThisSitePage = () => {
                         <Typography>List the tools, libraries, and resources used for the front end.</Typography>
                     </SubSection>
                 </Section>
-
                 <Section id="backend" title="Construction of the Site - Back End" icon={<BuildIcon />} backgroundColor="#b2dfdb">
                     <SubSection id="beserver" title="Server and Server Specs">
                         <Typography>Describe the server and its specifications for the back end.</Typography>
@@ -150,11 +169,9 @@ const AboutThisSitePage = () => {
                         <Typography>List the tools, libraries, and resources used for the back end.</Typography>
                     </SubSection>
                 </Section>
-
                 <Section id="challenges" title="Challenges" icon={<TrendingUpIcon />} backgroundColor="#ffe0b2">
                     <ChallengesTabs />
                 </Section>
-
                 <Section id="product" title="Final/Current Product" icon={<ComputerIcon />} backgroundColor="#c8e6c9">
                     <SubSection id="architecture" title="System Architecture">
                         <Typography>Describe the system architecture with an architecture map.</Typography>
@@ -167,7 +184,7 @@ const AboutThisSitePage = () => {
                     </SubSection>
                 </Section>
             </Container>
-            <SiteFooter/>
+            <SiteFooter />
         </React.Fragment>
     );
 };
@@ -224,7 +241,7 @@ const AccordionDetailsContent = () => (
 );
 
 const ChallengesTabs = () => {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
@@ -279,122 +296,215 @@ const Timeline = () => (
 
 const TableOfContents = ({ bordering, background }) => (
     <Container maxWidth="sm">
-        <Paper elevation={2} sx={{ border: `3px groove ${bordering}`, boxShadow:'none', py: '2%', backgroundColor: background}}>
-        <Typography variant="h4"><u>Table of Contents</u></Typography>
-        <Box sx={{ width: '100%' }} >
-            <List dense={true} sx={{marginLeft: '10%', paddingRight: '10%'} }>
-            <ListItem sx={{display: 'list-item', listStyleType: 'circle'}}>
-                <ListItemText primary="Inspiration for the Site"  sx={{ fontStyle: 'italic' }} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
+        <Paper elevation={2} sx={{ border: `3px groove ${bordering}`, boxShadow: 'none', py: '2%', backgroundColor: background }}>
+            <Typography variant="h4"><u>Table of Contents</u></Typography>
+            <Box sx={{ width: '100%' }} >
+                <List dense={true} sx={{ marginLeft: '10%', paddingRight: '10%' }}>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Inspiration for the Site" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
                         <ListItemButton component={TocLink} underline='hover' href="#reasoning">
-                    <ListItemText inset primary="Reasoning" />
-                </ListItemButton>
+                            <ListItemText inset primary="Reasoning" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#expectation">
-                    <ListItemText inset primary="Expectation" />
-                </ListItemButton>
-            </List>
-            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                <ListItemText primary="Planning of the Site"  sx={{ fontStyle: 'italic' }} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
-                <ListItemButton component={TocLink} underline='hover' href="#format">
-                    <ListItemText inset primary="Format"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Expectation" />
+                        </ListItemButton>
+                    </List>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Planning of the Site" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#format">
+                            <ListItemText inset primary="Format" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#goals">
-                    <ListItemText inset primary="Goals" />
-                </ListItemButton>
+                            <ListItemText inset primary="Goals" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#content">
-                    <ListItemText inset primary="Content Choices" />
-                </ListItemButton>
+                            <ListItemText inset primary="Content Choices" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#process">
-                    <ListItemText inset primary="Process" />
-                </ListItemButton>
-            </List>
-            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                <ListItemText primary="Construction of the Site - Front End" sx={{ fontStyle: 'italic' }} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
+                            <ListItemText inset primary="Process" />
+                        </ListItemButton>
+                    </List>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Construction of the Site - Front End" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
                         <ListItemButton component={TocLink} underline='hover' href="#feframework">
-                    <ListItemText inset primary="Framework"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Framework" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#felanguage">
-                    <ListItemText inset primary="Languages" />
-                </ListItemButton>
+                            <ListItemText inset primary="Languages" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#fedesign">
-                    <ListItemText inset primary="Design Choices" />
-                </ListItemButton>
+                            <ListItemText inset primary="Design Choices" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#fehosting">
-                    <ListItemText inset primary="Hosting" />
-                </ListItemButton>
+                            <ListItemText inset primary="Hosting" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#fecost">
-                    <ListItemText inset primary="Cost"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Cost" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#feresources">
-                    <ListItemText inset primary="Tools, Libraries, and Resources" />
-                </ListItemButton>
-            </List>
-            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                <ListItemText primary="Construction of the Site - Back End" sx={{ fontStyle: 'italic' }} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
+                            <ListItemText inset primary="Tools, Libraries, and Resources" />
+                        </ListItemButton>
+                    </List>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Construction of the Site - Back End" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
                         <ListItemButton component={TocLink} underline='hover' href="#beserver">
-                    <ListItemText inset primary="Server and Server Specs"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Server and Server Specs" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#behosting">
-                    <ListItemText inset primary="Hosting"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Hosting" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#becontainerization">
-                    <ListItemText inset primary="Containerization" />
-                </ListItemButton>
+                            <ListItemText inset primary="Containerization" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#beframework">
-                    <ListItemText inset primary="Api and Frameworks" />
-                </ListItemButton>
+                            <ListItemText inset primary="API and Frameworks" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#bedatabase">
-                    <ListItemText inset primary="Databases"/>
-                </ListItemButton>
+                            <ListItemText inset primary="Databases" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#becompute">
-                    <ListItemText inset primary="Compute Resources"  />
-                </ListItemButton>
+                            <ListItemText inset primary="Compute Resources" />
+                        </ListItemButton>
                         <ListItemButton component={TocLink} underline='hover' href="#benetwork">
-                    <ListItemText inset primary="Network" />
-                </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#beresources" >
-                    <ListItemText inset primary="Tools, Libraries, and Resources"/>
-                </ListItemButton>
-            </List>
-            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                <ListItemText primary="Challenges"  sx={{ fontStyle: 'italic' }} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#affordability" >
-                    <ListItemText inset primary="Affordability"/>
-                </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#networking" >
-                    <ListItemText inset primary="Networking" />
-                </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#allocation" >
-                    <ListItemText inset primary="Resource Allocation" />
-                </ListItemButton>
-            </List>
-            <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                <ListItemText primary="Final/Current Product" sx={{fontStyle: 'italic'}} />
-            </ListItem>
-            <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#architecture" >
-                    <ListItemText inset primary="System Architecture" />
-                </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#analytics" >
-                    <ListItemText inset primary="System Analytics" />
-                </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#roadmap" >
-                    <ListItemText inset primary="Roadmap" />
-                </ListItemButton>
-            </List>
-            </List>
-        </Box>
+                            <ListItemText inset primary="Network" />
+                        </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#beresources">
+                            <ListItemText inset primary="Tools, Libraries, and Resources" />
+                        </ListItemButton>
+                    </List>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Challenges" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#affordability">
+                            <ListItemText inset primary="Affordability" />
+                        </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#networking">
+                            <ListItemText inset primary="Networking" />
+                        </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#allocation">
+                            <ListItemText inset primary="Resource Allocation" />
+                        </ListItemButton>
+                    </List>
+                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
+                        <ListItemText primary="Final/Current Product" sx={{ fontStyle: 'italic' }} />
+                    </ListItem>
+                    <List component="div" disablePadding dense={true}>
+                        <ListItemButton component={TocLink} underline='hover' href="#architecture">
+                            <ListItemText inset primary="System Architecture" />
+                        </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#analytics">
+                            <ListItemText inset primary="System Analytics" />
+                        </ListItemButton>
+                        <ListItemButton component={TocLink} underline='hover' href="#roadmap">
+                            <ListItemText inset primary="Roadmap" />
+                        </ListItemButton>
+                    </List>
+                </List>
+            </Box>
         </Paper>
     </Container>
 );
 
+const actions = [
+    { icon: <EmojiObjectsIcon />, name: 'Inspiration', subActions: [{ icon: <EmojiObjectsIcon />, name: 'Reasoning' }, { icon: <EmojiObjectsIcon />, name: 'Expectation' }] },
+    { icon: <DeveloperBoardIcon />, name: 'Planning', subActions: [{ icon: <DeveloperBoardIcon />, name: 'Format' }, { icon: <DeveloperBoardIcon />, name: 'Goals' }, { icon: <DeveloperBoardIcon />, name: 'Content' }, { icon: <DeveloperBoardIcon />, name: 'Process' }] },
+    { icon: <PanoramaIcon />, name: 'Front End', subActions: [{ icon: <PanoramaIcon />, name: 'Framework' }, { icon: <PanoramaIcon />, name: 'Language' }, { icon: <PanoramaIcon />, name: 'Design' }, { icon: <PanoramaIcon />, name: 'Hosting' }, { icon: <PanoramaIcon />, name: 'Cost' }, { icon: <PanoramaIcon />, name: 'Resources' }] },
+    { icon: <StorageIcon />, name: 'Back End', subActions: [{ icon: <StorageIcon />, name: 'Server' }, { icon: <StorageIcon />, name: 'Hosting' }, { icon: <StorageIcon />, name: 'Containerization' }, { icon: <StorageIcon />, name: 'Framework' }, { icon: <StorageIcon />, name: 'Database' }, { icon: <StorageIcon />, name: 'Compute' }, { icon: <StorageIcon />, name: 'Network' }, { icon: <StorageIcon />, name: 'Resources' }] },
+    { icon: <TroubleshootIcon />, name: 'Challenges', subActions: [] },
+    { icon: <HubIcon />, name: 'Culminating Overview', subActions: [{ icon: <HubIcon />, name: 'Architecture' }, { icon: <HubIcon />, name: 'Analytics' }, { icon: <HubIcon />, name: 'Roadmap' }] },
+];
+
+const CustomTooltip = styled(({ className, ...props }) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+        maxWidth: 'none',
+        whiteSpace: 'nowrap',
+    },
+}));
+const NestedSpeedDial = ({ action, isHidden }) => {
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const theme = useTheme();
+
+    return (
+
+        <Tooltip open={!open && !isHidden} title={action.name} placement='right'>
+            <SpeedDial
+                ariaLabel={`${action.name} nested SpeedDial`}
+                sx={{ position: 'fixed', flexDirection: "row"}}
+                direction="right"
+                icon={action.icon}
+                onClose={handleClose}
+                onOpen={handleOpen}
+                open={open}
+                hidden={isHidden}
+            >
+                {action.subActions.map((subAction) => (
+                        <SpeedDialAction
+                        key={subAction.name}
+                        icon={subAction.icon}
+                        tooltipTitle={subAction.name}
+                        tooltipPlacement='bottom'
+                        onClick={handleClose}
+                        sx={{} }
+                        />
+                ))}
+            </SpeedDial>
+        </Tooltip>
+    );
+};
+
+const CustomActionSection = ({ containerSx, actions, ...props }) => (
+    <Stack direction="column" spacing={3} sx={containerSx}>
+    {
+            actions.map((action) => (
+                <Box
+                    key={action.name}
+                    sx={{height:'fit-content', minWidth: '56px', minHeight: '56px'} }>
+                        <NestedSpeedDial
+                            action={action}
+                            isHidden={!props.open}
+                            {...props}
+                        />
+                </Box>
+        ))
+        }
+    </Stack>
+)
+
+const StickyToc = ({ showStickyToc }) => {
+    const [open, setOpen] = useState(true);
+    const theme = useTheme();
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    return (
+        <Box sx={{ position: 'fixed', top: 0, left: 0, transform: 'translateZ(0px)', width: '100vw', height: '100vh' }}>
+            <Backdrop open={open}  onClick={handleClose} />
+            <SpeedDial
+                ariaLabel="SpeedDial basic example"
+                sx={{ position: 'relative', top: theme.spacing(2), left: theme.spacing(2), marginTop: '64px', maxWidth: '56px'}}
+                icon={<TocIcon />}
+                onOpen={handleOpen}
+                onClose={handleClose}
+                open={open}
+                direction='down'
+            >
+                <CustomActionSection actions={actions} containerSx={{position: 'relative', display: 'flex', flexDirection: 'column'}}/>
+            </SpeedDial>
+        </Box>
+    );
+};
 export default AboutThisSitePage;
