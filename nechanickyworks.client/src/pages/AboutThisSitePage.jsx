@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Typography, Collapse, Fab, Zoom, Tooltip, tooltipClasses, Backdrop, SpeedDial, SpeedDialAction, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
+import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { MenuBook, Code, Build, Computer, TrendingUp, Timeline as TimelineIcon, Panorama, Storage, EmojiObjects, DeveloperBoard, Troubleshoot, Hub } from '@mui/icons-material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
 import PageTitle from '../components/Shared/PageTitle';
@@ -8,31 +9,54 @@ import Cover from '../components/Display/Cover';
 import AboutThisSiteBackground from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackground.webp";
 import AboutThisSiteBackgroundDark from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackgroundDark.webp";
 import SiteFooter from '../components/Shared/Footer';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import CodeIcon from '@mui/icons-material/Code';
-import BuildIcon from '@mui/icons-material/Build';
-import ComputerIcon from '@mui/icons-material/Computer';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import TimelineIcon from '@mui/icons-material/Timeline';
-import { ExpandMore, ExpandLess } from '@mui/icons-material';
-import TocIcon from '@mui/icons-material/Toc';
-import PanoramaIcon from '@mui/icons-material/Panorama';
-import StorageIcon from '@mui/icons-material/Storage';
-import EmojiObjectsIcon from '@mui/icons-material/EmojiObjects';
-import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
-import TroubleshootIcon from '@mui/icons-material/Troubleshoot';
-import HubIcon from '@mui/icons-material/Hub';
-import ShortcutIcon from '@mui/icons-material/Shortcut';
+import TocSpeedDial from '../components/utils/TocSpeedDial';
+import TableOfContents from '../components/utils/Toc';
+import AnimatedCodeBlock from '../components/Demos/CodeWriter';
+
+const actions = [
+    { icon: <EmojiObjects />, name: 'Inspiration', link: 'inspiration' },
+    { icon: <DeveloperBoard />, name: 'Planning', link: 'planning' },
+    { icon: <Panorama />, name: 'Front End', link: 'frontend' },
+    { icon: <Storage />, name: 'Back End', link: 'backend' },
+    { icon: <Troubleshoot />, name: 'Challenges', link: 'challenges' },
+    { icon: <Hub />, name: 'Final Product', link: 'product' },
+];
+
+const tocContent = [
+    { name: 'Inspiration for the Site', subcontent: [{ name: 'Reasoning', link: 'reasoning' }, { name: 'Expectation', link: 'expectation' }] },
+    { name: 'Planning of the Site', subcontent: [{ name: 'Format', link: 'format' }, { name: 'Goals', link: 'goals' }, { name: 'Content Choices', link: 'content' }, { name: 'Process', link: 'process' }] },
+    { name: 'Construction of the Site - Front End', subcontent: [{ name: 'Framework', link: 'feframework' }, { name: 'Languages', link: 'languages' }, { name: 'Design Choices', link: 'fedesign' }, { name: 'Hosting', link: 'fehosting' }, { name: 'Cost', link: 'fecost' }, { name: 'Tools, Libraries, and Resources', link: 'feresources' }] },
+    { name: 'Construction of the Site - Back End', subcontent: [{ name: 'Server and Server Specs', link: 'beserver' }, { name: 'Hosting', link: 'behosting' }, { name: 'Containerization', link: 'becontainerization' }, { name: 'API and Frameworks', link: 'beframework' }, { name: 'Databases', link: 'bedatabase' }, { name: 'Compute Resources', link: 'becompute' }, { name: 'Network', link: 'benetwork' }, { name: 'Tools, Libraries, and Resources', link: 'beresources' }] },
+    { name: 'Challenges', subcontent: [{ name: 'Affordability', link: 'challenges' }, { name: 'Networking', link: 'challenges' }, { name: 'Resource Allocation', link: 'challenges' }] },
+    { name: 'Final/Current Product', subcontent: [{ name: 'System Achitecture', link: 'architecture' }, { name: 'System Analytics', link: 'analytics' }, { name: 'Roadmap', link: 'roadmap' }] }
+]
+
+var codeStringPrimary = `
+import React from 'react';
+import { Typography, Container, Box } from '@mui/material';
+\n
+function WelcomeMessage() {
+\treturn (
+\t\t<Container>
+\t\t\t<Box
+\t\t\t\tdisplay="flex"
+\t\t\t\tjustifyContent="center"
+\t\t\t\talignItems="center"
+\t\t\t\tminHeight="100vh"
+\t\t\t\ttextAlign="center"
+\t\t\t>
+\t\t\t\t<Typography variant="h2" component="h1">
+\t\t\t\t\tWelcome To NechanickyWorks
+\t\t\t\t</Typography>
+\t\t\t</Box>
+\t\t</Container>
+\t);
+}
+\nexport default WelcomeMessage;
+`;
 
 const ContentBox = styled(Box)({
     margin: '20px 0',
-});
-
-const TocLink = styled(Mlink)({
-    color: 'inherit',
-    '&:hover': {
-        textDecoration: 'underline !important'
-    }
 });
 
 const StyledCard = styled(Card)({
@@ -51,16 +75,18 @@ const StyledCardContent = styled(CardContent)({
 const AboutThisSitePage = () => {
     const theme = useTheme();
     const [highlights, setHighlights] = useState(theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5));
-    const [transitionalBg, setTransitionalBg] = useState(theme.palette.background.Paper);
+    const [transitionalBg, setTransitionalBg] = useState(theme.palette.background.paper);
     const [showStickyToc, setShowStickyToc] = useState(false);
+    const [isCodeBlockVisible, setIsCodeBlockVisible] = useState(false);
     const tocRef = useRef(null);
+    const codeBlockRef = useRef(null);
 
     useEffect(() => {
         setHighlights((prevState) => {
             const newColor = theme.palette.mode === 'dark' ? alpha(theme.palette.common.white, 0.5) : alpha(theme.palette.common.black, 0.5);
             return newColor;
         });
-        setTransitionalBg(theme.palette.background.Paper);
+        setTransitionalBg(theme.palette.background.paper);
     }, [theme.palette.mode]);
 
     useEffect(() => {
@@ -71,11 +97,20 @@ const AboutThisSitePage = () => {
             } else {
                 setShowStickyToc(false);
             }
+
+            const codeBlockPosition = codeBlockRef.current?.getBoundingClientRect();
+            if (codeBlockPosition) {
+                const inView = codeBlockPosition.top >= 0 && codeBlockPosition.bottom <= window.innerHeight;
+                setIsCodeBlockVisible(inView);
+            }
         };
 
         window.addEventListener('scroll', handleScroll);
+        handleScroll(); // Initial check
+
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
+
 
     return (
         <React.Fragment>
@@ -97,14 +132,16 @@ const AboutThisSitePage = () => {
                     </Stack>
                 </Container>
             </Cover>
-            <StickyToc showStickyToc={showStickyToc} />
+            <TocSpeedDial showStickyToc={showStickyToc} actions={actions} />
             <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
                 <div ref={tocRef}>
-                    <TableOfContents bordering={highlights} background={transitionalBg} />
+                    <TableOfContents bordering={highlights} background={transitionalBg} contents={tocContent } />
                 </div>
-                <Section id="inspiration" title="Inspiration for the Site" icon={<MenuBookIcon />} backgroundColor="#f0f4c3">
+                <Section id="inspiration" title="Inspiration for the Site" icon={<MenuBook />} backgroundColor="#f0f4c3">
                     <SubSection id="reasoning" title="Reasoning">
-                        <Typography>Explain the reasoning behind creating the portfolio.</Typography>
+                        <div ref={codeBlockRef} >
+                        <AnimatedCodeBlock isVisible={isCodeBlockVisible} code={codeStringPrimary } />
+                        </div>
                     </SubSection>
                     <SubSection id="expectation" title="Expectation">
                         <Typography>Outline your expectations from creating the portfolio.</Typography>
@@ -124,7 +161,7 @@ const AboutThisSitePage = () => {
                         <Typography>Discuss the planning and implementation process of the portfolio.</Typography>
                     </SubSection>
                 </Section>
-                <Section id="frontend" title="Construction of the Site - Front End" icon={<CodeIcon />} backgroundColor="#d1c4e9">
+                <Section id="frontend" title="Construction of the Site - Front End" icon={<Code />} backgroundColor="#d1c4e9">
                     <SubSection id="feframework" title="Framework">
                         <Typography>Explain the front end frameworks you used.</Typography>
                     </SubSection>
@@ -144,7 +181,7 @@ const AboutThisSitePage = () => {
                         <Typography>List the tools, libraries, and resources used for the front end.</Typography>
                     </SubSection>
                 </Section>
-                <Section id="backend" title="Construction of the Site - Back End" icon={<BuildIcon />} backgroundColor="#b2dfdb">
+                <Section id="backend" title="Construction of the Site - Back End" icon={<Build />} backgroundColor="#b2dfdb">
                     <SubSection id="beserver" title="Server and Server Specs">
                         <Typography>Describe the server and its specifications for the back end.</Typography>
                     </SubSection>
@@ -170,10 +207,10 @@ const AboutThisSitePage = () => {
                         <Typography>List the tools, libraries, and resources used for the back end.</Typography>
                     </SubSection>
                 </Section>
-                <Section id="challenges" title="Challenges" icon={<TrendingUpIcon />} backgroundColor="#ffe0b2">
+                <Section id="challenges" title="Challenges" icon={<TrendingUp />} backgroundColor="#ffe0b2">
                     <ChallengesTabs />
                 </Section>
-                <Section id="product" title="Final/Current Product" icon={<ComputerIcon />} backgroundColor="#c8e6c9">
+                <Section id="product" title="Final/Current Product" icon={<Computer />} backgroundColor="#c8e6c9">
                     <SubSection id="architecture" title="System Architecture">
                         <Typography>Describe the system architecture with an architecture map.</Typography>
                     </SubSection>
@@ -200,28 +237,17 @@ const Section = ({ id, title, children, icon, backgroundColor }) => (
                 <Typography variant="h4" gutterBottom>{title}</Typography>
             </StyledCardContent>
             <CardContent>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography variant="h6">{title}</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                        {children}
-                    </AccordionDetails>
-                </Accordion>
+                    {children}
             </CardContent>
         </StyledCard>
     </ContentBox>
 );
 
 const SubSection = ({ id, title, children }) => (
-    <Accordion sx={{ marginBottom: '10px' }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+    <Box sx={{ marginBottom: '10px' }} id={id}>
             <Typography variant="h6">{title}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
             {children}
-        </AccordionDetails>
-    </Accordion>
+    </Box>
 );
 
 const AccordionSection = ({ title, children }) => (
@@ -295,178 +321,6 @@ const Timeline = () => (
     </Box>
 );
 
-const TableOfContents = ({ bordering, background }) => (
-    <Container maxWidth="sm">
-        <Paper elevation={2} sx={{ border: `3px groove ${bordering}`, boxShadow: 'none', py: '2%', backgroundColor: background }}>
-            <Typography variant="h4"><u>Table of Contents</u></Typography>
-            <Box sx={{ width: '100%' }} >
-                <List dense={true} sx={{ marginLeft: '10%', paddingRight: '10%' }}>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Inspiration for the Site" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#reasoning">
-                            <ListItemText inset primary="Reasoning" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#expectation">
-                            <ListItemText inset primary="Expectation" />
-                        </ListItemButton>
-                    </List>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Planning of the Site" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#format">
-                            <ListItemText inset primary="Format" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#goals">
-                            <ListItemText inset primary="Goals" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#content">
-                            <ListItemText inset primary="Content Choices" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#process">
-                            <ListItemText inset primary="Process" />
-                        </ListItemButton>
-                    </List>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Construction of the Site - Front End" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#feframework">
-                            <ListItemText inset primary="Framework" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#felanguage">
-                            <ListItemText inset primary="Languages" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#fedesign">
-                            <ListItemText inset primary="Design Choices" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#fehosting">
-                            <ListItemText inset primary="Hosting" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#fecost">
-                            <ListItemText inset primary="Cost" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#feresources">
-                            <ListItemText inset primary="Tools, Libraries, and Resources" />
-                        </ListItemButton>
-                    </List>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Construction of the Site - Back End" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#beserver">
-                            <ListItemText inset primary="Server and Server Specs" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#behosting">
-                            <ListItemText inset primary="Hosting" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#becontainerization">
-                            <ListItemText inset primary="Containerization" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#beframework">
-                            <ListItemText inset primary="API and Frameworks" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#bedatabase">
-                            <ListItemText inset primary="Databases" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#becompute">
-                            <ListItemText inset primary="Compute Resources" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#benetwork">
-                            <ListItemText inset primary="Network" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#beresources">
-                            <ListItemText inset primary="Tools, Libraries, and Resources" />
-                        </ListItemButton>
-                    </List>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Challenges" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#affordability">
-                            <ListItemText inset primary="Affordability" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#networking">
-                            <ListItemText inset primary="Networking" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#allocation">
-                            <ListItemText inset primary="Resource Allocation" />
-                        </ListItemButton>
-                    </List>
-                    <ListItem sx={{ display: 'list-item', listStyleType: 'circle' }}>
-                        <ListItemText primary="Final/Current Product" sx={{ fontStyle: 'italic' }} />
-                    </ListItem>
-                    <List component="div" disablePadding dense={true}>
-                        <ListItemButton component={TocLink} underline='hover' href="#architecture">
-                            <ListItemText inset primary="System Architecture" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#analytics">
-                            <ListItemText inset primary="System Analytics" />
-                        </ListItemButton>
-                        <ListItemButton component={TocLink} underline='hover' href="#roadmap">
-                            <ListItemText inset primary="Roadmap" />
-                        </ListItemButton>
-                    </List>
-                </List>
-            </Box>
-        </Paper>
-    </Container>
-);
 
-const actions = [
-    { icon: <EmojiObjectsIcon />, name: 'Inspiration', link: '#inspiration' },
-    { icon: <DeveloperBoardIcon />, name: 'Planning', link: '#planning' },
-    { icon: <PanoramaIcon />, name: 'Front End', link: '#frontend' },
-    { icon: <StorageIcon />, name: 'Back End', link: '#backend' },
-    { icon: <TroubleshootIcon />, name: 'Challenges', link: '#challenges' },
-    { icon: <HubIcon />, name: 'Final Product', link: '#product' },
-];
 
-function CustomFabContent({ icon, text }) {
-    return (
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            {icon}
-            <span style={{ marginLeft: 8 }}>{text}</span>
-        </div>
-    );
-}
-
-const StickyToc = ({ showStickyToc }) => {
-    const [open, setOpen] = useState(false);
-    const theme = useTheme();
-
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
-    return (
-            <Zoom in={showStickyToc}>
-        <Box sx={{ position: 'fixed', top: 0, left: 0, transform: 'translateZ(0px)', width: '100vw', height: '100vh', zIndex: 10 }}>
-            <Backdrop open={open} onClick={handleClose} />
-
-            <SpeedDial
-                ariaLabel="SpeedDial basic example"
-                sx={{ position: 'absolute', top: theme.spacing(2), left: theme.spacing(2), marginTop: '64px' }}
-                FabProps={{ sx: { position: 'relative', maxWidth: '56px', alignSelf: 'start' }, color: 'secondary' }}
-                icon={<TocIcon />}
-                onOpen={handleOpen}
-                onClose={handleClose}
-                open={open}
-                direction='down'
-            >
-                {open && actions.map((action) => (
-                    <SpeedDialAction
-                        key={action.name}
-                        onClick={handleClose}
-                        icon={<CustomFabContent icon={action.icon} text={action.name} />}
-                        FabProps={{ variant: 'extended', href: action.link }}
-                    />
-                ))}
-                </SpeedDial>
-
-            </Box>
-            </Zoom>
-    );
-};
 export default AboutThisSitePage;
