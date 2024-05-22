@@ -4,8 +4,7 @@ import Typewriter from 'typewriter-effect';
 import 'highlight.js/styles/night-owl.css'; // Import a stylesheet for highlight.js
 
 function AnimatedCodeBlock({isVisible, code}) {
-    const [elements, setElements] = useState([]);
-    const codeRef = useRef(null);
+    const [elements, setElements] = useState(null);
 
     useEffect(() => {
         const highlightedCode = hljs.highlightAuto(code).value;
@@ -15,20 +14,7 @@ function AnimatedCodeBlock({isVisible, code}) {
     return (
         <div className="hljs">
             <pre style={{ textAlign: 'left', tabSize:4 }}>
-                <code ref={codeRef}>
-                    {isVisible && (
-                        <Typewriter
-                            options={{
-                                delay: 20,
-                                html: true,
-                            }}
-                            onInit={(typewriter) => {
-                                typewriter.typeString(elements);
-                                typewriter.start();
-                            }}
-                        />
-                    )}
-                </code>
+                <code dangerouslySetInnerHTML={{ __html: elements} }/>
             </pre>
         </div>
     );

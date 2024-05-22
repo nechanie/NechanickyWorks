@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { MenuBook, Code, Build, Computer, TrendingUp, Timeline as TimelineIcon, Panorama, Storage, EmojiObjects, DeveloperBoard, Troubleshoot, Hub } from '@mui/icons-material';
+import { motion } from 'framer-motion';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/system';
 import PageTitle from '../components/Shared/PageTitle';
@@ -12,6 +13,8 @@ import SiteFooter from '../components/Shared/Footer';
 import TocSpeedDial from '../components/utils/TocSpeedDial';
 import TableOfContents from '../components/utils/Toc';
 import AnimatedCodeBlock from '../components/Demos/CodeWriter';
+import MotionSection from '../components/MotionSection';
+import ContentSection from '../components/ContentSection';
 
 const actions = [
     { icon: <EmojiObjects />, name: 'Inspiration', link: 'inspiration' },
@@ -34,43 +37,29 @@ const tocContent = [
 var codeStringPrimary = `
 import React from 'react';
 import { Typography, Container, Box } from '@mui/material';
-\n
+
+
 function WelcomeMessage() {
-\treturn (
-\t\t<Container>
-\t\t\t<Box
-\t\t\t\tdisplay="flex"
-\t\t\t\tjustifyContent="center"
-\t\t\t\talignItems="center"
-\t\t\t\tminHeight="100vh"
-\t\t\t\ttextAlign="center"
-\t\t\t>
-\t\t\t\t<Typography variant="h2" component="h1">
-\t\t\t\t\tWelcome To NechanickyWorks
-\t\t\t\t</Typography>
-\t\t\t</Box>
-\t\t</Container>
-\t);
+	return (
+		<Container>
+			<Box
+				display="flex"
+				justifyContent="center"
+				alignItems="center"
+				minHeight="100vh"
+				textAlign="center"
+			>
+				<Typography variant="h2">
+					Welcome To NechanickyWorks
+				</Typography>
+			</Box>
+		</Container>
+	);
 }
-\nexport default WelcomeMessage;
+
+export default WelcomeMessage;
 `;
 
-const ContentBox = styled(Box)({
-    margin: '20px 0',
-});
-
-const StyledCard = styled(Card)({
-    marginBottom: '20px',
-    border: '1px solid #ddd',
-    borderRadius: '8px',
-    boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-});
-
-const StyledCardContent = styled(CardContent)({
-    display: 'flex',
-    alignItems: 'center',
-    padding: '16px',
-});
 
 const AboutThisSitePage = () => {
     const theme = useTheme();
@@ -133,139 +122,99 @@ const AboutThisSitePage = () => {
                 </Container>
             </Cover>
             <TocSpeedDial showStickyToc={showStickyToc} actions={actions} />
-            <Container maxWidth="xl" align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
+            <Box align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
                 <div ref={tocRef}>
-                    <TableOfContents bordering={highlights} background={transitionalBg} contents={tocContent } />
+                    <TableOfContents bordering={highlights} background={transitionalBg} contents={tocContent} />
                 </div>
-                <Section id="inspiration" title="Inspiration for the Site" icon={<MenuBook />} backgroundColor="#f0f4c3">
-                    <SubSection id="reasoning" title="Reasoning">
+                <MotionSection id="inspiration" title="Inspiration for the Site">
+                    <ContentSection id="reasoning" title="Reasoning">
                         <div ref={codeBlockRef} >
-                        <AnimatedCodeBlock isVisible={isCodeBlockVisible} code={codeStringPrimary } />
+                            <AnimatedCodeBlock isVisible={isCodeBlockVisible} code={codeStringPrimary} codeType={ 'javascript' } />
                         </div>
-                    </SubSection>
-                    <SubSection id="expectation" title="Expectation">
+                    </ContentSection>
+                    <ContentSection id="expectation" title="Expectation">
                         <Typography>Outline your expectations from creating the portfolio.</Typography>
-                    </SubSection>
-                </Section>
-                <Section id="planning" title="Planning of the Site" icon={<TimelineIcon />} backgroundColor="#ffecb3">
-                    <SubSection id="format" title="Format">
+                    </ContentSection>
+                </MotionSection>
+                <MotionSection id="planning" title="Planning of the Site" icon={<TimelineIcon />} backgroundColor="#ffecb3">
+                    <ContentSection id="format" title="Format">
                         <Typography>Explain why you chose a web format for your portfolio.</Typography>
-                    </SubSection>
-                    <SubSection id="goals" title="Goals">
+                    </ContentSection>
+                    <ContentSection id="goals" title="Goals">
                         <Typography>Detail the goals you aimed to achieve with the portfolio.</Typography>
-                    </SubSection>
-                    <SubSection id="content" title="Content Choices">
+                    </ContentSection>
+                    <ContentSection id="content" title="Content Choices">
                         <Typography>Describe why you chose the projects/content included in the portfolio.</Typography>
-                    </SubSection>
-                    <SubSection id="process" title="Process">
+                    </ContentSection>
+                    <ContentSection id="process" title="Process">
                         <Typography>Discuss the planning and implementation process of the portfolio.</Typography>
-                    </SubSection>
-                </Section>
-                <Section id="frontend" title="Construction of the Site - Front End" icon={<Code />} backgroundColor="#d1c4e9">
-                    <SubSection id="feframework" title="Framework">
+                    </ContentSection>
+                </MotionSection>
+                <MotionSection id="frontend" title="Construction of the Site - Front End" icon={<Code />} backgroundColor="#d1c4e9">
+                    <ContentSection id="feframework" title="Framework">
                         <Typography>Explain the front end frameworks you used.</Typography>
-                    </SubSection>
-                    <SubSection id="felanguage" title="Languages">
+                    </ContentSection>
+                    <ContentSection id="felanguage" title="Languages">
                         <Typography>Detail the front end languages you used.</Typography>
-                    </SubSection>
-                    <SubSection id="fedesign" title="Design Choices">
+                    </ContentSection>
+                    <ContentSection id="fedesign" title="Design Choices">
                         <Typography>Describe the design choices for the front end.</Typography>
-                    </SubSection>
-                    <SubSection id="fehosting" title="Hosting">
+                    </ContentSection>
+                    <ContentSection id="fehosting" title="Hosting">
                         <Typography>Explain the hosting solution for the front end.</Typography>
-                    </SubSection>
-                    <SubSection id="fecost" title="Cost">
+                    </ContentSection>
+                    <ContentSection id="fecost" title="Cost">
                         <Typography>Detail the cost considerations for the front end.</Typography>
-                    </SubSection>
-                    <SubSection id="feresources" title="Tools, Libraries, and Resources">
+                    </ContentSection>
+                    <ContentSection id="feresources" title="Tools, Libraries, and Resources">
                         <Typography>List the tools, libraries, and resources used for the front end.</Typography>
-                    </SubSection>
-                </Section>
-                <Section id="backend" title="Construction of the Site - Back End" icon={<Build />} backgroundColor="#b2dfdb">
-                    <SubSection id="beserver" title="Server and Server Specs">
+                    </ContentSection>
+                </MotionSection>
+                <MotionSection id="backend" title="Construction of the Site - Back End" icon={<Build />} backgroundColor="#b2dfdb">
+                    <ContentSection id="beserver" title="Server and Server Specs">
                         <Typography>Describe the server and its specifications for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="behosting" title="Hosting">
+                    </ContentSection>
+                    <ContentSection id="behosting" title="Hosting">
                         <Typography>Explain the hosting solution for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="becontainerization" title="Containerization">
+                    </ContentSection>
+                    <ContentSection id="becontainerization" title="Containerization">
                         <Typography>Discuss the containerization strategy for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="beframework" title="API and Frameworks">
+                    </ContentSection>
+                    <ContentSection id="beframework" title="API and Frameworks">
                         <Typography>Detail the API and frameworks used for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="bedatabase" title="Databases">
+                    </ContentSection>
+                    <ContentSection id="bedatabase" title="Databases">
                         <Typography>Describe the databases used for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="becompute" title="Compute Resources">
+                    </ContentSection>
+                    <ContentSection id="becompute" title="Compute Resources">
                         <Typography>Explain the compute resources allocated for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="benetwork" title="Network">
+                    </ContentSection>
+                    <ContentSection id="benetwork" title="Network">
                         <Typography>Discuss the network setup for the back end.</Typography>
-                    </SubSection>
-                    <SubSection id="beresources" title="Tools, Libraries, and Resources">
+                    </ContentSection>
+                    <ContentSection id="beresources" title="Tools, Libraries, and Resources">
                         <Typography>List the tools, libraries, and resources used for the back end.</Typography>
-                    </SubSection>
-                </Section>
-                <Section id="challenges" title="Challenges" icon={<TrendingUp />} backgroundColor="#ffe0b2">
+                    </ContentSection>
+                </MotionSection>
+                <MotionSection id="challenges" title="Challenges" icon={<TrendingUp />} backgroundColor="#ffe0b2">
                     <ChallengesTabs />
-                </Section>
-                <Section id="product" title="Final/Current Product" icon={<Computer />} backgroundColor="#c8e6c9">
-                    <SubSection id="architecture" title="System Architecture">
+                </MotionSection>
+                <MotionSection id="product" title="Final/Current Product" icon={<Computer />} backgroundColor="#c8e6c9">
+                    <ContentSection id="architecture" title="System Architecture">
                         <Typography>Describe the system architecture with an architecture map.</Typography>
-                    </SubSection>
-                    <SubSection id="analytics" title="System Analytics">
+                    </ContentSection>
+                    <ContentSection id="analytics" title="System Analytics">
                         <Typography>Provide system analytics and full system specs across the entire architecture.</Typography>
-                    </SubSection>
-                    <SubSection id="roadmap" title="Roadmap">
+                    </ContentSection>
+                    <ContentSection id="roadmap" title="Roadmap">
                         <Typography>Outline the future plans and roadmap for the website.</Typography>
-                    </SubSection>
-                </Section>
-            </Container>
+                    </ContentSection>
+                </MotionSection>
+            </Box>
             <SiteFooter />
         </React.Fragment>
     );
 };
-
-const Section = ({ id, title, children, icon, backgroundColor }) => (
-    <ContentBox id={id} sx={{ backgroundColor: backgroundColor, borderRadius: '8px', padding: '16px', marginBottom: '16px' }}>
-        <StyledCard>
-            <StyledCardContent>
-                <IconButton sx={{ marginRight: '16px' }}>
-                    {icon}
-                </IconButton>
-                <Typography variant="h4" gutterBottom>{title}</Typography>
-            </StyledCardContent>
-            <CardContent>
-                    {children}
-            </CardContent>
-        </StyledCard>
-    </ContentBox>
-);
-
-const SubSection = ({ id, title, children }) => (
-    <Box sx={{ marginBottom: '10px' }} id={id}>
-            <Typography variant="h6">{title}</Typography>
-            {children}
-    </Box>
-);
-
-const AccordionSection = ({ title, children }) => (
-    <Accordion>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="h5">{title}</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-            {children}
-        </AccordionDetails>
-    </Accordion>
-);
-
-const AccordionDetailsContent = () => (
-    <Box>
-        <Typography>Details about frameworks, languages, design concepts, etc.</Typography>
-    </Box>
-);
 
 const ChallengesTabs = () => {
     const [value, setValue] = useState(0);
@@ -303,24 +252,5 @@ const TabPanel = ({ children, value, index }) => (
         )}
     </div>
 );
-
-const Timeline = () => (
-    <Box>
-        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-            <Typography variant="h6">Milestone 1</Typography>
-            <Typography>Date and description of the milestone.</Typography>
-        </Paper>
-        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-            <Typography variant="h6">Milestone 2</Typography>
-            <Typography>Date and description of the milestone.</Typography>
-        </Paper>
-        <Paper elevation={3} style={{ padding: '20px', marginBottom: '20px' }}>
-            <Typography variant="h6">Milestone 3</Typography>
-            <Typography>Date and description of the milestone.</Typography>
-        </Paper>
-    </Box>
-);
-
-
 
 export default AboutThisSitePage;
