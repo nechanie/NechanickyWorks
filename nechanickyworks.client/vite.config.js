@@ -41,6 +41,11 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         }
     },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        setupFiles: './setupTests.js', // Adjust the path if needed
+    },
     server: {
         proxy: {
             '^/GoogleMaps/config': {
