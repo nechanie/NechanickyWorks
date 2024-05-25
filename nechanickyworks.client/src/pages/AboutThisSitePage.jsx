@@ -1,64 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Container, Typography, Accordion, AccordionSummary, AccordionDetails, Tabs, Tab, Box, Paper, useTheme, List, ListItem, ListItemText, Stack, ListItemButton, alpha, Link as Mlink, Card, CardContent, IconButton } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { MenuBook, Code, Build, Computer, TrendingUp, Timeline as TimelineIcon, Panorama, Storage, EmojiObjects, DeveloperBoard, Troubleshoot, Hub } from '@mui/icons-material';
-import { motion } from 'framer-motion';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Container, Typography, Box, Paper, useTheme, Stack, alpha } from '@mui/material';
 import { styled } from '@mui/system';
+import { Link } from 'react-router-dom';
+import { Code, Build, Computer, TrendingUp, Timeline as TimelineIcon } from '@mui/icons-material';
 import PageTitle from '../components/Shared/PageTitle';
 import Cover from '../components/Display/Cover';
 import AboutThisSiteBackground from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackground.webp";
 import AboutThisSiteBackgroundDark from "../assets/imgs/backgrounds/AboutThisSite/AboutThisSiteBackgroundDark.webp";
+import BackEndSectionLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/BackEndSectionLight.webp";
+import BackEndSectionDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/BackEndSectionDark.webp";
+import FrontEndSectionLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/FrontEndSectionLight.webp";
+import FrontEndSectionDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/FrontEndSectionDark.webp";
+import InspirationSectionLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/InspirationSectionLight.webp";
+import InspirationSectionDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/InspirationSectionDark.webp";
+import PlanningSectionLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlanningSectionLight.webp";
+import PlanningSectionDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlanningSectionDark.webp";
+import ReasoningLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/ReasoningLight.webp";
+import ReasoningDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/ReasoningDark.webp";
 import SiteFooter from '../components/Shared/Footer';
 import TocSpeedDial from '../components/utils/TocSpeedDial';
 import TableOfContents from '../components/utils/Toc';
 import AnimatedCodeBlock from '../components/Demos/CodeWriter';
 import MotionSection from '../components/MotionSection';
-import ContentSection from '../components/ContentSection';
+import AboutThisSiteSection, { AboutThisSiteSectionContentItem } from '../components/ContentSection';
+import { AboutThisSiteActions, AboutThisSiteCodePrimary, AboutThisSiteTocContent } from '../components/Shared/Data/AboutThisSiteData';
+import ChallengesTabs from '../components/Display/ChallengeTabs';
 
-const actions = [
-    { icon: <EmojiObjects />, name: 'Inspiration', link: 'inspiration' },
-    { icon: <DeveloperBoard />, name: 'Planning', link: 'planning' },
-    { icon: <Panorama />, name: 'Front End', link: 'frontend' },
-    { icon: <Storage />, name: 'Back End', link: 'backend' },
-    { icon: <Troubleshoot />, name: 'Challenges', link: 'challenges' },
-    { icon: <Hub />, name: 'Final Product', link: 'product' },
-];
-
-const tocContent = [
-    { name: 'Inspiration for the Site', subcontent: [{ name: 'Reasoning', link: 'reasoning' }, { name: 'Expectation', link: 'expectation' }] },
-    { name: 'Planning of the Site', subcontent: [{ name: 'Format', link: 'format' }, { name: 'Goals', link: 'goals' }, { name: 'Content Choices', link: 'content' }, { name: 'Process', link: 'process' }] },
-    { name: 'Construction of the Site - Front End', subcontent: [{ name: 'Framework', link: 'feframework' }, { name: 'Languages', link: 'languages' }, { name: 'Design Choices', link: 'fedesign' }, { name: 'Hosting', link: 'fehosting' }, { name: 'Cost', link: 'fecost' }, { name: 'Tools, Libraries, and Resources', link: 'feresources' }] },
-    { name: 'Construction of the Site - Back End', subcontent: [{ name: 'Server and Server Specs', link: 'beserver' }, { name: 'Hosting', link: 'behosting' }, { name: 'Containerization', link: 'becontainerization' }, { name: 'API and Frameworks', link: 'beframework' }, { name: 'Databases', link: 'bedatabase' }, { name: 'Compute Resources', link: 'becompute' }, { name: 'Network', link: 'benetwork' }, { name: 'Tools, Libraries, and Resources', link: 'beresources' }] },
-    { name: 'Challenges', subcontent: [{ name: 'Affordability', link: 'challenges' }, { name: 'Networking', link: 'challenges' }, { name: 'Resource Allocation', link: 'challenges' }] },
-    { name: 'Final/Current Product', subcontent: [{ name: 'System Achitecture', link: 'architecture' }, { name: 'System Analytics', link: 'analytics' }, { name: 'Roadmap', link: 'roadmap' }] }
-]
-
-var codeStringPrimary = `
-import React from 'react';
-import { Typography, Container, Box } from '@mui/material';
-
-
-function WelcomeMessage() {
-	return (
-		<Container>
-			<Box
-				display="flex"
-				justifyContent="center"
-				alignItems="center"
-				minHeight="100vh"
-				textAlign="center"
-			>
-				<Typography variant="h2">
-					Welcome To NechanickyWorks
-				</Typography>
-			</Box>
-		</Container>
-	);
-}
-
-export default WelcomeMessage;
-`;
+const Section = styled(AboutThisSiteSection)({
+    minHeight: '600px'
+});
 
 
 const AboutThisSitePage = () => {
@@ -81,11 +51,7 @@ const AboutThisSitePage = () => {
     useEffect(() => {
         const handleScroll = () => {
             const tocPosition = tocRef.current?.getBoundingClientRect().bottom;
-            if (tocPosition < 0) {
-                setShowStickyToc(true);
-            } else {
-                setShowStickyToc(false);
-            }
+            setShowStickyToc(tocPosition < 0);
 
             const codeBlockPosition = codeBlockRef.current?.getBoundingClientRect();
             if (codeBlockPosition) {
@@ -95,8 +61,6 @@ const AboutThisSitePage = () => {
         };
 
         window.addEventListener('scroll', handleScroll);
-        handleScroll(); // Initial check
-
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -121,136 +85,176 @@ const AboutThisSitePage = () => {
                     </Stack>
                 </Container>
             </Cover>
-            <TocSpeedDial showStickyToc={showStickyToc} actions={actions} />
+            {/*<TocSpeedDial showStickyToc={showStickyToc} actions={AboutThisSiteActions} />*/}
             <Box align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
-                <div ref={tocRef}>
-                    <TableOfContents bordering={highlights} background={transitionalBg} contents={tocContent} />
-                </div>
-                <MotionSection id="inspiration" title="Inspiration for the Site">
-                    <ContentSection id="reasoning" title="Reasoning">
-                        <div ref={codeBlockRef} >
-                            <AnimatedCodeBlock isVisible={isCodeBlockVisible} code={codeStringPrimary} codeType={ 'javascript' } />
+                <Container maxWidth="xl">
+                    <Stack direction="column" spacing={9} useFlexGap >
+                        <div ref={tocRef}>
+                            {/*<TableOfContents bordering={highlights} background={transitionalBg} contents={AboutThisSiteTocContent} />*/}
                         </div>
-                    </ContentSection>
-                    <ContentSection id="expectation" title="Expectation">
-                        <Typography>Outline your expectations from creating the portfolio.</Typography>
-                    </ContentSection>
-                </MotionSection>
-                <MotionSection id="planning" title="Planning of the Site" icon={<TimelineIcon />} backgroundColor="#ffecb3">
-                    <ContentSection id="format" title="Format">
-                        <Typography>Explain why you chose a web format for your portfolio.</Typography>
-                    </ContentSection>
-                    <ContentSection id="goals" title="Goals">
-                        <Typography>Detail the goals you aimed to achieve with the portfolio.</Typography>
-                    </ContentSection>
-                    <ContentSection id="content" title="Content Choices">
-                        <Typography>Describe why you chose the projects/content included in the portfolio.</Typography>
-                    </ContentSection>
-                    <ContentSection id="process" title="Process">
-                        <Typography>Discuss the planning and implementation process of the portfolio.</Typography>
-                    </ContentSection>
-                </MotionSection>
-                <MotionSection id="frontend" title="Construction of the Site - Front End" icon={<Code />} backgroundColor="#d1c4e9">
-                    <ContentSection id="feframework" title="Framework">
-                        <Typography>Explain the front end frameworks you used.</Typography>
-                    </ContentSection>
-                    <ContentSection id="felanguage" title="Languages">
-                        <Typography>Detail the front end languages you used.</Typography>
-                    </ContentSection>
-                    <ContentSection id="fedesign" title="Design Choices">
-                        <Typography>Describe the design choices for the front end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="fehosting" title="Hosting">
-                        <Typography>Explain the hosting solution for the front end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="fecost" title="Cost">
-                        <Typography>Detail the cost considerations for the front end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="feresources" title="Tools, Libraries, and Resources">
-                        <Typography>List the tools, libraries, and resources used for the front end.</Typography>
-                    </ContentSection>
-                </MotionSection>
-                <MotionSection id="backend" title="Construction of the Site - Back End" icon={<Build />} backgroundColor="#b2dfdb">
-                    <ContentSection id="beserver" title="Server and Server Specs">
-                        <Typography>Describe the server and its specifications for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="behosting" title="Hosting">
-                        <Typography>Explain the hosting solution for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="becontainerization" title="Containerization">
-                        <Typography>Discuss the containerization strategy for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="beframework" title="API and Frameworks">
-                        <Typography>Detail the API and frameworks used for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="bedatabase" title="Databases">
-                        <Typography>Describe the databases used for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="becompute" title="Compute Resources">
-                        <Typography>Explain the compute resources allocated for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="benetwork" title="Network">
-                        <Typography>Discuss the network setup for the back end.</Typography>
-                    </ContentSection>
-                    <ContentSection id="beresources" title="Tools, Libraries, and Resources">
-                        <Typography>List the tools, libraries, and resources used for the back end.</Typography>
-                    </ContentSection>
-                </MotionSection>
-                <MotionSection id="challenges" title="Challenges" icon={<TrendingUp />} backgroundColor="#ffe0b2">
-                    <ChallengesTabs />
-                </MotionSection>
-                <MotionSection id="product" title="Final/Current Product" icon={<Computer />} backgroundColor="#c8e6c9">
-                    <ContentSection id="architecture" title="System Architecture">
-                        <Typography>Describe the system architecture with an architecture map.</Typography>
-                    </ContentSection>
-                    <ContentSection id="analytics" title="System Analytics">
-                        <Typography>Provide system analytics and full system specs across the entire architecture.</Typography>
-                    </ContentSection>
-                    <ContentSection id="roadmap" title="Roadmap">
-                        <Typography>Outline the future plans and roadmap for the website.</Typography>
-                    </ContentSection>
-                </MotionSection>
+                        <Section id="inspiration" title="Inspiration for the Site" spacing={3} images={{ light: InspirationSectionLight, dark: InspirationSectionDark }} >
+                            <AboutThisSiteSectionContentItem id="reasoning" title="Reasoning" images={{light: ReasoningLight, dark: ReasoningDark}}>
+                                <div ref={codeBlockRef} >
+                                    {/*<AnimatedCodeBlock isVisible={isCodeBlockVisible} code={AboutThisSiteCodePrimary} codeType={ 'javascript' } />*/}
+                                    <Typography>
+                                        After graduating with my bachelor's in computer science from Oregon State University, I wanted to create a platform to publicly
+                                        display the different projects that I have worked on during my time in school as well as professionally. This platform serves as a
+                                        showcase for previous and future projects, allowing me to document and share my journey in the field. The primary expectation for the
+                                        site is to function as a portfolio that displays my projects and experiences, offering insights into who I am and what I have done. Additionally,
+                                        I envision this platform serving an educational role, not only showcasing my projects but also enabling people to learn from them and become more
+                                        informed about the technologies utilized.
+                                    </Typography>
+                                </div>
+                            </AboutThisSiteSectionContentItem>
+                        </Section>
+                        <Section id="planning" title="Planning of the Site" spacing={3} images={{ light: PlanningSectionLight, dark: PlanningSectionDark }} ltr={false}>
+                            <AboutThisSiteSectionContentItem id="format" title="Format">
+                                <Typography>
+                                    From the outset, I knew I wanted to create a website to expose this platform. Choosing a web format gave
+                                    me full control over how people interact with and experience the content. Utilizing a web format also simplified
+                                    the process of making the platform public, allowing for an incremental release structure. This enabled me to make
+                                    the platform available for use as soon as possible while continuously adding and updating content.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="goals" title="Goals">
+                                <Typography>
+                                    The goals for the site included making the project content educational and interactive, providing
+                                    users with unique experiences that mirror my own when working on these projects. I aimed for the
+                                    content to be visually stimulating to entice users to keep exploring. The site was designed to be
+                                    semi-guided, allowing each user to have a personalized experience.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="content" title="Content Choices">
+                                <Typography>
+                                    For the initial development, I chose projects based on how well they aligned with my goals and career
+                                    aspirations of working primarily on machine learning technologies. This included a combination of advanced
+                                    machine learning projects and a few web development projects from my time at ATI Materials. Additional projects,
+                                    such as a mobile development project and a programmatic mathematical analysis project (Gaussian quadrature for
+                                    integrating polynomials), were included to expand the content.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="process" title="Process">
+                                <Typography>
+                                    The project development process followed an agile methodology, implementing incremental design practices, code-first
+                                    development, and later, some test-driven design practices. Each page and feature were designed and developed with user
+                                    stories and scenarios, following a standard sprint-focused development lifecycle.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                        </Section>
+                        <Section id="frontend" title="Construction of the Site - Front End" spacing={3} images={{ light: FrontEndSectionLight, dark: FrontEndSectionDark }}>
+                            <AboutThisSiteSectionContentItem id="feframework" title="Framework">
+                                <Typography>
+                                    I chose to use a React-based front end due to its widespread use and standardization in web development. Additionally,
+                                    integrating the Vite framework allowed for seamless integration with React and .NET Core runtime, which serves as the backend
+                                    support for the website.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="felanguage" title="Languages">
+                                <Typography>
+                                    The front end utilized a mixture of HTML, CSS, JavaScript, and C#.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="fedesign" title="Design Choices">
+                                <Typography>
+                                    My design choices were initially focused on creating a
+                                    functional interface, with plans to expand on UX/UI design concepts later. I adopted Material UI standards for the base design,
+                                    providing a standardized structure with a modern aesthetic.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="fehosting" title="Hosting">
+                                <Typography>
+                                    The core web application is hosted as a web app service through Microsoft Azure cloud services. Hosting the front end on Azure
+                                    ensured dependable service and minimized the need for additional focus on ensuring consistent accessibility through custom hosting.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="fecost" title="Cost">
+                                <Typography>
+                                    The overall cost of the front end was limited to the hosting costs on Azure.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="feresources" title="Tools, Libraries, and Resources">
+                                <Typography>
+                                    Development was done in Visual Studio Community 2022, using frameworks such as React, Vite, and .NET Core. Source control was managed
+                                    through GitHub. Libraries and packages included:
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                        </Section>
+                        <Section id="backend" title="Construction of the Site - Back End" spacing={3} images={{ light: BackEndSectionLight, dark: BackEndSectionDark }} ltr={false}>
+                            <AboutThisSiteSectionContentItem id="beserver" title="Server and Server Specs">
+                                <Typography>
+                                    The primary backend server for the web application's functionalities is a custom-made server housed in my home, which I built myself with the following specifications:
+
+                                    GPU: Nvidia RTX 3080 Ti
+                                    CPU: Ryzen 9 5950x
+                                    RAM: 32GB
+                                    OS: Ubuntu Server LTS
+                                    Software Layer: Nginx, Python, Docker, Redis, PostGres, MiniConda
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="behosting" title="Hosting">
+                                <Typography>
+                                    The backend is entirely hosted on this custom server, which hosts various APIs and databases containerized within Docker. This setup allows the backend to handle
+                                    computationally intensive tasks, enabling users to run complex compute tasks without needing a machine that supports them explicitly.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="becontainerization" title="Containerization">
+                                <Typography>
+                                    All backend components are containerized through Docker, except for the global network and traffic routing mechanisms. These instances include the
+                                    databases used by the interactive projects on the website and the project runtime APIs for computational tasks.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="beframework" title="API and Frameworks">
+                                <Typography>
+                                    A primary API created using Python FastAPI with Uvicorn acts as the communication bridge between the interactive projects and the backend execution. This API manages
+                                    the exchange of information, handles resource queues for the GPU, and ensures efficient resource allocation.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="bedatabase" title="Databases">
+                                <Typography>
+                                    Redis facilitates shared memory between multiple processes, and a Postgres database supports backend storage for several interactive projects. 
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="becompute" title="Compute Resources">
+                                <Typography>
+                                    Given the GPU-intensive nature of machine learning tasks, I implemented a multifaceted queuing system to manage GPU resources efficiently.
+                                    This system ensures that each user can run GPU-based tasks without significant delays and that resources are distributed fairly across users.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="beresources" title="Tools, Libraries, and Resources">
+                                <Typography>List the tools, libraries, and resources used for the back end.</Typography>
+                            </AboutThisSiteSectionContentItem>
+                        </Section>
+                        <Section id="challenges" title="Challenges" spacing={3}>
+                            <ChallengesTabs />
+                        </Section>
+                        <Section id="product" title="Final/Current Product" spacing={3}>
+                            <AboutThisSiteSectionContentItem id="architecture" title="System Architecture">
+                                <Typography>
+                                    The system architecture includes a React-based front end hosted on Azure, a custom-built backend server hosting containerized services,
+                                    and a robust API for communication and resource management. The architecture is designed to support complex compute tasks, provide educational
+                                    content, and offer interactive experiences to users.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="analytics" title="System Analytics">
+                                <Typography>
+                                    The system includes analytics to monitor user interactions, track resource usage, and ensure efficient performance. These analytics help identify
+                                    areas for improvement and guide future development efforts.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                            <AboutThisSiteSectionContentItem id="roadmap" title="Roadmap">
+                                <Typography>
+                                    The current roadmap includes completing the remaining core project pages, redesigning project layouts for better educational value, and introducing more
+                                    visual aids such as diagrams, images, and video walkthroughs. The goal is to make the content easier to digest and more engaging for users.
+                                </Typography>
+                            </AboutThisSiteSectionContentItem>
+                        </Section>
+                    </Stack>
+                </Container>
             </Box>
             <SiteFooter />
         </React.Fragment>
     );
 };
 
-const ChallengesTabs = () => {
-    const [value, setValue] = useState(0);
-
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
-    return (
-        <Box>
-            <Tabs value={value} onChange={handleChange}>
-                <Tab label="GPU Resources" />
-                <Tab label="Networking" />
-                <Tab label="Other Challenges" />
-            </Tabs>
-            <TabPanel value={value} index={0}>
-                <Typography>Details about GPU resource challenges.</Typography>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <Typography>Details about networking challenges.</Typography>
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <Typography>Details about other challenges.</Typography>
-            </TabPanel>
-        </Box>
-    );
-};
-
-const TabPanel = ({ children, value, index }) => (
-    <div role="tabpanel" hidden={value !== index}>
-        {value === index && (
-            <Box>
-                {children}
-            </Box>
-        )}
-    </div>
-);
 
 export default AboutThisSitePage;
