@@ -17,6 +17,19 @@ import PlanningSectionLight from "../assets/imgs/backgrounds/AboutThisSite/Secti
 import PlanningSectionDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlanningSectionDark.webp";
 import ReasoningLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/ReasoningLight.webp";
 import ReasoningDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/ReasoningDark.webp";
+import GoalsLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/GoalsLight.webp";
+import GoalsDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/GoalsDark.webp";
+import ContentLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/ContentLight.webp";
+import ContentDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/ContentDark.webp";
+import ProcessLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/ProcessLight.webp";
+import ProcessDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/ProcessDark.webp";
+import FormatLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/FormatLight.webp";
+import FormatDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/FormatDark.webp";
+import FeFrameworkLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/FeFrameworkLight.webp";
+import FeFrameworkDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/FeFrameworkDark.webp";
+import PlaceholderLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlaceholderLight.webp";
+import PlaceholderDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlaceholderDark.webp";
+
 import SiteFooter from '../components/Shared/Footer';
 import TocSpeedDial from '../components/utils/TocSpeedDial';
 import TableOfContents from '../components/utils/Toc';
@@ -108,7 +121,7 @@ const AboutThisSitePage = () => {
                             </AboutThisSiteSectionContentItem>
                         </Section>
                         <Section id="planning" title="Planning of the Site" spacing={3} images={{ light: PlanningSectionLight, dark: PlanningSectionDark }} ltr={false}>
-                            <AboutThisSiteSectionContentItem id="format" title="Format">
+                            <AboutThisSiteSectionContentItem id="format" title="Format" images={{ light: FormatLight, dark: FormatDark }}>
                                 <Typography>
                                     From the outset, I knew I wanted to create a website to expose this platform. Choosing a web format gave
                                     me full control over how people interact with and experience the content. Utilizing a web format also simplified
@@ -116,7 +129,7 @@ const AboutThisSitePage = () => {
                                     the platform available for use as soon as possible while continuously adding and updating content.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="goals" title="Goals">
+                            <AboutThisSiteSectionContentItem id="goals" title="Goals" images={{ light: GoalsLight, dark: GoalsDark }}>
                                 <Typography>
                                     The goals for the site included making the project content educational and interactive, providing
                                     users with unique experiences that mirror my own when working on these projects. I aimed for the
@@ -124,7 +137,7 @@ const AboutThisSitePage = () => {
                                     semi-guided, allowing each user to have a personalized experience.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="content" title="Content Choices">
+                            <AboutThisSiteSectionContentItem id="content" title="Content Choices" images={{ light: ContentLight, dark: ContentDark }}>
                                 <Typography>
                                     For the initial development, I chose projects based on how well they aligned with my goals and career
                                     aspirations of working primarily on machine learning technologies. This included a combination of advanced
@@ -133,7 +146,7 @@ const AboutThisSitePage = () => {
                                     integrating polynomials), were included to expand the content.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="process" title="Process">
+                            <AboutThisSiteSectionContentItem id="process" title="Process" images={{ light: ProcessLight, dark: ProcessDark }}>
                                 <Typography>
                                     The project development process followed an agile methodology, implementing incremental design practices, code-first
                                     development, and later, some test-driven design practices. Each page and feature were designed and developed with user
@@ -142,37 +155,37 @@ const AboutThisSitePage = () => {
                             </AboutThisSiteSectionContentItem>
                         </Section>
                         <Section id="frontend" title="Construction of the Site - Front End" spacing={3} images={{ light: FrontEndSectionLight, dark: FrontEndSectionDark }}>
-                            <AboutThisSiteSectionContentItem id="feframework" title="Framework">
+                            <AboutThisSiteSectionContentItem id="feframework" title="Framework" images={{ light: FeFrameworkLight, dark: FeFrameworkDark }}>
                                 <Typography>
                                     I chose to use a React-based front end due to its widespread use and standardization in web development. Additionally,
                                     integrating the Vite framework allowed for seamless integration with React and .NET Core runtime, which serves as the backend
                                     support for the website.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="felanguage" title="Languages">
+                            <AboutThisSiteSectionContentItem id="felanguage" title="Languages" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The front end utilized a mixture of HTML, CSS, JavaScript, and C#.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="fedesign" title="Design Choices">
+                            <AboutThisSiteSectionContentItem id="fedesign" title="Design Choices" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     My design choices were initially focused on creating a
                                     functional interface, with plans to expand on UX/UI design concepts later. I adopted Material UI standards for the base design,
                                     providing a standardized structure with a modern aesthetic.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="fehosting" title="Hosting">
+                            <AboutThisSiteSectionContentItem id="fehosting" title="Hosting" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The core web application is hosted as a web app service through Microsoft Azure cloud services. Hosting the front end on Azure
                                     ensured dependable service and minimized the need for additional focus on ensuring consistent accessibility through custom hosting.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="fecost" title="Cost">
+                            <AboutThisSiteSectionContentItem id="fecost" title="Cost" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The overall cost of the front end was limited to the hosting costs on Azure.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="feresources" title="Tools, Libraries, and Resources">
+                            <AboutThisSiteSectionContentItem id="feresources" title="Tools, Libraries, and Resources" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     Development was done in Visual Studio Community 2022, using frameworks such as React, Vite, and .NET Core. Source control was managed
                                     through GitHub. Libraries and packages included:
@@ -180,7 +193,7 @@ const AboutThisSitePage = () => {
                             </AboutThisSiteSectionContentItem>
                         </Section>
                         <Section id="backend" title="Construction of the Site - Back End" spacing={3} images={{ light: BackEndSectionLight, dark: BackEndSectionDark }} ltr={false}>
-                            <AboutThisSiteSectionContentItem id="beserver" title="Server and Server Specs">
+                            <AboutThisSiteSectionContentItem id="beserver" title="Server and Server Specs" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The primary backend server for the web application's functionalities is a custom-made server housed in my home, which I built myself with the following specifications:
 
@@ -191,36 +204,36 @@ const AboutThisSitePage = () => {
                                     Software Layer: Nginx, Python, Docker, Redis, PostGres, MiniConda
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="behosting" title="Hosting">
+                            <AboutThisSiteSectionContentItem id="behosting" title="Hosting" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The backend is entirely hosted on this custom server, which hosts various APIs and databases containerized within Docker. This setup allows the backend to handle
                                     computationally intensive tasks, enabling users to run complex compute tasks without needing a machine that supports them explicitly.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="becontainerization" title="Containerization">
+                            <AboutThisSiteSectionContentItem id="becontainerization" title="Containerization" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     All backend components are containerized through Docker, except for the global network and traffic routing mechanisms. These instances include the
                                     databases used by the interactive projects on the website and the project runtime APIs for computational tasks.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="beframework" title="API and Frameworks">
+                            <AboutThisSiteSectionContentItem id="beframework" title="API and Frameworks" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     A primary API created using Python FastAPI with Uvicorn acts as the communication bridge between the interactive projects and the backend execution. This API manages
                                     the exchange of information, handles resource queues for the GPU, and ensures efficient resource allocation.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="bedatabase" title="Databases">
+                            <AboutThisSiteSectionContentItem id="bedatabase" title="Databases" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     Redis facilitates shared memory between multiple processes, and a Postgres database supports backend storage for several interactive projects. 
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="becompute" title="Compute Resources">
+                            <AboutThisSiteSectionContentItem id="becompute" title="Compute Resources" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     Given the GPU-intensive nature of machine learning tasks, I implemented a multifaceted queuing system to manage GPU resources efficiently.
                                     This system ensures that each user can run GPU-based tasks without significant delays and that resources are distributed fairly across users.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="beresources" title="Tools, Libraries, and Resources">
+                            <AboutThisSiteSectionContentItem id="beresources" title="Tools, Libraries, and Resources" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>List the tools, libraries, and resources used for the back end.</Typography>
                             </AboutThisSiteSectionContentItem>
                         </Section>
@@ -228,20 +241,20 @@ const AboutThisSitePage = () => {
                             <ChallengesTabs />
                         </Section>
                         <Section id="product" title="Final/Current Product" spacing={3}>
-                            <AboutThisSiteSectionContentItem id="architecture" title="System Architecture">
+                            <AboutThisSiteSectionContentItem id="architecture" title="System Architecture" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The system architecture includes a React-based front end hosted on Azure, a custom-built backend server hosting containerized services,
                                     and a robust API for communication and resource management. The architecture is designed to support complex compute tasks, provide educational
                                     content, and offer interactive experiences to users.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="analytics" title="System Analytics">
+                            <AboutThisSiteSectionContentItem id="analytics" title="System Analytics" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The system includes analytics to monitor user interactions, track resource usage, and ensure efficient performance. These analytics help identify
                                     areas for improvement and guide future development efforts.
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
-                            <AboutThisSiteSectionContentItem id="roadmap" title="Roadmap">
+                            <AboutThisSiteSectionContentItem id="roadmap" title="Roadmap" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The current roadmap includes completing the remaining core project pages, redesigning project layouts for better educational value, and introducing more
                                     visual aids such as diagrams, images, and video walkthroughs. The goal is to make the content easier to digest and more engaging for users.
