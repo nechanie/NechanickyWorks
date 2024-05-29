@@ -14,6 +14,7 @@ import Cover from '../components/Display/Cover';
 import GraphDescription from '../components/Display/GraphDescription';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
 import GQLineGraph from '../components/Display/GQLineGraph';
+import PageTitle from '../components/Shared/PageTitle';
 
 const GaussianQuadraturePage = () => {
     const currentPath = useLocation();
@@ -185,8 +186,9 @@ const GaussianQuadraturePage = () => {
 
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Gaussian Quadrature' />
             <Cover light={GaussianQuadratureBackground} dark={GaussianQuadratureBackgroundDark}>
-                <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
+                <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around' }}>
                         <Typography variant='h4' gutterBottom sx={{ fontSynthesisWeight: 'auto', fontWeight: 600, color:'common.white' }}>Welcome to the Gaussian Quadrature Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p: '2%' }}>
@@ -350,18 +352,19 @@ const GaussianQuadraturePage = () => {
                         p: 2,
                         borderWidth: 0,
                         borderTopWidth: 1,
+                        zIndex: 20,
                     }}
                 >
                     {showPrimaryProgress && (<Container maxWidth='lg'>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                <Typography variant="body2" >{statusMessage}</Typography>
                             </Box>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <LinearProgress variant="determinate" color="success" value={primaryProgress} />
+                                <LinearProgress variant="determinate" value={primaryProgress} />
                             </Box>
                             <Box sx={{ minWidth: 35 }}>
-                                <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                                <Typography variant="body2" >{`${Math.round(primaryProgress)}%`}</Typography>
                             </Box>
                         </Box>
                     </Container>

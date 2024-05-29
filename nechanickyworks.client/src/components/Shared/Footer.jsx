@@ -11,7 +11,7 @@ import DaneLogo from "../../assets/imgs/DaneLogo.png";
 const StyledFooter = styled('footer')(({ theme }) => ({
     padding: theme.spacing(3),
     background: theme.palette.background.footer,
-    color: theme.palette.primary.main,
+    color: theme.palette.text.footer,
     'a': {
         fontWeight: 'inherit',
         color: "inherit",
@@ -52,7 +52,7 @@ const SiteFooter = () => {
                             <Typography component={Link} to='/projects' variant='overline'>Project Browser</Typography>
                             <Typography component={Link} to='/projects/TrustworthyMachineLearning' variant='overline'>Trustworthy Machine Learning</Typography>
                             <Typography component={Link} to='/projects/GaussianQuadrature' variant='overline'>Gaussian Quadrature</Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>OSU Senior Capstone (Coming Soon)</Typography>{/*'/projects/OSUCapstoneProject'*/}
+                            <Typography component={Link} to='/projects/OSUCapstoneProject' variant='overline'>OSU Senior Capstone</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>Diffusion Denoised Robustification (Coming Soon)</Typography>{/*'/projects/DiffusionDenoisedRobustification'*/}
                             <Typography component={Link} disabled={true} variant='overline'>Warehouse Order Form (Coming Soon)</Typography>
                             <Typography component={Link} disabled={true} variant='overline'>New Hire Request Form (Coming Soon)</Typography>
@@ -62,8 +62,8 @@ const SiteFooter = () => {
                     <Grid item xs={12} sm={6} md={4}>
                         <Stack direction='column' sx={{ marginBottom: "3%" }} alignItems='center'>
                             <Typography variant='body1'><u>About</u></Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>About Me (Coming Soon)</Typography>
-                            <Typography component={Link} disabled={true} variant='overline'>About This Website (Coming Soon)</Typography>
+                            <Typography component={Link} to="/about-me" variant='overline'>About Me</Typography>
+                            <Typography component={Link} to='/about-this-site' variant='overline'>About This Website</Typography>
                         </Stack>
                         <Stack direction='column' alignItems='center'>
                             <Typography variant='body1'><u>Contact</u></Typography>

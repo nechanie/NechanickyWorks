@@ -22,7 +22,7 @@ const ProjectPage = () => {
 
     return (
         <React.Fragment>
-            <PageTitle pageTitle="Nechanicky Works" />
+            <PageTitle pageTitle="Browse Projects" />
             <Cover light={BackgroundLight} dark={BackgroundDark }>
                 <Container maxWidth='xl' align='center' sx={{ py: "2%", height: '100%' }} >
                     <Stack direction='column' sx={{height:'100%'}}>

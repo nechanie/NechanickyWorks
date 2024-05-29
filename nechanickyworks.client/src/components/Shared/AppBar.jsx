@@ -90,7 +90,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
     const drawer = (
         <Box
             role="presentation"
-            sx={{ textAlign: 'center' }}
+            sx={{ textAlign: 'center'}}
         >
             <Typography variant="h6" sx={{ my: 2 }}>
                 Nechanicky Works
@@ -120,8 +120,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/GaussianQuadrature" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Gaussian Quadrature' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
-                                <ListItemText primary='OSU Senior Capstone (Coming Soon)' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
+                                <ListItemText primary='OSU Senior Capstone' />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>
                                 <ListItemText primary='Diffusion Denoised Robustification (Coming Soon)' />
@@ -147,11 +147,11 @@ const CustomAppBar = ({ onThemeToggle }) => {
                 <ListItem disablePadding={true}>
                     <Collapse in={expandedAbout} timeout="auto" unmountOnExit>
                         <List component="div">
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/about-me" onClick={handleDrawerToggle}>
-                                <ListItemText primary='About Me (Coming Soon)' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/about-me" onClick={handleDrawerToggle}>
+                                <ListItemText primary='About Me' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/about-this-site" onClick={handleDrawerToggle}>
-                                <ListItemText primary='About This Site (Coming Soon)' />
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/about-this-site" onClick={handleDrawerToggle}>
+                                <ListItemText primary='About This Site' />
                             </ListItemButton>
                         </List>
                     </Collapse>
@@ -167,7 +167,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
 
     return (
         <React.Fragment>
-            <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none' }}>
+            <AppBar position="absolute" sx={{ background: darkAppBar, boxShadow: 'none', color: theme.palette.mode === 'light' ? theme.palette.common.black : theme.palette.common.white }}>
                 <Container maxWidth="xl">
                     <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
                         <IconButton
@@ -217,7 +217,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 <MenuItem onClick={handleClose} component={Link} to="/projects">Browse Projects</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/TrustWorthyMachineLearning">Trustworthy Machine Learning</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/GaussianQuadrature">Gaussian Quadrature</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/OSUCapstoneProject">OSU Senior Capstone (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleClose} component={Link} to="/projects/OSUCapstoneProject">OSU Senior Capstone</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/WarehouseRequestForm">Warehouse Order Form (Coming Soon)</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/RecruitmentRequestForm">New Hire Request Form (Coming Soon)</MenuItem>
@@ -246,8 +246,8 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 }}
                             >
                                 {/* Replace these with your actual navigation links */}
-                                <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-me">About Me (Coming Soon)</MenuItem>
-                                <MenuItem onClick={handleAboutClose} component={Link} disabled={true} to="/about-this-site">About This Site (Coming Soon)</MenuItem>
+                                <MenuItem onClick={handleAboutClose} component={Link} to="/about-me">About Me</MenuItem>
+                                <MenuItem onClick={handleAboutClose} component={Link} to="/about-this-site">About This Site</MenuItem>
                             </Menu>     
                             <Button color="inherit" variant="text" component={Link} to='/contact'>
                                 Contact Me

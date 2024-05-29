@@ -15,6 +15,7 @@ import Cover from '../components/Display/Cover';
 import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
+import PageTitle from '../components/Shared/PageTitle';
 
 
 const TrustWorthyMLProjectPage = () => {
@@ -114,7 +115,6 @@ const TrustWorthyMLProjectPage = () => {
             }
             if (msg.type === 'batch_info') {
                 if (showBatchGraph === false) {
-
                     setStatusMessage("Training Model...");
                     setShowBatchGraph(true);
                 }
@@ -347,8 +347,9 @@ const TrustWorthyMLProjectPage = () => {
 
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Trustworthy ML' />
             <Cover light={TMLBackground} dark={TMLBackgroundDark }>
-                <Container maxWidth='md' align='center' sx={{ py: "2%", height: '100%' }} >
+                <Container maxWidth='md' align='center' sx={{ py: "2%"}} >
                     <Stack direction='column' sx={{ height: '100%', justifyContent: 'space-around'}}>
                         <Typography variant='h4' gutterBottom sx={{fontSynthesisWeight: 'auto', fontWeight:600}}>Welcome to the Trustworthy Machine Learning Project Page.</Typography>
                         <Paper sx={{ backgroundColor: theme.palette.background.paperOpaque, p:'2%' }}>
@@ -564,28 +565,29 @@ const TrustWorthyMLProjectPage = () => {
                             p: 2,
                             borderWidth: 0,
                             borderTopWidth: 1,
+                            zIndex:20,
                         }}
                     >
                     {showSecondaryProgress && (<Container maxWidth='sm'>
                         {isCircular ? (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                    <Typography variant="body2">{statusMessage}</Typography>
                                 </Box>
                                 <Box sx={{ minWidth: 35 }}>
-                                    <CircularProgress color="info" />
+                                    <CircularProgress color='secondary' />
                                 </Box>
                             </Box>
                         ) : (
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <Typography variant="body2" color="text.secondary">{statusMessage}</Typography>
+                                    <Typography variant="body2" >{statusMessage}</Typography>
                                 </Box>
                                 <Box sx={{ width: '100%', mr: 1 }}>
-                                    <LinearProgress variant="determinate" color="info" value={secondaryProgress} />
+                                    <LinearProgress variant="determinate" color='secondary' value={secondaryProgress} />
                                 </Box>
                                 <Box sx={{ minWidth: 35 }}>
-                                    <Typography variant="body2" color="text.secondary">{`${Math.round(secondaryProgress)}%`}</Typography>
+                                    <Typography variant="body2" >{`${Math.round(secondaryProgress)}%`}</Typography>
                                 </Box>
                             </Box>
                         )}
@@ -593,10 +595,10 @@ const TrustWorthyMLProjectPage = () => {
                     {showPrimaryProgress && (<Container maxWidth='lg'>
                         <Box sx={{ display: 'flex', alignItems: 'center' }}>
                             <Box sx={{ width: '100%', mr: 1 }}>
-                                <LinearProgress variant="determinate" color="success" value={primaryProgress} />
+                                <LinearProgress variant="determinate" value={primaryProgress} />
                             </Box>
                             <Box sx={{ minWidth: 35 }}>
-                                <Typography variant="body2" color="text.secondary">{`${Math.round(primaryProgress)}%`}</Typography>
+                                <Typography variant="body2" >{`${Math.round(primaryProgress)}%`}</Typography>
                             </Box>
                         </Box>
                         </Container>

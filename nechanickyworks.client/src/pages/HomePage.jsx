@@ -11,11 +11,13 @@ import MyFridgeImage from "../assets/imgs/Myfridge.jpg";
 import TMLImage from "../assets/imgs/TML.jpg";
 import ComingSoonOverlay from '../components/Display/ComingSoonOverlay';
 import SiteFooter from '../components/Shared/Footer';
+import PageTitle from '../components/Shared/PageTitle';
 
 
 const HomePage = () => {
     return (
         <React.Fragment>
+            <PageTitle pageTitle='Nechanicky Works' />
             <Container maxWidth="lg" sx={{ marginTop: "2%" }}>
         {/* Title Section */}
                 <Typography variant="h2" align="center" component="h1" gutterBottom>

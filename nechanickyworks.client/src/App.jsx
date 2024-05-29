@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { ThemeProvider, createTheme, styled, responsiveFontSizes } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import HomePageReImagined from './pages/HomePageReImagined'; // Adjust the path as necessary
 import HomePage from './pages/HomePage'; // Adjust the path as necessary
 import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
 import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
-import { ThemeProvider, createTheme, styled, responsiveFontSizes} from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { Box, useMediaQuery } from '@mui/material';
 import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
 import OSUCapstoneProjectPage from './pages/OSUCapstoneProjectPage';
@@ -28,176 +28,176 @@ import Easy from './assets/fonts/Easy.otf';
 import ScrollToTopButton from './components/utils/ScrollToTopButton';
 
 const getDesignTokens = (mode) => ({
-    palette: {
-        mode,
-        ...(mode === 'light'
-            ? {
-                common: {
-                    black: '#000',  // Standard black
-                    white: '#fff',  // Standard white
-                },
-                primary: {
-                    main: '#fff',  // White as the main primary color
-                    light: '#f2f2f2',  // A lighter shade of white for variation
-                    dark: '#ccc',  // A darker shade of white for contrast
-                    contrastText: '#000',  // Black text for contrast on primary color
-                },
-                secondary: {
-                    main: '#000',  // Black as the vibrant color for secondary actions
-                    light: '#333',  // Lightened version of black for variation
-                    dark: '#000',  // Darkened version of black for contrast
-                    contrastText: '#fff',  // White for contrast
-                },
-                error: {
-                    main: '#d32f2f',
-                    light: '#ef5350',
-                    dark: '#c62828',
-                    contrastText: '#fff',
-                },
-                warning: {
-                    main: '#ed6c02',
-                    light: '#ff9800',
-                    dark: '#e65100',
-                    contrastText: '#fff',
-                },
-                info: {
-                    main: '#474A48',
-                    light: '#6e7271',
-                    dark: '#1e2120',
-                    contrastText: '#fff',
-                },
-                success: {
-                    main: '#4caf50',
-                    light: '#81c784',
-                    dark: '#388e3c',
-                    contrastText: '#fff',
-                },
-                grey: {
-                    50: '#f5f5f5',
-                    100: '#eeeeee',
-                    200: '#e0e0e0',
-                    300: '#bdbdbd',
-                    400: '#9e9e9e',
-                    500: '#909590',
-                    600: '#474A48',
-                    700: '#2C302E',
-                    800: '#424242',
-                    900: '#212121',
-                    A100: '#f5f5f5',
-                    A200: '#eeeeee',
-                    A400: '#bdbdbd',
-                    A700: '#616161',
-                },
-                text: {
-                    primary: '#000',  // Black for primary text
-                    secondary: '#474A48',  // Slightly lighter for secondary text
-                    disabled: 'rgba(0, 0, 0, 0.38)',  // Standard disabled text color
-                    divider: 'rgba(0, 0, 0, 0.12)',  // Standard divider color
-                },
-                background: {
-                    paper: '#fff',  // White background for components, such as cards
-                    paperOpaque: "rgba(255, 255, 255, 0.5)",
-                    paperOpaqueContrast: "rgba(79, 85, 82, 0.5)",
-                    footer: '#000'
-                },
-                action: {
-                    active: 'rgba(0, 0, 0, 0.54)',
-                    hover: 'rgba(0, 0, 0, 0.04)',
-                    hoverOpacity: 0.04,
-                    selected: 'rgba(0, 0, 0, 0.08)',
-                    selectedOpacity: 0.08,
-                    disabled: 'rgba(0, 0, 0, 0.26)',
-                    disabledBackground: 'rgba(0, 0, 0, 0.12)',
-                    disabledOpacity: 0.38,
-                    focus: 'rgba(0, 0, 0, 0.12)',
-                    focusOpacity: 0.12,
-                    activatedOpacity: 0.12,
-                },
-            }
-            : {
-                common: {
-                    black: '#000',  // Standard black even in dark mode
-                    white: '#fff',  // Standard white even in dark mode
-                },
-                primary: {
-                    main: '#fff',
-                    light: '#f2f2f2',
-                    dark: '#ccc',
-                    contrastText: '#000',
-                },
-                secondary: {
-                    main: '#000',
-                    light: '#333',
-                    dark: '#000',
-                    contrastText: '#fff',
-                },
-                error: {
-                    main: '#f44336',
-                    light: '#e57373',
-                    dark: '#d32f2f',
-                    contrastText: '#fff',
-                },
-                warning: {
-                    main: '#ffa726',
-                    light: '#ffb74d',
-                    dark: '#f57c00',
-                    contrastText: '#fff',
-                },
-                info: {
-                    main: '#64b5f6',
-                    light: '#90caf9',
-                    dark: '#42a5f5',
-                    contrastText: '#fff',
-                },
-                success: {
-                    main: '#81c784',
-                    light: '#a5d6a7',
-                    dark: '#4caf50',
-                    contrastText: '#fff',
-                },
-                grey: {
-                    50: '#424242',
-                    100: '#616161',
-                    200: '#757575',
-                    300: '#9e9e9e',
-                    400: '#bdbdbd',
-                    500: '#e0e0e0',
-                    600: '#eeeeee',
-                    700: '#f5f5f5',
-                    800: '#fafafa',
-                    900: '#fff',
-                    A100: '#a4a4a4',
-                    A200: '#8d8d8d',
-                    A400: '#737373',
-                    A700: '#616161',
-                },
-                text: {
-                    primary: '#fff',  // White text for primary
-                    secondary: '#e0e0e0',  // Lighter grey for secondary
-                    disabled: 'rgba(255, 255, 255, 0.5)',  // Light color for disabled text
-                    divider: 'rgba(255, 255, 255, 0.12)',  // Divider adjusted for dark mode
-                },
-                background: {
-                    paper: '#4f5552',  // Dark grey for components background
-                    paperOpaque: "rgba(79, 85, 82, 0.5)",
-                    paperOpaqueContrast: "rgba(0, 0, 0, 0.5)",
-                    footer: '#4f5552'
-                },
-                action: {
-                    active: 'rgba(255, 255, 255, 0.7)',
-                    hover: 'rgba(255, 255, 255, 0.08)',
-                    hoverOpacity: 0.08,
-                    selected: 'rgba(255, 255, 255, 0.16)',
-                    selectedOpacity: 0.16,
-                    disabled: 'rgba(255, 255, 255, 0.3)',
-                    disabledBackground: 'rgba(255, 255, 255, 0.12)',
-                    disabledOpacity: 0.38,
-                    focus: 'rgba(255, 255, 255, 0.12)',
-                    focusOpacity: 0.12,
-                    activatedOpacity: 0.24,
-                },
-            }),
-    },
+    //palette: {
+    //    mode,
+    //    ...(mode === 'light'
+    //        ? {
+    //            common: {
+    //                black: '#000',  // Standard black
+    //                white: '#fff',  // Standard white
+    //            },
+    //            primary: {
+    //                main: '#fff',  // White as the main primary color
+    //                light: '#f2f2f2',  // A lighter shade of white for variation
+    //                dark: '#ccc',  // A darker shade of white for contrast
+    //                contrastText: '#000',  // Black text for contrast on primary color
+    //            },
+    //            secondary: {
+    //                main: '#000',  // Black as the vibrant color for secondary actions
+    //                light: '#333',  // Lightened version of black for variation
+    //                dark: '#000',  // Darkened version of black for contrast
+    //                contrastText: '#fff',  // White for contrast
+    //            },
+    //            error: {
+    //                main: '#d32f2f',
+    //                light: '#ef5350',
+    //                dark: '#c62828',
+    //                contrastText: '#fff',
+    //            },
+    //            warning: {
+    //                main: '#ed6c02',
+    //                light: '#ff9800',
+    //                dark: '#e65100',
+    //                contrastText: '#fff',
+    //            },
+    //            info: {
+    //                main: '#474A48',
+    //                light: '#6e7271',
+    //                dark: '#1e2120',
+    //                contrastText: '#fff',
+    //            },
+    //            success: {
+    //                main: '#4caf50',
+    //                light: '#81c784',
+    //                dark: '#388e3c',
+    //                contrastText: '#fff',
+    //            },
+    //            grey: {
+    //                50: '#f5f5f5',
+    //                100: '#eeeeee',
+    //                200: '#e0e0e0',
+    //                300: '#bdbdbd',
+    //                400: '#9e9e9e',
+    //                500: '#909590',
+    //                600: '#474A48',
+    //                700: '#2C302E',
+    //                800: '#424242',
+    //                900: '#212121',
+    //                A100: '#f5f5f5',
+    //                A200: '#eeeeee',
+    //                A400: '#bdbdbd',
+    //                A700: '#616161',
+    //            },
+    //            text: {
+    //                primary: '#000',  // Black for primary text
+    //                secondary: '#474A48',  // Slightly lighter for secondary text
+    //                disabled: 'rgba(0, 0, 0, 0.38)',  // Standard disabled text color
+    //                divider: 'rgba(0, 0, 0, 0.12)',  // Standard divider color
+    //            },
+    //            background: {
+    //                paper: '#fff',  // White background for components, such as cards
+    //                paperOpaque: "rgba(255, 255, 255, 0.5)",
+    //                paperOpaqueContrast: "rgba(79, 85, 82, 0.5)",
+    //                footer: '#000'
+    //            },
+    //            action: {
+    //                active: 'rgba(0, 0, 0, 0.54)',
+    //                hover: 'rgba(0, 0, 0, 0.04)',
+    //                hoverOpacity: 0.04,
+    //                selected: 'rgba(0, 0, 0, 0.08)',
+    //                selectedOpacity: 0.08,
+    //                disabled: 'rgba(0, 0, 0, 0.26)',
+    //                disabledBackground: 'rgba(0, 0, 0, 0.12)',
+    //                disabledOpacity: 0.38,
+    //                focus: 'rgba(0, 0, 0, 0.12)',
+    //                focusOpacity: 0.12,
+    //                activatedOpacity: 0.12,
+    //            },
+    //        }
+    //        : {
+    //            common: {
+    //                black: '#000',  // Standard black even in dark mode
+    //                white: '#fff',  // Standard white even in dark mode
+    //            },
+    //            primary: {
+    //                main: '#fff',
+    //                light: '#f2f2f2',
+    //                dark: '#ccc',
+    //                contrastText: '#000',
+    //            },
+    //            secondary: {
+    //                main: '#000',
+    //                light: '#333',
+    //                dark: '#000',
+    //                contrastText: '#fff',
+    //            },
+    //            error: {
+    //                main: '#f44336',
+    //                light: '#e57373',
+    //                dark: '#d32f2f',
+    //                contrastText: '#fff',
+    //            },
+    //            warning: {
+    //                main: '#ffa726',
+    //                light: '#ffb74d',
+    //                dark: '#f57c00',
+    //                contrastText: '#fff',
+    //            },
+    //            info: {
+    //                main: '#64b5f6',
+    //                light: '#90caf9',
+    //                dark: '#42a5f5',
+    //                contrastText: '#fff',
+    //            },
+    //            success: {
+    //                main: '#81c784',
+    //                light: '#a5d6a7',
+    //                dark: '#4caf50',
+    //                contrastText: '#fff',
+    //            },
+    //            grey: {
+    //                50: '#424242',
+    //                100: '#616161',
+    //                200: '#757575',
+    //                300: '#9e9e9e',
+    //                400: '#bdbdbd',
+    //                500: '#e0e0e0',
+    //                600: '#eeeeee',
+    //                700: '#f5f5f5',
+    //                800: '#fafafa',
+    //                900: '#fff',
+    //                A100: '#a4a4a4',
+    //                A200: '#8d8d8d',
+    //                A400: '#737373',
+    //                A700: '#616161',
+    //            },
+    //            text: {
+    //                primary: '#fff',  // White text for primary
+    //                secondary: '#e0e0e0',  // Lighter grey for secondary
+    //                disabled: 'rgba(255, 255, 255, 0.5)',  // Light color for disabled text
+    //                divider: 'rgba(255, 255, 255, 0.12)',  // Divider adjusted for dark mode
+    //            },
+    //            background: {
+    //                paper: '#4f5552',  // Dark grey for components background
+    //                paperOpaque: "rgba(79, 85, 82, 0.5)",
+    //                paperOpaqueContrast: "rgba(0, 0, 0, 0.5)",
+    //                footer: '#4f5552'
+    //            },
+    //            action: {
+    //                active: 'rgba(255, 255, 255, 0.7)',
+    //                hover: 'rgba(255, 255, 255, 0.08)',
+    //                hoverOpacity: 0.08,
+    //                selected: 'rgba(255, 255, 255, 0.16)',
+    //                selectedOpacity: 0.16,
+    //                disabled: 'rgba(255, 255, 255, 0.3)',
+    //                disabledBackground: 'rgba(255, 255, 255, 0.12)',
+    //                disabledOpacity: 0.38,
+    //                focus: 'rgba(255, 255, 255, 0.12)',
+    //                focusOpacity: 0.12,
+    //                activatedOpacity: 0.24,
+    //            },
+    //        }),
+    //},
     //palette: {
     //    mode,
     //    ...(mode === 'light'
@@ -272,6 +272,9 @@ const getDesignTokens = (mode) => ({
     //            },
     //            background: {
     //                paper: '#e0e0e0', // Background for components, such as cards
+    //                paperOpaque: "rgba(255, 255, 255, 0.5)",
+    //                paperOpaqueContrast: "rgba(79, 85, 82, 0.5)",
+    //                footer: '#000'
     //            },
     //            action: {
     //                active: 'rgba(0, 0, 0, 0.54)',
@@ -374,47 +377,298 @@ const getDesignTokens = (mode) => ({
     //            },
     //        }),
     //},
+    //"palette": {
+    //    mode,
+    //    ...(mode === 'light'
+    //        ? {
+    //            "common": {
+    //                "black": "#333333",
+    //                "white": "#FFFFFF"
+    //            },
+    //            "primary": {
+    //                "main": "#005B96",
+    //                "light": "#3C8DBC",
+    //                "dark": "#003865",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "secondary": {
+    //                "main": "#FFA726",
+    //                "light": "#FFCC80",
+    //                "dark": "#FB8C00",
+    //                "contrastText": "#333333"
+    //            },
+    //            "error": {
+    //                "main": "#D32F2F",
+    //                "light": "#EF5350",
+    //                "dark": "#C62828",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "warning": {
+    //                "main": "#FFA000",
+    //                "light": "#FFC107",
+    //                "dark": "#FF8F00",
+    //                "contrastText": "#333333"
+    //            },
+    //            "info": {
+    //                "main": "#26A69A",
+    //                "light": "#4DB6AC",
+    //                "dark": "#00897B",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "success": {
+    //                "main": "#388E3C",
+    //                "light": "#66BB6A",
+    //                "dark": "#2E7D32",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "grey": {
+    //                "50": "#FAFAFA",
+    //                "100": "#F5F5F5",
+    //                "200": "#EEEEEE",
+    //                "300": "#E0E0E0",
+    //                "400": "#BDBDBD",
+    //                "500": "#9E9E9E",
+    //                "600": "#757575",
+    //                "700": "#616161",
+    //                "800": "#424242",
+    //                "900": "#212121",
+    //                "A100": "#D5D5D5",
+    //                "A200": "#AAAAAA",
+    //                "A400": "#303030",
+    //                "A700": "#616161"
+    //            },
+    //            "text": {
+    //                "primary": "#333333",
+    //                "secondary": "#757575",
+    //                "disabled": "rgba(0, 0, 0, 0.38)",
+    //                "divider": "rgba(0, 0, 0, 0.12)"
+    //            },
+    //            "background": {
+    //                "paper": "#FFFFFF",
+    //                "footer": "#EEEEEE"
+    //            },
+    //            "action": {
+    //                "active": "rgba(0, 0, 0, 0.54)",
+    //                "hover": "rgba(0, 0, 0, 0.04)",
+    //                "selected": "rgba(0, 0, 0, 0.08)",
+    //                "disabled": "rgba(0, 0, 0, 0.26)"
+    //            }
+    //        }
+    //        : {
+    //            "common": {
+    //                "black": "#FFFFFF",
+    //                "white": "#333333"
+    //            },
+    //            "primary": {
+    //                "main": "#005B96",
+    //                "light": "#3C8DBC",
+    //                "dark": "#003865",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "secondary": {
+    //                "main": "#FFA726",
+    //                "light": "#FFCC80",
+    //                "dark": "#FB8C00",
+    //                "contrastText": "#333333"
+    //            },
+    //            "error": {
+    //                "main": "#D32F2F",
+    //                "light": "#EF5350",
+    //                "dark": "#C62828",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "warning": {
+    //                "main": "#FFA000",
+    //                "light": "#FFC107",
+    //                "dark": "#FF8F00",
+    //                "contrastText": "#333333"
+    //            },
+    //            "info": {
+    //                "main": "#26A69A",
+    //                "light": "#4DB6AC",
+    //                "dark": "#00897B",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "success": {
+    //                "main": "#388E3C",
+    //                "light": "#66BB6A",
+    //                "dark": "#2E7D32",
+    //                "contrastText": "#FFFFFF"
+    //            },
+    //            "grey": {
+    //                "50": "#424242",
+    //                "100": "#616161",
+    //                "200": "#757575",
+    //                "300": "#9e9e9e",
+    //                "400": "#BDBDBD",
+    //                "500": "#e0e0e0",
+    //                "600": "#eeeeee",
+    //                "700": "#f5f5f5",
+    //                "800": "#fafafa",
+    //                "900": "#ffffff",
+    //                "A100": "#a4a4a4",
+    //                "A200": "#8d8d8d",
+    //                "A400": "#737373",
+    //                "A700": "#616161"
+    //            },
+    //            "text": {
+    //                "primary": "#FFFFFF",
+    //                "secondary": "#e0e0e0",
+    //                "disabled": "rgba(255, 255, 255, 0.5)",
+    //                "divider": "rgba(255, 255, 255, 0.12)"
+    //            },
+    //            "background": {
+    //                "paper": "#4f5552"
+    //            },
+    //            "action": {
+    //                "active": "rgba(255, 255, 255, 0.7)",
+    //                "hover": "rgba(255, 255, 255, 0.08)",
+    //                "selected": "rgba(255, 255, 255, 0.16)",
+    //                "disabled": "rgba(255, 255, 255, 0.3)"
+    //            }
+    //        }
+    //    )
+    //},
+    "palette": {
+        mode, // Toggle this to switch themes
+        ...(mode === 'light' ? {
+            "primary": {
+                "main": "#5B93D3"
+            },
+            "secondary": {
+                "main": "#d39b5b",
+            },
+            "error": {
+                "main": "#DC3545",
+            },
+            "warning": {
+                "main": "#FFC107",
+            },
+            "info": {
+                "main": "#17A2B8",
+            },
+            "success": {
+                "main": "#28A745",
+            },
+            "accent": {
+                "primary": "#FFC107",
+                "secondary": "#17A2B8",
+                "tertiary": "#28A745",
+                "alternate": "#DC3545",
+            },
+            "text": {
+                "primary": "#333333",
+                "secondary": "#757575",
+                "disabled": "rgba(51, 51, 51, 0.38)",
+                "divider": "rgba(51, 51, 51, 0.12)",
+                "footer": "#FFFFFF"
+            },
+            "background": {
+                "main": "linear-gradient(#FCFCFC, #ECEFF1)",
+                "paper": "#F8F9FA",
+                "paperOpaque": "rgba(255, 255, 255, 0.5)",
+                "paperOpaqueContrast": "rgba(51, 51, 51, 0.5)",
+                "footer": "#29434E"
+            }
+        } : {
+            "primary": {
+                "main": "#457B9D"
+            },
+            "secondary": {
+                "main": "#9d6745"
+            },
+            "error": {
+                "main": "#E74C3C"
+            },
+            "warning": {
+                "main": "#FFCA28"
+            },
+            "info": {
+                "main": "#1ABC9C"
+            },
+            "success": {
+                "main": "#2ECC71"
+                },
+            "accent": {
+                "primary": "#FFCA28",
+                "secondary": "#1ABC9C",
+                "tertiary": "#2ECC71",
+                "alternate": "#E74C3C",
+            },
+            "text": {
+                "primary": "#FCFCFC",
+                "secondary": "#E0E0E0",
+                "disabled": "rgba(252, 252, 252, 0.5)",
+                "divider": "rgba(252, 252, 252, 0.12)",
+                "footer": "#FCFCFC"
+            },
+            "background": {
+                "paper": "#121212",
+                "paperOpaque": "rgba(192, 192, 192, 0.5)",
+                "paperOpaqueContrast": "rgba(64, 64, 64, 0.5)",
+                "footer": "#3E2723",
+                "main": "linear-gradient(#303030, #263238)"
+            }
+        })
+    },
     typography: {
-        fontFamily: 'Klotee, Artega',
-        body1: {
-            fontFamily: 'Easy'
+        fontFamily: 'acumin-pro, sans-serif',
+        h1: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
         },
-        tag: {
-            FontFamily: "Easy",
-            fontWeight: 400,
-            fontSize: "0.7rem",
-        }
+        h2: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
+        },
+        h3: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            textTransform: 'uppercase',
+            fontWeight: 900
+        },
+        h4: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        h5: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        h6: {
+            fontFamily: 'frank-ruhl-libre-variable, serif',
+            fontWeight: 900
+        },
+        body1: {
+            fontFamily: 'acumin-pro, sans-serif',
+        },
+        body2: {
+            fontFamily: 'acumin-pro, sans-serif',
+        },
     },
     components: {
-        MuiCssBaseline: {
-            styleOverrides: `
-        @font-face {
-          font-family: 'Klotee';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Klotee"), url(${Klotee}) format('opentype');
-        }
-        @font-face {
-          font-family: 'Artega';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Artega"), url(${Artega}) format('opentype');
-        }
-        @font-face {
-          font-family: 'Easy';
-          font-style: normal;
-          font-display: swap;
-          font-weight: 400;
-          src: local("Easy"), url(${Easy}) format('opentype');
-        }
-      `,
-        },
         MuiChip: {
             styleOverrides: {
                 root: {
-                    fontFamily: 'Easy',
+                    fontFamily: 'acumin-pro',
+                }
+            }
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'frank-ruhl-libre-variable, serif',
+                    textTransform: 'uppercase',
+                    fontWeight: 900
+                }
+            }
+        },
+        MuiIconButton: {
+            styleOverrides: {
+                root: {
+                    fontFamily: 'frank-ruhl-libre-variable, serif',
+                    textTransform: 'uppercase',
                 }
             }
         }
@@ -422,7 +676,7 @@ const getDesignTokens = (mode) => ({
 });
 
 const GradientBox = styled(Box)(({ theme }) => ({
-    background: theme.palette.background.default,
+    background: theme.palette.background.main,
     color: theme.palette.primary.contrastText,
 }));
 

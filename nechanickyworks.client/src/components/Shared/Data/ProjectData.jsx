@@ -35,7 +35,7 @@ const ProjectDataList = ([
         description: 'Experience real-world applications of advanced NLP and vector database technology, and understand how these modern technologies can identify and analyze patterns in vast datasets.',
         image: CapstoneImage,
         href: "OSUCapstoneProject",
-        comingSoon: true,
+        comingSoon: false,
         tags: [{
             id: 1, ref: 'ed', text: 'Educational'
         }, { id: 2, ref: 'demo', text: 'Interactive Demo' }, { id: 3, ref: 'ml', text: 'Machine Learning' }]

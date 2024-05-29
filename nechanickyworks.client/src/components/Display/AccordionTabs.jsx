@@ -53,7 +53,39 @@ const AccordionTabs = ({ tabs, adaptiveSizes = 'auto' }) => {
     var [rows, setRows] = useState(createRows(tabs, collapseIndex));
     const [content, setContent] = useState(null);
     const [isCollapsing, setIsCollapsing] = useState(false);
+    const [hasExited, setHasExited] = useState(true);
+    const [firstRender, setFirstRender] = useState(true);
 
+    const handleChange = (row, index) => {
+        if (!firstRender) {
+            setHasExited(false);
+        }
+        else {
+            setFirstRender(false);
+        }
+        if (selectedRow === row && selectedIndex == index) {
+            setSelectedIndex(null);
+            setSelectedRow(null);
+        }
+        else {
+            if (selectedIndex === null && selectedRow === null) {
+                setContent(rows[row][1][index]);
+                setHasExited(true);
+            }
+            setSelectedRow(row);
+            setSelectedIndex(index);
+        }
+    };
+
+    const handleOnExited = () => {
+        if (selectedIndex === null && selectedRow === null) {
+            setContent(null);
+        }
+        else {
+            setContent(rows[selectedRow][1][selectedIndex]);
+        }
+        setHasExited(true);
+    }
 
     useEffect(() => {
         setCollapseIndex((prev) => {
@@ -66,34 +98,6 @@ const AccordionTabs = ({ tabs, adaptiveSizes = 'auto' }) => {
         setRows(createRows(tabs, collapseIndex));
     }, [collapseIndex, tabs]);
 
-    const handleClick = (row, index) => {
-        if (selectedIndex === index && selectedRow === row) {
-            // Start collapsing
-            setIsCollapsing(true);
-            setTimeout(() => {
-                setSelectedIndex(null);
-                setSelectedRow(null);
-                setContent(null);
-                setIsCollapsing(false);
-            }, 1000); // Assuming the collapse animation takes 300ms
-        } else {
-            if (selectedIndex === null) {
-                setSelectedRow(row);
-                setContent(rows[row][1][index]);
-                setSelectedIndex(index);
-            }
-            else {
-                setIsCollapsing(true);
-                setTimeout(() => {
-                    setContent(rows[row][1][index]);
-                    setSelectedIndex(index);
-                    setSelectedRow(row);
-                    setIsCollapsing(false);
-                }, 1000); // Delay the content update until the collapse has finished
-            }
-        }
-    };
-
 
 
     return (
@@ -104,14 +108,14 @@ const AccordionTabs = ({ tabs, adaptiveSizes = 'auto' }) => {
                             {row[0].map((tab, tabIndex) => (
                                 <Grid item xs={6} sm={6} md={4} lg={3} key={`row-${rowIndex}-col-${tabIndex}`}>
                                     <Card variant='outlined' sx={{maxHeight: adaptiveSizes, maxWidth:adaptiveSizes} }>
-                                        <CardActionArea onClick={() => handleClick(rowIndex ,tabIndex)}>
+                                        <CardActionArea onClick={() => handleChange(rowIndex ,tabIndex)}>
                                             {tab}
                                         </CardActionArea>
                                     </Card>
                                 </Grid>
                             ))}
                             <Grid item xs={12} sx={{paddingTop:'0 !important'}}>
-                                <Collapse in={selectedRow === rowIndex && !isCollapsing} timeout={1000} >
+                                <Collapse in={parseInt(selectedRow) === rowIndex && hasExited} timeout={1000} onExited={() => handleOnExited()} mountOnEnter unmountOnExit >
                                     <Paper p={2} sx={{ width: '100%', my: "4%" }} color='secondary'>
                                         {content}
                                     </Paper>

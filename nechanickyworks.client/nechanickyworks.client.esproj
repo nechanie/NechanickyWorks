@@ -9,9 +9,15 @@
     <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
   </PropertyGroup>
   <ItemGroup>
+    <Folder Include=".vscode\" />
     <Folder Include="src\components\Demos\" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".vscode\launch.json" />
   </ItemGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties package_1json__JsonSchema="" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>
