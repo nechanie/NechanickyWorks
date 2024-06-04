@@ -38,6 +38,7 @@ import MotionSection from '../components/MotionSection';
 import AboutThisSiteSection, { AboutThisSiteSectionContentItem } from '../components/ContentSection';
 import { AboutThisSiteActions, AboutThisSiteCodePrimary, AboutThisSiteTocContent } from '../components/Shared/Data/AboutThisSiteData';
 import ChallengesTabs from '../components/Display/ChallengeTabs';
+import Radial, { RadialContentItem } from '../components/Custom/Radial';
 
 const Section = styled(AboutThisSiteSection)({
     minHeight: '600px'
@@ -101,6 +102,7 @@ const AboutThisSitePage = () => {
             {/*<TocSpeedDial showStickyToc={showStickyToc} actions={AboutThisSiteActions} />*/}
             <Box align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
                 <Container maxWidth="xl">
+                    
                     <Stack direction="column" spacing={9} useFlexGap >
                         <div ref={tocRef}>
                             {/*<TableOfContents bordering={highlights} background={transitionalBg} contents={AboutThisSiteTocContent} />*/}
@@ -130,12 +132,22 @@ const AboutThisSitePage = () => {
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="goals" title="Goals" images={{ light: GoalsLight, dark: GoalsDark }}>
-                                <Typography>
-                                    The goals for the site included making the project content educational and interactive, providing
-                                    users with unique experiences that mirror my own when working on these projects. I aimed for the
-                                    content to be visually stimulating to entice users to keep exploring. The site was designed to be
-                                    semi-guided, allowing each user to have a personalized experience.
-                                </Typography>
+                                <div style={{ width: '100%', height: '100%', border: `1px solid ${theme.palette.primary.contrastText}`, marginInline: 'auto' }}>
+                                    <Radial color={ theme.palette.accent.secondary }>
+                                        <RadialContentItem title='Content' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            My goal for the content of this site has been to include things that can be educational and interactive. I aimed for the content to be visually stimulating where possible to reduce level of intimidation stemming from the advanced nature of some of the topics.
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Design' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            My goal for the design of this site has been to provide a semi-guided structure to facilitate basic understanding of the content while still leaving room for people to have their own unique experiences while exploring.
+                                        </RadialContentItem>
+                                    </Radial>
+                                </div>
+                                {/*<Typography>*/}
+                                {/*    The goals for the site included making the project content educational and interactive, providing*/}
+                                {/*    users with unique experiences that mirror my own when working on these projects. I aimed for the*/}
+                                {/*    content to be visually stimulating to entice users to keep exploring. The site was designed to be*/}
+                                {/*    semi-guided, allowing each user to have a personalized experience.*/}
+                                {/*</Typography>*/}
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="content" title="Content Choices" images={{ light: ContentLight, dark: ContentDark }}>
                                 <Typography>
@@ -163,9 +175,24 @@ const AboutThisSitePage = () => {
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="felanguage" title="Languages" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
-                                <Typography>
-                                    The front end utilized a mixture of HTML, CSS, JavaScript, and C#.
-                                </Typography>
+                                <div style={{ width: '100%', height: '100%', border: `1px solid ${theme.palette.primary.contrastText}`, marginInline: 'auto' }}>
+                                    <Radial color={theme.palette.accent.secondary}>
+                                        <RadialContentItem title='HTML' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Everything visible component on this website has been constructed or derived directly from the use of HTML. While this is very standard, it is worth acknowledging as a critical language in the front-end construction. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='CSS' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            The CSS is a bit more abstracted compared to the HTML portion of the front end. Due to a combination of the framework and libraries I used, there is a significant amount of css
+                                            styling in place, but most of the custom defined CSS throughout the site is tied to either animations or visual fine-tuning. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Javascript' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Javascript plays a big part in the front end of this website due to the framework I used, i.e. React. Nearly every part of this site uses javascript to some degree. There are a hand full of
+                                            items that do not, but those are very few. 
+                                        </RadialContentItem>
+                                    </Radial>
+                                </div>
+                                {/*<Typography>*/}
+                                {/*    The front end utilized a mixture of HTML, CSS, JavaScript, and C#.*/}
+                                {/*</Typography>*/}
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="fedesign" title="Design Choices" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>

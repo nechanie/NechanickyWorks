@@ -58,33 +58,35 @@ const AboutThisSiteSectionRoot = ({ id, title, children, images = null, ltr = tr
         initial: { scale: 0, borderRadius: '50%' },
         animate: { scale: 1, borderRadius: ['50%', '50%', '10px'] },
         exit: { scale: 0, borderRadius: '50%' },
-        transition: { duration: 0.8, ease: 'easeInOut' }
+        transition: { duration: 0.5, ease: 'easeInOut' }
     };
 
     return (
         <Grid container id={id} justifyContent="center" {...props} >
         
             {(images && ltr) && (
-                    <Grid item xs={0} sm={12} md={5} sx={{ position: 'relative' }}>
-                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute', top: 0, left:0}} />
+                <Grid item md={5} sx={{ position: 'relative', display: {xs: 'none', md:'block'} }}>
+                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute', top: 0}} />
 
                         <AnimatePresence>
                             {selectedItem != null && (
-                                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute', top: 0, left: 0}} {...imageAnimationProps} />
+                                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute', top: 0}} {...imageAnimationProps} />
                             )}
                         </AnimatePresence>
-                    </Grid>
+                </Grid>
             )}
             <Grid item xs={12} md={7} sx={{ position: 'relative' } }>
-                <Stack direction="column" sx={{ padding: '2%' }} >
+                <Stack direction="column" sx={{ padding: '2%' }} useFlexGap>
                     <Typography variant={titleVariant} {...titleProps}>{title}</Typography>
                     <Grid container component={motion.div} justifyContent={'center'} sx={{ paddingTop: '3%', paddingBottom: '3%'}} spacing={2}>
                         {children}
                     </Grid>
                 </Stack>
-                <AnimatePresence>
+                <Box>
+                    <AnimatePresence style={{height: '100%', width:'100%'} }>
                     {selectedItem && (
-                        <Card component={motion.div} layoutId={selectedItem.id} elevation={ 0 } sx={{ position: 'absolute', top: 0, left: 0, width:'100%', height:'100%', padding: '3%' }}>
+                            <Card component={motion.div} layoutId={selectedItem.id} elevation={0} sx={{ position: 'absolute', top: 0, width: 'calc(100% - 24px)', height: '100%', padding: '3%' }}>
+                            <Stack direction='column' height='100%'>
                             <CardHeader
                                 action={
                                     <IconButton aria-label="back" onClick={() => setSelectedItem(null)}>
@@ -93,14 +95,17 @@ const AboutThisSiteSectionRoot = ({ id, title, children, images = null, ltr = tr
                                 }
                                 title={ selectedItem.title }
                             />
-                            <CardContent>
+                                <CardContent sx={{height:'100%', width:'100%'} }>
                                 {selectedItem.children}
-                            </CardContent>
+                                    </CardContent>
+                                </Stack>
                         </Card>
+
                     )}
-                </AnimatePresence>
+                    </AnimatePresence>
+                </Box>
             </Grid>
-            {(images && !ltr) && (<Grid item xs={0} sm={12} md={5} sx={{ position: 'relative' }}>
+            {(images && !ltr) && (<Grid item md={5} sx={{ position: 'relative', display: { xs: 'none', md: 'block' } }}>
                 <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute', top: 0}} />
 
                 <AnimatePresence>

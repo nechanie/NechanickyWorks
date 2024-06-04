@@ -551,10 +551,13 @@ const getDesignTokens = (mode) => ({
                 "main": "#28A745",
             },
             "accent": {
-                "primary": "#FFC107",
-                "secondary": "#17A2B8",
-                "tertiary": "#28A745",
-                "alternate": "#DC3545",
+                "primary": "#FFC107", // A bright, warm color that complements #5B93D3
+                "secondary": "#17A589", // A teal shade that pairs well with #d39b5b
+                "tertiary": "#27AE60", // A vibrant green that adds a refreshing touch
+                "alternate": "#C0392B" // A deep red to create strong visual interest
+            },
+            "surfaceSecondary": {
+                "main": "#E0E0E0"
             },
             "text": {
                 "primary": "#333333",
@@ -608,6 +611,9 @@ const getDesignTokens = (mode) => ({
                 "paperOpaqueContrast": "rgba(64, 64, 64, 0.5)",
                 "footer": "#3E2723",
                 "main": "linear-gradient(#303030, #263238)"
+                },
+            "surfaceSecondary": {
+                "main": "#2E2E2E"
             }
         })
     },
