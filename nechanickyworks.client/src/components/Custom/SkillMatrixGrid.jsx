@@ -120,7 +120,7 @@ const SkillMatrixGrid = () => {
             { name: 'Scrum', level: 3, icon: faTasks, description: 'Managed projects and coordinated team efforts in a Scrum framework.', years: 2, months: 8 },
         ],
         'Version Control & Tools': [
-            { name: 'Github', level: 4, icon: faGithub, description: 'Utilized for project version control and collaboration.', syears: 4, months: 0 },
+            { name: 'Github', level: 4, icon: faGithub, description: 'Utilized for project version control and collaboration.', years: 4, months: 0 },
             { name: 'Linux', level: 4, icon: LinuxIcon, description: 'Regular use in software development and testing.', years: 3, months: 6 },
             { name: 'Android Studio', level: 3, icon: AndroidIcon, description: 'Used for mobile app development.', years: 0, months: 8 },
         ],

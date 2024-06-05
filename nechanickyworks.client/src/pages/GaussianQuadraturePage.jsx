@@ -232,57 +232,6 @@ const GaussianQuadraturePage = () => {
                             </Typography>
                         </Stack>
                     </Paper>
-                    <Paper square={false} elevation={3} sx={{
-                        p: 3
-                    }}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <Stack direction='column' sx={{ width: "100%" }}>
-                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                        What does it do?
-                                    </Typography>
-                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        The following interactive demo will allow you to engage directly with the Gauss-Legendre Quadrature method.
-                                        You will be able to specify a polynomial function and an interval to compute its integral over. The demo will
-                                        not only estimate the integral using Gauss-Legendre Quadrature but also compare it against results from the
-                                        Trapezoidal Rule, Simpson's Rule, and near-true values calculated through python's scipy library. A graphical
-                                        representation will display the error margins between these methods over a range of iterations, offering
-                                        insightful visual feedback on the precision and efficiency of Gauss-Legendre Quadrature in numerical integration.
-                                    </Typography>
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Stack direction='column' sx={{ width: "100%" }}>
-                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                        Key Features:
-                                    </Typography>
-                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        <ul>
-                                            <li>Integrate polynomial and exponential functions using several programmatic methods.</li>
-                                            <li>Create your own polynomial and exponential functions to integrate.</li>
-                                            <li>Observe the difference in performance between Gaussian Quadrature and other more naive approaches to integration.</li>
-                                            <li>Understand the implications of efficiency and margin of error in numerical integration.</li>
-                                        </ul>
-                                    </Typography>
-                                </Stack>
-                            </Grid>
-                            <Grid item xs={12} sm={12} md={6}>
-                                <Stack direction='column' sx={{ width: "100%" }}>
-                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                        What to Look For:
-                                    </Typography>
-                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        <ul>
-                                            <li>Notice how fast each integration method approaches 0 in the graph, faster is better.</li>
-                                            <li>Try various functions and consider the differences you see in the graphs.</li>
-                                            <li>The bottom axis can be considered the number of computational steps, consider what this means based on what you see.</li>
-                                            <li>Notice the differences in the final estimation of each integral and consider how the magnitude of the difference can impact the usability of each method in the real world.</li>
-                                        </ul>
-                                    </Typography>
-                                </Stack>
-                            </Grid>
-                        </Grid>
-                    </Paper>
                     <Grid container>
                         <Grid item xs={12} lg={6} xl={6}>
                             <Container maxWidth='sm' sx={{ my: '3%' }}>
@@ -334,6 +283,57 @@ const GaussianQuadraturePage = () => {
                             )}
                         </Container>
                     </Paper>)}
+                    <Paper square={false} elevation={3} sx={{
+                        p: 3
+                    }}>
+                        <Grid container spacing={2}>
+                            <Grid item xs={12}>
+                                <Stack direction='column' sx={{ width: "100%" }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        What does it do?
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        The interactive demo allows you to engage directly with the Gauss-Legendre Quadrature method.
+                                        You will be able to specify a polynomial function and an interval to compute its integral over. The demo will
+                                        not only estimate the integral using Gauss-Legendre Quadrature but also compare it against results from the
+                                        Trapezoidal Rule, Simpson's Rule, and near-true values calculated through python's scipy library. A graphical
+                                        representation will display the error margins between these methods over a range of iterations, offering
+                                        insightful visual feedback on the precision and efficiency of Gauss-Legendre Quadrature in numerical integration.
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                                <Stack direction='column' sx={{ width: "100%" }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Key Features:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>Integrate polynomial and exponential functions using several programmatic methods.</li>
+                                            <li>Create your own polynomial and exponential functions to integrate.</li>
+                                            <li>Observe the difference in performance between Gaussian Quadrature and other more naive approaches to integration.</li>
+                                            <li>Understand the implications of efficiency and margin of error in numerical integration.</li>
+                                        </ul>
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                            <Grid item xs={12} sm={12} md={6}>
+                                <Stack direction='column' sx={{ width: "100%" }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        What to Look For:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>Notice how fast each integration method approaches 0 in the graph, faster is better.</li>
+                                            <li>Try various functions and consider the differences you see in the graphs.</li>
+                                            <li>The bottom axis can be considered the number of computational steps, consider what this means based on what you see.</li>
+                                            <li>Notice the differences in the final estimation of each integral and consider how the magnitude of the difference can impact the usability of each method in the real world.</li>
+                                        </ul>
+                                    </Typography>
+                                </Stack>
+                            </Grid>
+                        </Grid>
+                    </Paper>
                 </Container>
             </Container>
             <Fade appear={false} in={bannerOpen}>

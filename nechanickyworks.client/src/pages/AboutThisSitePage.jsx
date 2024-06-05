@@ -38,9 +38,10 @@ import MotionSection from '../components/MotionSection';
 import AboutThisSiteSection, { AboutThisSiteSectionContentItem } from '../components/ContentSection';
 import { AboutThisSiteActions, AboutThisSiteCodePrimary, AboutThisSiteTocContent } from '../components/Shared/Data/AboutThisSiteData';
 import ChallengesTabs from '../components/Display/ChallengeTabs';
+import Radial, { RadialContentItem } from '../components/Custom/Radial';
 
 const Section = styled(AboutThisSiteSection)({
-    minHeight: '600px'
+    minHeight: 'fit-content'
 });
 
 
@@ -99,8 +100,9 @@ const AboutThisSitePage = () => {
                 </Container>
             </Cover>
             {/*<TocSpeedDial showStickyToc={showStickyToc} actions={AboutThisSiteActions} />*/}
-            <Box align='center' sx={{ paddingTop: "2%", color: theme.palette.secondary.contrastText }}>
-                <Container maxWidth="xl">
+            <Box align='center' sx={{ paddingTop: "2%", paddingBottom: "2%", color: theme.palette.secondary.contrastText }}>
+                <Container maxWidth="lg">
+                    
                     <Stack direction="column" spacing={9} useFlexGap >
                         <div ref={tocRef}>
                             {/*<TableOfContents bordering={highlights} background={transitionalBg} contents={AboutThisSiteTocContent} />*/}
@@ -130,12 +132,22 @@ const AboutThisSitePage = () => {
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="goals" title="Goals" images={{ light: GoalsLight, dark: GoalsDark }}>
-                                <Typography>
-                                    The goals for the site included making the project content educational and interactive, providing
-                                    users with unique experiences that mirror my own when working on these projects. I aimed for the
-                                    content to be visually stimulating to entice users to keep exploring. The site was designed to be
-                                    semi-guided, allowing each user to have a personalized experience.
-                                </Typography>
+                                <div style={{ width: '100%', height: '100%', border: `1px solid ${theme.palette.primary.contrastText}`, marginInline: 'auto' }}>
+                                    <Radial color={ theme.palette.accent.secondary }>
+                                        <RadialContentItem title='Content' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            My goal for the content of this site has been to include things that can be educational and interactive. I aimed for the content to be visually stimulating where possible to reduce level of intimidation stemming from the advanced nature of some of the topics.
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Design' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            My goal for the design of this site has been to provide a semi-guided structure to facilitate basic understanding of the content while still leaving room for people to have their own unique experiences while exploring.
+                                        </RadialContentItem>
+                                    </Radial>
+                                </div>
+                                {/*<Typography>*/}
+                                {/*    The goals for the site included making the project content educational and interactive, providing*/}
+                                {/*    users with unique experiences that mirror my own when working on these projects. I aimed for the*/}
+                                {/*    content to be visually stimulating to entice users to keep exploring. The site was designed to be*/}
+                                {/*    semi-guided, allowing each user to have a personalized experience.*/}
+                                {/*</Typography>*/}
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="content" title="Content Choices" images={{ light: ContentLight, dark: ContentDark }}>
                                 <Typography>
@@ -163,9 +175,24 @@ const AboutThisSitePage = () => {
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="felanguage" title="Languages" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
-                                <Typography>
-                                    The front end utilized a mixture of HTML, CSS, JavaScript, and C#.
-                                </Typography>
+                                <div style={{ width: '100%', height: '100%', border: `1px solid ${theme.palette.primary.contrastText}`, marginInline: 'auto' }}>
+                                    <Radial color={theme.palette.accent.secondary}>
+                                        <RadialContentItem title='HTML' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Everything visible component on this website has been constructed or derived directly from the use of HTML. While this is very standard, it is worth acknowledging as a critical language in the front-end construction. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='CSS' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            The CSS is a bit more abstracted compared to the HTML portion of the front end. Due to a combination of the framework and libraries I used, there is a significant amount of css
+                                            styling in place, but most of the custom defined CSS throughout the site is tied to either animations or visual fine-tuning. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Javascript' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Javascript plays a big part in the front end of this website due to the framework I used, i.e. React. Nearly every part of this site uses javascript to some degree. There are a hand full of
+                                            items that do not, but those are very few. 
+                                        </RadialContentItem>
+                                    </Radial>
+                                </div>
+                                {/*<Typography>*/}
+                                {/*    The front end utilized a mixture of HTML, CSS, JavaScript, and C#.*/}
+                                {/*</Typography>*/}
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="fedesign" title="Design Choices" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
@@ -182,21 +209,65 @@ const AboutThisSitePage = () => {
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="fecost" title="Cost" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
-                                    The overall cost of the front end was limited to the hosting costs on Azure.
+                                    The overall cost of the front end was limited to the hosting costs on Azure
                                 </Typography>
                             </AboutThisSiteSectionContentItem>
                             <AboutThisSiteSectionContentItem id="feresources" title="Tools, Libraries, and Resources" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
-                                <Typography>
-                                    Development was done in Visual Studio Community 2022, using frameworks such as React, Vite, and .NET Core. Source control was managed
-                                    through GitHub. Libraries and packages included:
-                                </Typography>
+                                <div style={{ width: '100%', height: '100%', border: `1px solid ${theme.palette.primary.contrastText}`, marginInline: 'auto' }}>
+                                    <Radial color={theme.palette.accent.secondary}>
+                                        <RadialContentItem title='React' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            The front end framework used to create this website is React. This has been outlined in the framework section as well, but since React is such a core part part of
+                                            the application and is also a library, it is definitely worth mentioning on its own. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Vite' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Vite has been integrated into the front end application as the primary built tool. This tool is responsible for building the source into the running web application.
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Visual Studio Community 2022' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            Visual Studio Community 2022 was the primary IDE used in the development of this website. The initial creation of the project was done through the provided React + .Net Core
+                                            template offered in Visual Studio Code. This template generated a basic scaffolding of folders and configuration files for the site. Nearly all of the template content has been
+                                            replaced with the exception of the linting configuration files and other config files, which have simply been added to. 
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Open Source Libs' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            A list of the libraries used in the front end of this site can be seen below, with the library name, version, and primary role:
+                                            <ul>
+                                                <li>@emotion/react - 11.11.4 -> Base CSS styling for MUI components.</li>
+                                                <li>@emotion/styled - 11.11.5 -> Custom CSS overrides for MUI components</li>
+                                                <li>@fortawesome/fontawesome - 6.5.2 -> Access to various icons from the fortawesome library.</li>
+                                                <li>@mui/icons-material: ^5.15.15 -> Provides easy access to various icons from the Material library.</li>
+                                                <li>@mui/lab - 5.0.0-alpha.170 -> Extra components from the Material UI library for special use cases.</li>
+                                                <li>@mui/material - 5.15.12 -> Core design library facilitating standard component architecture across the site.</li>
+                                                <li>@mui/x-charts - 7.3.0 -> Used to create the charts that display demo data. </li>
+                                                <li>@react-google-maps/api - 2.19.3 -> Used to integrate a google maps view in contact page.</li>
+                                                <li>axios - 1.6.8 -> Used to make API calls to the backend.</li>
+                                                <li>framer-motion - 11.2.6 -> Applies smooth orchestration of animations.</li>
+                                                <li>katex - 0.16.10 -> Used to apply LaTeX formatting for things like math equations</li>
+                                                <li>react - 18.2.0 -> Base react library.</li>
+                                                <li>react-router-dom - 6.22.2 -> Facilitates routing for multipaged site.</li>
+                                                <li>react-slick - 0.30.2 -> Carousel component support.</li>
+                                                <li>react-use-websocket - 4.8.1 -> Websockets used to facilitate live responses in demos.</li>
+                                            </ul>
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Figma' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            When necessary, I used Figma to wireframe and design custom components and pages. This tool was especially useful in the construction of components that required multiple layers, for which the wireframe provided
+                                            a clear component hierarchy for each layer.
+                                        </RadialContentItem>
+                                        <RadialContentItem title='Material UI' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
+                                            While Material UI is technically a library and design standard used in the front end of the application, I felt that it deserved its own spot as a primary resource in the front end development. 
+                                            The material UI library has been used extensively across the entire application to create a standardized UI design, which helped keep the look and feel of the application consistent across all pages and 
+                                            components. The material UI library also plays a key role in the thematic colors presented across the application, facilitating easy integration of both light and dark mode themes.
+                                        </RadialContentItem>
+                                    </Radial>
+                                </div>
+                                {/*<Typography>*/}
+                                {/*    Development was done in Visual Studio Community 2022, using frameworks such as React, Vite, and .NET Core. Source control was managed*/}
+                                {/*    through GitHub. Libraries and packages included:*/}
+                                {/*</Typography>*/}
                             </AboutThisSiteSectionContentItem>
                         </Section>
                         <Section id="backend" title="Construction of the Site - Back End" spacing={3} images={{ light: BackEndSectionLight, dark: BackEndSectionDark }} ltr={false}>
                             <AboutThisSiteSectionContentItem id="beserver" title="Server and Server Specs" images={{ light: PlaceholderLight, dark: PlaceholderDark }}>
                                 <Typography>
                                     The primary backend server for the web application's functionalities is a custom-made server housed in my home, which I built myself with the following specifications:
-
                                     GPU: Nvidia RTX 3080 Ti
                                     CPU: Ryzen 9 5950x
                                     RAM: 32GB

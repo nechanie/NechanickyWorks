@@ -71,10 +71,10 @@ const AboutMePage = () => {
                             src={MyPic}
                             sx={{ width: 120, height: 120, mx: 'auto' }}
                         />
-                        <Typography variant="h3" component="h1" color="textSecondary" gutterBottom>
+                        <Typography variant="h3" component="h1" gutterBottom>
                             Ethan Nechanicky
                         </Typography>
-                        <Typography variant="h6" align='center' color="textSecondary">
+                        <Typography variant="h6" align='center'>
                             Innovative Computer Science Graduate Specializing in AI and Full-Stack Development
                         </Typography>
                     </Box>

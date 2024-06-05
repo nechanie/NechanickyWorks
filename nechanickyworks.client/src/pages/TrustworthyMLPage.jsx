@@ -393,6 +393,93 @@ const TrustWorthyMLProjectPage = () => {
                             </Typography>
                         </Stack>
                     </Paper>
+                    <Grid container>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <Container maxWidth='sm' sx={{ my: '3%' }}>
+                                <Paper elevation={3} sx={{ p: 3 }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Demo How To:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>I recommend checking out the <Glossary />, which includes some helpful definitions for the concepts you may be unfamiliar with.</li>
+                                            <li>Start by accessing the demo configuration form.</li>
+                                            <li>Review the pre-filled hyperparameters. These defaults are a good starting point for your experimentation.</li>
+                                            <li>Customize your training session. You have the flexibility to adjust any of the hyperparameters according to your interests or needs.</li>
+                                            <li>(Optional) Select the option to evaluate against PGD attacks if you wish to test the model's performance under adversarial conditions.</li>
+                                            <li>(Optional) Review and adjust the PGD attack hyperparameters, if necessary. These fields become visible only when you opt to evaluate the model against PGD attacks and are pre-filled with recommended default values.</li>
+                                            <li>Once you've configured your settings, submit the form. This action initiates the model's training and evaluation process.</li>
+                                            <li>Watch the live display that appears, showing real-time updates of the model's training progress and performance evaluation.</li>
+                                            <li>After the demo completes, the final evaluation metrics of the model will be displayed. This includes its accuracy and, if selected, its robustness against PGD attacks.</li>
+                                            <li>Analyze the outcomes. Use this information to understand how different hyperparameters and adversarial attacks affect the model's performance.</li>
+                                            <li>The form will allow new submissions once the current demo run completes. Feel free to experiment with different configurations to see how they impact model performance.</li>
+                                        </ul>
+                                    </Typography>
+                                </Paper>
+                            </Container>
+                        </Grid>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                        </Grid>
+                    </Grid>
+
+                    {showBatchGraph && (<Paper elevation={3} sx={{ marginTop: 2, py: '3%' }}>
+                        <Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
+                            <LineGraph dataRefs={batches} dataVals={batchGraphData} xLabel="Batches" showPoints={showPoints} />
+                        </Box>
+                        <Box>
+                            <GraphDescription
+                                title="Batch Training Progress"
+                                description="This graph displays the training accuracy and loss over each batch. The X-axis represents each batch processed, while the Y-axis shows the accuracy percentage and loss value. Higher accuracy and lower loss values indicate better model performance. Look for trends of increasing accuracy and decreasing loss as more batches are processed, which suggest the model is learning effectively."
+                            />
+                        </Box>
+                        <Container maxWidth='md'>
+                            {accuracy !== null && (
+                                <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
+                                    Accuracy of your trained model: {accuracy}%
+                                </Typography>
+                            )}
+
+                        </Container>
+                        {showEpochGraph && (<React.Fragment><Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
+                            <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
+                        </Box>
+                            <Box>
+                                <GraphDescription
+                                    title="Epoch Training Progress"
+                                    description="This graph shows the progression of training over each epoch. Each epoch represents a full cycle through the training dataset. The graph tracks the accuracy and loss at the end of each epoch. Stable or increasing accuracy combined with decreasing loss across epochs generally indicates a successful training session."
+                                />
+                            </Box>
+                        </React.Fragment>
+                        )}
+
+                        {finalAccuracy !== null && (
+                            <React.Fragment>
+                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
+                                    Final Accuracy After Attack: {finalAccuracy}%
+                                </Typography>
+                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
+                                    Change in accuracy due to attack: {(finalAccuracy - accuracy).toFixed(2)}%
+                                </Typography>
+                            </React.Fragment>
+                        )}
+                        {showBarGraph && (
+                            <React.Fragment>
+                                <Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
+                                    <BarGraph dataRefs={categories} dataVals={[{
+                                        type: 'bar',
+                                        data: categoryPercentages
+                                    }]} />
+                                </Box>
+                                <Box>
+                                    <GraphDescription
+                                        title="Category Breakdown Performance"
+                                        description="This bar graph represents the attack's performance on your model across each of the different categories. It helps visualize the robustness (strength against attacks) of the model against adversarial examples. Each bar will show you what percentage of the images in each class were misclasified. Low bars will signify categories that are difficult to attack, while high bars will signify categories that are easy to attack, which can help reveal weaknesses in your model."
+                                    />
+                                </Box>
+                            </React.Fragment>
+                        )}
+                    </Paper>)}
                     <Paper square={false} elevation={3} sx={{
                         p:3
                     }}>
@@ -403,7 +490,7 @@ const TrustWorthyMLProjectPage = () => {
                                         What does it do?
                                     </Typography>
                                     <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        The demo below enables you to train a computer vision model using one of three base model architectures: LeNet, VGG, and ResNet.
+                                        The demo enables you to train a computer vision model using one of three base model architectures: LeNet, VGG, and ResNet.
                                         You will train your model on one of two datasets: MNIST, which includes 70,000 black and white images of handwritten digits from
                                         0 to 9, or CIFAR-10, which consists of 60,000 colored images of ten different types of objects. The training process involves teaching
                                         the model to recognize and categorize images from these datasets into their respective categories. For instance, if you train your
@@ -458,93 +545,6 @@ const TrustWorthyMLProjectPage = () => {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <Grid container>
-                        <Grid item xs={12} lg={6} xl={6}>
-                            <Container maxWidth='sm' sx={{ my: '3%' }}>
-                                <Paper elevation={3} sx={{ p: 3 }}>
-                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                        Demo How To:
-                                    </Typography>
-                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        <ul>
-                                            <li>I recommend checking out the <Glossary/>, which includes some helpful definitions for the concepts you may be unfamiliar with.</li>
-                                            <li>Start by accessing the demo configuration form.</li>
-                                            <li>Review the pre-filled hyperparameters. These defaults are a good starting point for your experimentation.</li>
-                                            <li>Customize your training session. You have the flexibility to adjust any of the hyperparameters according to your interests or needs.</li>
-                                            <li>(Optional) Select the option to evaluate against PGD attacks if you wish to test the model's performance under adversarial conditions.</li>
-                                            <li>(Optional) Review and adjust the PGD attack hyperparameters, if necessary. These fields become visible only when you opt to evaluate the model against PGD attacks and are pre-filled with recommended default values.</li>
-                                            <li>Once you've configured your settings, submit the form. This action initiates the model's training and evaluation process.</li>
-                                            <li>Watch the live display that appears, showing real-time updates of the model's training progress and performance evaluation.</li>
-                                            <li>After the demo completes, the final evaluation metrics of the model will be displayed. This includes its accuracy and, if selected, its robustness against PGD attacks.</li>
-                                            <li>Analyze the outcomes. Use this information to understand how different hyperparameters and adversarial attacks affect the model's performance.</li>
-                                            <li>The form will allow new submissions once the current demo run completes. Feel free to experiment with different configurations to see how they impact model performance.</li>
-                                        </ul>
-                                    </Typography>
-                                </Paper>
-                            </Container>
-                        </Grid>
-                        <Grid item xs={12} lg={6} xl={6}>
-                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
-                        </Grid>
-                    </Grid>
-                      
-                    {showBatchGraph && (<Paper elevation={3} sx={{ marginTop: 2, py:'3%' }}>
-                        <Box sx={{height: { xs: '26vh', sm: '40vh', md:'50vh' }, p: "3%" }} ref={demoRunningRef}>
-                            <LineGraph dataRefs={batches} dataVals={batchGraphData} xLabel="Batches" showPoints={showPoints} />
-                        </Box>
-                        <Box>
-                            <GraphDescription
-                                title="Batch Training Progress"
-                                description="This graph displays the training accuracy and loss over each batch. The X-axis represents each batch processed, while the Y-axis shows the accuracy percentage and loss value. Higher accuracy and lower loss values indicate better model performance. Look for trends of increasing accuracy and decreasing loss as more batches are processed, which suggest the model is learning effectively."
-                            />
-                        </Box>
-                        <Container maxWidth='md'>
-                            {accuracy !== null && (
-                                <Typography variant="h5" align="center" sx={{ marginTop: 2 }}>
-                                    Accuracy of your trained model: {accuracy}%
-                                </Typography>
-                            )}
-                            
-                        </Container>
-                        {showEpochGraph && (<React.Fragment><Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
-                            <LineGraph dataRefs={epochs} dataVals={epochGraphData} xLabel="Epochs" showPoints={showPoints} />
-                        </Box>
-                        <Box>
-                            <GraphDescription
-                                    title="Epoch Training Progress"
-                                    description="This graph shows the progression of training over each epoch. Each epoch represents a full cycle through the training dataset. The graph tracks the accuracy and loss at the end of each epoch. Stable or increasing accuracy combined with decreasing loss across epochs generally indicates a successful training session."
-                                />
-                            </Box>
-                        </React.Fragment>
-                        )}
-
-                        {finalAccuracy !== null && (
-                            <React.Fragment>
-                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
-                                    Final Accuracy After Attack: {finalAccuracy}%
-                                </Typography>
-                                <Typography variant="h5" align="center" sx={{ mt: '4%' }}>
-                                    Change in accuracy due to attack: {(finalAccuracy - accuracy).toFixed(2)}%
-                                </Typography>
-                            </React.Fragment>
-                        )}
-                        {showBarGraph && (
-                            <React.Fragment>
-                                <Box sx={{ height: { xs: '26vh', sm: '40vh', md: '50vh' }, p: "3%" }} ref={demoRunningRef}>
-                                <BarGraph dataRefs={categories} dataVals={[{
-                                    type: 'bar',
-                                    data: categoryPercentages
-                                }]}/>
-                            </Box>
-                            <Box>
-                            <GraphDescription
-                                title="Category Breakdown Performance"
-                                description="This bar graph represents the attack's performance on your model across each of the different categories. It helps visualize the robustness (strength against attacks) of the model against adversarial examples. Each bar will show you what percentage of the images in each class were misclasified. Low bars will signify categories that are difficult to attack, while high bars will signify categories that are easy to attack, which can help reveal weaknesses in your model."
-                            />
-                                </Box>
-                            </React.Fragment>
-                        )}
-                    </Paper>)}
                 </Container>
             </Container>
                 <Fade appear={false} in={bannerOpen}>
