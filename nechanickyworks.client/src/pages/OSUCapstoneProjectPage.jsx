@@ -259,6 +259,43 @@ const OSUCapstoneProjectPage = () => {
                             </Typography>
                         </Stack>
                     </Paper>
+                    <Grid container>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <Container maxWidth='sm' sx={{ my: '3%' }}>
+                                <Paper elevation={3} sx={{ p: 3 }}>
+                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
+                                        Demo How To:
+                                    </Typography>
+                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
+                                        <ul>
+                                            <li>Choose a profile using the tool provided in the form. The tool randomly selects several profiles from the database to choose from. If you would like different options, you can use the provided refresh button to get a new random set of profiles. Some profiles may be blank.</li>
+                                            <li>The profile number of the chosen profile will be displayed on the form.</li>
+                                            <li>Next, select a model from the available options. Different models have different capabilities, and this choice will influence the embedding process.</li>
+                                            <li>Specify the similarity metric you want to use for comparing profiles. This will determine how the similarity is calculated.</li>
+                                            <li>Decide whether to embed the entire database or only a subset. If you choose a subset, specify the number of profiles to generate embeddings for. This step is crucial for processing and analyzing the data efficiently. Profiles in subsets will be chosen randomly, this means that each time you submit the form, you will likely get a variety of results.</li>
+                                            <li>Determine the number of similar results you wish to generate and display. This number determines the maximum number of top most similar profiles to show.</li>
+                                            <li>Click the "Find Similar Profiles" button to start the embedding process.</li>
+                                            <li>The demo will present you with a list of similar profiles, including the original profile for comparison. Each similar result will feature a ranking value (K value), indicating the degree of similarity to the chosen profile. Note that the K values take different forms depending on your choice of similarity metric, however, the displayed results will always be ordered from most similar to least similar.</li>
+                                            <li>Review the analytics provided, such as runtime for embedding, database transactions, and overall processing time. Compiled metrics for the similarity results offer further insights into the analysis.</li>
+                                            <li>Once the current job completes, the form will allow new submissions. Feel free to experiment with different configurations to explore the system's capabilities.</li>
+                                        </ul>
+                                    </Typography>
+                                </Paper>
+                            </Container>
+                        </Grid>
+                        <Grid item xs={12} lg={6} xl={6}>
+                            <OSUCapstoneForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                        </Grid>
+                    </Grid>
+                    {showTable && (
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Paper elevation={3} sx={{ p: 3 }} ref={demoRunningRef}>
+                                    <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={results} selectedProfile={selectedProfile} />
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    )}
                     <Paper square={false} elevation={3} sx={{
                         p: 3
                     }}>
@@ -353,43 +390,6 @@ const OSUCapstoneProjectPage = () => {
                             </Grid>
                         </Grid>
                     </Paper>
-                    <Grid container>
-                        <Grid item xs={12} lg={6} xl={6}>
-                            <Container maxWidth='sm' sx={{ my: '3%' }}>
-                                <Paper elevation={3} sx={{ p: 3 }}>
-                                    <Typography variant="h5" align="center" component="h1" gutterBottom>
-                                        Demo How To:
-                                    </Typography>
-                                    <Typography variant="body1" align="left" sx={{ margin: '20px 0' }} component="div">
-                                        <ul>
-                                            <li>Choose a profile using the tool provided in the form. The tool randomly selects several profiles from the database to choose from. If you would like different options, you can use the provided refresh button to get a new random set of profiles. Some profiles may be blank.</li>
-                                            <li>The profile number of the chosen profile will be displayed on the form.</li>
-                                            <li>Next, select a model from the available options. Different models have different capabilities, and this choice will influence the embedding process.</li>
-                                            <li>Specify the similarity metric you want to use for comparing profiles. This will determine how the similarity is calculated.</li>
-                                            <li>Decide whether to embed the entire database or only a subset. If you choose a subset, specify the number of profiles to generate embeddings for. This step is crucial for processing and analyzing the data efficiently. Profiles in subsets will be chosen randomly, this means that each time you submit the form, you will likely get a variety of results.</li>
-                                            <li>Determine the number of similar results you wish to generate and display. This number determines the maximum number of top most similar profiles to show.</li>
-                                            <li>Click the "Find Similar Profiles" button to start the embedding process.</li>
-                                            <li>The demo will present you with a list of similar profiles, including the original profile for comparison. Each similar result will feature a ranking value (K value), indicating the degree of similarity to the chosen profile. Note that the K values take different forms depending on your choice of similarity metric, however, the displayed results will always be ordered from most similar to least similar.</li>
-                                            <li>Review the analytics provided, such as runtime for embedding, database transactions, and overall processing time. Compiled metrics for the similarity results offer further insights into the analysis.</li>
-                                            <li>Once the current job completes, the form will allow new submissions. Feel free to experiment with different configurations to explore the system's capabilities.</li>
-                                        </ul>
-                                    </Typography>
-                                </Paper>
-                            </Container>
-                        </Grid>
-                        <Grid item xs={12} lg={6} xl={6}>
-                            <OSUCapstoneForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
-                        </Grid>
-                    </Grid>
-                    {showTable && (
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Paper elevation={3} sx={{ p: 3 }} ref={demoRunningRef}>
-                                    <CapstoneResTable setupTime={setupTime} modelTime={modelTime} upsertTime={upsertTime} queryTime={queryTime} systemTime={systemTime} kMin={kMin} kMax={kMax} kAvg={kAvg} rows={results} selectedProfile={selectedProfile} />
-                                </Paper>
-                            </Grid>
-                        </Grid>
-                    )}
                 </Container>
             </Container>
             <Fade appear={false} in={bannerOpen}>

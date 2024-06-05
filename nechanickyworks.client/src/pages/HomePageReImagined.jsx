@@ -53,7 +53,7 @@ const HomePageReImagined = () => {
                         <Typography variant='h2' color='white' align='center'>Nechanicky Works</Typography>
                         <Stack spacing={2} align='center' alignItems='center'>
                             <Typography sx={{ fontSize: {xs: '3rem'}, fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem' }} variant="h6"  color='white'>Ethan Nechanicky Portfolio</Typography>
-                            <DoubleRippleButton size='large' addBackground={alpha(theme.palette.background.paper, 0.2)} component={Link} rippleColor={alpha(theme.palette.primary.dark, 0.5)} hoverColor={theme.palette.common.white} sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem', fontSize: { xs: '1.2rem' } }} startingColor='transparent' onClick={handleExploreClick} variant='outlined'>Explore</DoubleRippleButton>
+                            <DoubleRippleButton size='medium' addBackground={alpha(theme.palette.background.paper, 0.2)} component={Link} rippleColor={alpha(theme.palette.primary.dark, 0.5)} hoverColor={theme.palette.common.white} sx={{ fontWeight: 'bold', fontSynthesisWeight: 'auto', letterSpacing: '0.1rem', fontSize: { xs: '1.2rem' } }} startingColor='transparent' onClick={handleExploreClick} variant='outlined'>Explore</DoubleRippleButton>
                         </Stack>
                     </Stack>
                 </Box>
@@ -185,7 +185,7 @@ const HomePageReImagined = () => {
                         <Box sx={{
                             width: '100%'
                         }} align='center'>
-                            <Button size="large" variant='outlined' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} disabled>Learn About this Site (Coming Soon)</Button>
+                            <DoubleRippleButton size="large" variant='outlined' rippleColor={alpha(theme.palette.accent.alternate, 0.5)} startingColor='transparent' sx={{ width: 'fit-content', color: theme.palette.text.primary, borderColor: theme.palette.text.primary }} component={Link} to="/about-this-site">Learn About this Site</DoubleRippleButton>
                         </Box>
                     </Stack>
                 </Container>

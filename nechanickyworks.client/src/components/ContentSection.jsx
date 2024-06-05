@@ -12,7 +12,7 @@ const AboutThisSiteSectionMedia = ({ images, sx = {}, ...props }) => {
         setThemedImage((theme.palette.mode === 'light' ? images.light : images.dark));
     }, [theme.palette.mode, images.dark, images.light]);
     return (
-        <Box component={motion.div} sx={[{ borderRadius: '10px', width: `calc(100% - 24px)`, height: '100%', backgroundImage: `url(${themedImage})`, backgroundSize: 'cover', backgroundPosition: 'center', boxSizing: 'border-box', padding:'inherit' }, sx] } {...props}/>
+        <Box component={motion.div} sx={[{maxHeight: "70vh", borderRadius: '10px', width: `calc(100% - 24px)`, height: '100%', backgroundImage: `url(${themedImage})`, backgroundSize: 'cover', backgroundPosition: 'center', boxSizing: 'border-box', padding:'inherit' }, sx] } {...props}/>
     );
 }
 
@@ -32,16 +32,16 @@ export const AboutThisSiteSectionContentItem = ({ id, title, images, children, t
     }
 
     return (
-        <Grid item component={motion.div} layoutId={ id } id={id} xs={6} {...props} align='center' sx={{width:'100%', height:'100%'} }>
-            <Card>
-                <CardActionArea onClick={() => setSelectedItem(currentItem)}>
+        <Grid item component={motion.div} layoutId={ id } id={id} xs={6} {...props} align='center' sx={{width:'100%'} }>
+            <Card sx={{ height: '100%'} }>
+                <CardActionArea onClick={() => setSelectedItem(currentItem)} sx={{height: '100%', display: 'flex', flexDirection: 'column'} }>
                     <CardMedia
-                        sx={{ height: 140 }}
+                        sx={{ height: 140, width: "100%" }}
                         image={themedImage}
                         title={title }
                     />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
+                    <CardContent sx={{display: 'flex', justifyContent: 'center', alignContent: 'stretch', flexGrow: 1} }>
+                        <Typography gutterBottom variant="h5" component="div" sx={{wordBreak: 'break-word', height: 'fit-content', width: "100%", alignSelf:'center', justifySelf: 'center'} }>
                             {title}
                         </Typography>
                     </CardContent>
@@ -65,12 +65,12 @@ const AboutThisSiteSectionRoot = ({ id, title, children, images = null, ltr = tr
         <Grid container id={id} justifyContent="center" {...props} >
         
             {(images && ltr) && (
-                <Grid item md={5} sx={{ position: 'relative', display: {xs: 'none', md:'block'} }}>
-                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute', top: 0}} />
+                <Grid item md={5} sx={{ position: 'relative', display: {xs: 'none', md:'flex', flexDirection: 'column', justifyContent: 'center'} }}>
+                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute'}} />
 
                         <AnimatePresence>
                             {selectedItem != null && (
-                                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute', top: 0}} {...imageAnimationProps} />
+                                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute'}} {...imageAnimationProps} />
                             )}
                         </AnimatePresence>
                 </Grid>
@@ -105,12 +105,12 @@ const AboutThisSiteSectionRoot = ({ id, title, children, images = null, ltr = tr
                     </AnimatePresence>
                 </Box>
             </Grid>
-            {(images && !ltr) && (<Grid item md={5} sx={{ position: 'relative', display: { xs: 'none', md: 'block' } }}>
-                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute', top: 0}} />
+            {(images && !ltr) && (<Grid item md={5} sx={{ position: 'relative', display: {xs: 'none', md:'flex', flexDirection: 'column', justifyContent: 'center'} }}>
+                <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootBaseImage' images={images} {...mediaProps} sx={{ position: 'absolute'}} />
 
                 <AnimatePresence>
                     {selectedItem != null && (
-                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute', top: 0 }} {...imageAnimationProps} />
+                        <AboutThisSiteSectionMedia key='AboutThisSiteSectionRootItemImage' images={selectedItem.images} {...mediaProps} sx={{ position: 'absolute' }} {...imageAnimationProps} />
                     )}
                 </AnimatePresence>
             </Grid>)}
