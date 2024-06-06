@@ -26,6 +26,7 @@ import Klotee from './assets/fonts/Klotee.otf';
 import Artega from './assets/fonts/Artega.otf';
 import Easy from './assets/fonts/Easy.otf';
 import ScrollToTopButton from './components/utils/ScrollToTopButton';
+import ConsultingPricePage from './pages/ConsultingPricePage';
 
 const getDesignTokens = (mode) => ({
     "palette": {
@@ -253,7 +254,9 @@ function App() {
                                 <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
                                 <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
                                 <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
-                                <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
+                            <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
+                            <Route path="/Pricing" element={<ConsultingPricePage />} />
+
                             </Routes>
                         {/*<TaskWindow/>*/}
                             <ScrollToTopButton/>
