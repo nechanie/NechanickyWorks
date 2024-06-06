@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Typography, Box, Grid, Card, CardContent } from '@mui/material';
+import SiteFooter from '../components/Shared/Footer';
 
 const pricingTiers = [
     {
@@ -59,7 +60,9 @@ const additionalInfo = [
 
 const ConsultingPricePage = () => {
     return (
-        <Container>
+        <>
+        <Container sx={{paddingTop: '64px'} }>
+            <Container maxWidth="xl" sx={{padding:"3%"} }>
             <Typography variant="h4" component="h1" gutterBottom>
                 Nechanicky Solutions LLC - Service Tiers
             </Typography>
@@ -85,7 +88,8 @@ const ConsultingPricePage = () => {
                         </Card>
                     </Grid>
                 ))}
-            </Grid>
+                    </Grid>
+            <Container maxWidth="sm">
             <Box mt={4}>
                 {additionalInfo.map((info, index) => (
                     <Box key={index} mb={3}>
@@ -101,8 +105,12 @@ const ConsultingPricePage = () => {
                         </Box>
                     </Box>
                 ))}
-            </Box>
-        </Container>
+                        </Box>
+                    </Container>
+                </Container>
+            </Container>
+        <SiteFooter/>
+        </>
     );
 };
 
