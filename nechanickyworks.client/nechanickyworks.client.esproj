@@ -10,6 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
+    <Folder Include="src\components\Dedication\Data\" />
     <Folder Include="src\components\Demos\" />
   </ItemGroup>
   <ItemGroup>
