@@ -230,21 +230,21 @@ const AboutThisSitePage = () => {
                                         <RadialContentItem title='Open Source Libs' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
                                             A list of the libraries used in the front end of this site can be seen below, with the library name, version, and primary role:
                                             <ul>
-                                                <li>@emotion/react - 11.11.4 -{'>'} Base CSS styling for MUI components.</li>
-                                                <li>@emotion/styled - 11.11.5 -{'>'} Custom CSS overrides for MUI components</li>
-                                                <li>@fortawesome/fontawesome - 6.5.2 -{'>'} Access to various icons from the fortawesome library.</li>
-                                                <li>@mui/icons-material: ^5.15.15 -{'>'} Provides easy access to various icons from the Material library.</li>
-                                                <li>@mui/lab - 5.0.0-alpha.170 -{'>'} Extra components from the Material UI library for special use cases.</li>
-                                                <li>@mui/material - 5.15.12 -{'>'} Core design library facilitating standard component architecture across the site.</li>
-                                                <li>@mui/x-charts - 7.3.0 -{'>'} Used to create the charts that display demo data. </li>
-                                                <li>@react-google-maps/api - 2.19.3 -{'>'} Used to integrate a google maps view in contact page.</li>
-                                                <li>axios - 1.6.8 -{'>'} Used to make API calls to the backend.</li>
-                                                <li>framer-motion - 11.2.6 -{'>'} Applies smooth orchestration of animations.</li>
-                                                <li>katex - 0.16.10 -{'>'} Used to apply LaTeX formatting for things like math equations</li>
-                                                <li>react - 18.2.0 -{'>'} Base react library.</li>
-                                                <li>react-router-dom - 6.22.2 -{'>'} Facilitates routing for multipaged site.</li>
-                                                <li>react-slick - 0.30.2 -{'>'} Carousel component support.</li>
-                                                <li>react-use-websocket - 4.8.1 -{'>'} Websockets used to facilitate live responses in demos.</li>
+                                                <li>@emotion/react - 11.11.4 -> Base CSS styling for MUI components.</li>
+                                                <li>@emotion/styled - 11.11.5 -> Custom CSS overrides for MUI components</li>
+                                                <li>@fortawesome/fontawesome - 6.5.2 -> Access to various icons from the fortawesome library.</li>
+                                                <li>@mui/icons-material: ^5.15.15 -> Provides easy access to various icons from the Material library.</li>
+                                                <li>@mui/lab - 5.0.0-alpha.170 -> Extra components from the Material UI library for special use cases.</li>
+                                                <li>@mui/material - 5.15.12 -> Core design library facilitating standard component architecture across the site.</li>
+                                                <li>@mui/x-charts - 7.3.0 -> Used to create the charts that display demo data. </li>
+                                                <li>@react-google-maps/api - 2.19.3 -> Used to integrate a google maps view in contact page.</li>
+                                                <li>axios - 1.6.8 -> Used to make API calls to the backend.</li>
+                                                <li>framer-motion - 11.2.6 -> Applies smooth orchestration of animations.</li>
+                                                <li>katex - 0.16.10 -> Used to apply LaTeX formatting for things like math equations</li>
+                                                <li>react - 18.2.0 -> Base react library.</li>
+                                                <li>react-router-dom - 6.22.2 -> Facilitates routing for multipaged site.</li>
+                                                <li>react-slick - 0.30.2 -> Carousel component support.</li>
+                                                <li>react-use-websocket - 4.8.1 -> Websockets used to facilitate live responses in demos.</li>
                                             </ul>
                                         </RadialContentItem>
                                         <RadialContentItem title='Figma' style={{ width: '100%', height: '100%', backgroundColor: theme.palette.surfaceSecondary.main, textAlign: 'center' }}>
