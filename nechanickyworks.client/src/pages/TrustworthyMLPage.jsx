@@ -19,6 +19,8 @@ import PageTitle from '../components/Shared/PageTitle';
 
 
 const TrustWorthyMLProjectPage = () => {
+    // Use the `useWebSocket` hook to use shared websocket connection
+    const { webSocketManager, isWebSocketRunning } = useWebSocket();
     const currentPath = useLocation();
     const socketPageRef = PageRef.TML;
     const [accuracy, setAccuracy] = useState(null);
@@ -49,10 +51,79 @@ const TrustWorthyMLProjectPage = () => {
     const [showBarGraph, setShowBarGraph] = useState(false);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
-    // Use the `useWebSocket` hook to use shared websocket connection
-    const { webSocketManager, queue } = useWebSocket();
+
     const demoRunningRef = useRef(null);
-    const [bannerOpen, setBannerOpen] = React.useState(true);
+    const [bannerOpen, setBannerOpen] = useState(false);
+
+    const saveStateToLocalStorage = () => {
+        const state = {
+            accuracy,
+            finalAccuracy,
+            batches,
+            lossData,
+            accuracyData,
+            epochs,
+            epochLossData,
+            batchGraphData,
+            epochGraphData,
+            isFormDisabled,
+            showPoints,
+            primaryProgress,
+            secondaryProgress,
+            showPrimaryProgress,
+            showSecondaryProgress,
+            isCircular,
+            statusMessage,
+            lastBatchNum,
+            willAttack,
+            showBatchGraph,
+            showEpochGraph,
+            categories,
+            categoryPercentages,
+            showBarGraph,
+            bannerOpen
+        };
+
+        localStorage.setItem('tmlProjectState', JSON.stringify(state));
+    };
+
+    useEffect(() => {
+        const savedState = localStorage.getItem('tmlProjectState');
+        if (savedState) {
+            const parsedState = JSON.parse(savedState);
+            setAccuracy(parsedState.accuracy);
+            setFinalAccuracy(parsedState.finalAccuracy);
+            setBatches(parsedState.batches);
+            setLossData(parsedState.lossData);
+            setAccuracyData(parsedState.accuracyData);
+            setEpochs(parsedState.epochs);
+            setEpochLossData(parsedState.epochLossData);
+            setBatchGraphData(parsedState.batchGraphData);
+            setEpochGraphData(parsedState.epochGraphData);
+            setIsFormDisabled(parsedState.isFormDisabled);
+            setShowPoints(parsedState.showPoints);
+            setPrimaryProgress(parsedState.primaryProgress);
+            setSecondaryProgress(parsedState.secondaryProgress);
+            setShowPrimaryProgress(parsedState.showPrimaryProgress);
+            setShowSecondaryProgress(parsedState.showSecondaryProgress);
+            setIsCircular(parsedState.isCircular);
+            setStatusMessage(parsedState.statusMessage);
+            setLastBatchNum(parsedState.lastBatchNum);
+            setWillAttack(parsedState.willAttack);
+            setShowBatchGraph(parsedState.showBatchGraph);
+            setShowEpochGraph(parsedState.showEpochGraph);
+            setCategories(parsedState.categories);
+            setCategoryPercentages(parsedState.categoryPercentages);
+            setShowBarGraph(parsedState.showBarGraph);
+            setBannerOpen(parsedState.bannerOpen);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (isWebSocketRunning) {
+            saveStateToLocalStorage();
+        }
+    }, [accuracy, finalAccuracy, batches, lossData, accuracyData, epochs, epochLossData, batchGraphData, epochGraphData, isFormDisabled, showPoints, primaryProgress, secondaryProgress, showPrimaryProgress, showSecondaryProgress, isCircular, statusMessage, lastBatchNum, willAttack, showBatchGraph, showEpochGraph, categories, categoryPercentages, showBarGraph, bannerOpen, isWebSocketRunning])
 
     React.useEffect(() => {
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;

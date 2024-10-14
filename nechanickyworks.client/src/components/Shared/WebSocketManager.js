@@ -82,6 +82,8 @@ class WebSocketManager {
 
         this.currentWebSocket.onopen = () => {
             this.currentWebSocket.send(JSON.stringify(this.currentTask.taskInitData)); // Send data if needed
+            if (this.onQueueUpdate) this.onQueueUpdate(); // Notify that websocket is open
+            this.currentTask.status = TaskStatus.RUNNING;
         };
 
         this.currentWebSocket.onmessage = (event) => {
@@ -107,7 +109,7 @@ class WebSocketManager {
             this.processNextRequest(); // Attempt to continue with the next request
         };
 
-        this.currentTask.status = TaskStatus.RUNNING;
+        //this.currentTask.status = TaskStatus.RUNNING;
         this.updateQueueSubscribers();
     }
 
