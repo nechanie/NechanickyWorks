@@ -11,6 +11,8 @@ import Cover from '../components/Display/Cover';
 import OSUCapstoneBackgroundImage from "../assets/imgs/backgrounds/OSUCapstone/OSUCapstoneBackground.webp";
 import OSUCapstoneBackgroundImageDark from "../assets/imgs/backgrounds/OSUCapstone/OSUCapstoneBackgroundDark.webp";
 import CapstoneResTable from '../components/Display/data/CapstoneResTable';
+import axios from 'axios';
+
 
 
 const OSUCapstoneProjectPage = () => {
@@ -45,6 +47,18 @@ const OSUCapstoneProjectPage = () => {
     const { webSocketManager, queue } = useWebSocket();
     const webSocketRef = useRef(null);
     const demoRunningRef = useRef(null);
+    async function CapstoneInit(payload) {
+        try {
+            const response = await axios.post('http://localhost:8181/api/GPUJobRequestV1', payload);
+            if (response.status === 200) {
+                return response.data.status;
+            } else {
+                console.log("api did not respond with status 200");
+            }
+        } catch (error) {
+            console.log("error in api response");
+        }
+    }
 
     React.useEffect(() => {
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
@@ -180,7 +194,7 @@ const OSUCapstoneProjectPage = () => {
         };
     }, [webSocketManager, socketPageRef, lastEmbedNum, statusMessage, lastChunkNum]);
 
-    const handleFormSubmit = useCallback((formData) => {
+    const handleFormSubmit = useCallback(async (formData) => {
         setIsFormDisabled(true);
         setShowLog(true);
         setLogMessages("");
@@ -203,16 +217,21 @@ const OSUCapstoneProjectPage = () => {
         setResults([]);
         setSelectedProfile(null);
         setShowTable(false);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/CapstoneV1", "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
 
-        newTask.taskInitData = {
+        const job_id = await CapstoneInit({
+            job_type: "capstone",
             profile: formData.selectedProfile,
             model: formData.selectedModel,
             dim: formData.embeddingDim,
             metric: formData.selectedMetric,
             embeddingCount: formData.numProfilesToGenerate,
             resultsCount: formData.numSimilarResults
-        };
+        });
+
+        const newTask = new WebSocketTask("ws://localhost:8181/ws/GPUJobWebsocketV1", "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
+        newTask.taskInitData = {
+            job_id: job_id
+        }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
         console.log("> Request queued");
@@ -230,7 +249,7 @@ const OSUCapstoneProjectPage = () => {
                             <Typography variant="h4" align="center" component="h1" color='inherit' gutterBottom>
                                 Introduction
                             </Typography>
-                            <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight:'bold' }}>
+                            <Typography variant="body1" align="center" sx={{ margin: '20px 0', fontWeight: 'bold' }}>
                                 This project harnesses advanced Natural Language Processing (NLP) techniques alongside vector database technology
                                 to profile individuals based on their social media data. Employing transformer-based models, it finds users similar
                                 to a given profile, expanding profiling capabilities beyond traditional analysis. The integration of Pinecone,
@@ -448,9 +467,9 @@ const OSUCapstoneProjectPage = () => {
                     )}
                 </Paper>
             </Fade>
-            
+
             {/* Footer Section */}
-            <SiteFooter/>
+            <SiteFooter />
         </React.Fragment>
     );
 }

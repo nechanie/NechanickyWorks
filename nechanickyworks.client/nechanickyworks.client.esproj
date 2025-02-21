@@ -11,6 +11,7 @@
   <ItemGroup>
     <Folder Include=".vscode\" />
     <Folder Include="src\components\Demos\" />
+    <Folder Include="src\reducers\sections\TML\" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".vscode\launch.json" />

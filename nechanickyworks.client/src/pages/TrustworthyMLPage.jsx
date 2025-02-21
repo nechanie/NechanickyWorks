@@ -16,7 +16,7 @@ import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
 import PageTitle from '../components/Shared/PageTitle';
-
+import axios from 'axios';
 
 const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
@@ -53,6 +53,21 @@ const TrustWorthyMLProjectPage = () => {
     const { webSocketManager, queue } = useWebSocket();
     const demoRunningRef = useRef(null);
     const [bannerOpen, setBannerOpen] = React.useState(true);
+
+    //Test of api job request submit method
+    async function TMLinit(payload) {
+        try {
+            const response = await axios.post('http://localhost:8181/api/GPUJobRequestV1', payload);
+            if (response.status === 200) {
+                return response.data.status;
+            } else {
+                console.log("api did not respond with status 200");
+            }
+        } catch (error) {
+            console.log("error in api response");
+        }
+    }
+
 
     React.useEffect(() => {
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
@@ -226,12 +241,16 @@ const TrustWorthyMLProjectPage = () => {
                 setFinalAccuracy(msg.data.accuracy);
                 setShowBarGraph(true);
             }
+            if (msg.type === 'subscriber_info') {
+                console.log(msg);
+            }
         };
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
 
         webSocketManager.onLogMessage = (message) => {
             if (webSocketManager.currentTask && webSocketManager.currentTask.PageRef() === socketPageRef) {
+                console.log(message);
                 handleMessage(message);
                 webSocketManager.webSocketLogs[socketPageRef].push(message);
             }
@@ -293,7 +312,7 @@ const TrustWorthyMLProjectPage = () => {
         });
     }, [epochAccuracyData, epochLossData, lineColor]);
 
-    const handleFormSubmit = useCallback((formData) => {
+    const handleFormSubmit = useCallback(async (formData) => {
         setAccuracy(null);
         setFinalAccuracy(null);
         setAccuracyData([]);
@@ -320,9 +339,9 @@ const TrustWorthyMLProjectPage = () => {
         setCategories([]);
         setCategoryPercentages([]);
         setShowBarGraph(false);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
 
-        newTask.taskInitData = {
+        const job_id = await TMLinit({
+            job_type: "tml",
             model: formData.model,
             dataset: formData.dataset,
             epochs: formData.epochs,
@@ -337,8 +356,14 @@ const TrustWorthyMLProjectPage = () => {
             alpha: formData.alphaValue,
             niter: formData.numberOfIterations,
             randomstart: formData.randomInitializer
+        });
+
+        const newTask = new WebSocketTask("ws://localhost:8181/ws/GPUJobWebsocketV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+
+        newTask.taskInitData = {
+            job_id: job_id
         };
-        if (newTask.taskInitData.attack === true) {
+        if (formData.attackEvaluation === true) {
             setWillAttack(true);
         }
         newTask.taskStatus = "waiting";
