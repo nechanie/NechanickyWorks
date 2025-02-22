@@ -16,7 +16,7 @@ import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
 import PageTitle from '../components/Shared/PageTitle';
-
+import axios from 'axios';
 
 const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
@@ -47,12 +47,28 @@ const TrustWorthyMLProjectPage = () => {
     const [categories, setCategories] = useState([]);
     const [categoryPercentages, setCategoryPercentages] = useState([]);
     const [showBarGraph, setShowBarGraph] = useState(false);
+    const [isFormRunning, setIsFormRunning] = useState(false);
+    const [formQueueTimeStart, setFormQueueTimeStart] = useState(null);
+    const [formQueuePosition, setFormQueuePosition] = useState(null);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
     const demoRunningRef = useRef(null);
     const [bannerOpen, setBannerOpen] = React.useState(true);
+
+    async function TMLinit(payload) {
+        try {
+            const response = await axios.post(`http://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/GPUJobRequestV1`, payload);
+            if (response.status === 200) {
+                return response.data.status;
+            } else {
+                console.log("api did not respond with status 200");
+            }
+        } catch (error) {
+            console.log("error in api response");
+        }
+    }
 
     React.useEffect(() => {
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
@@ -78,6 +94,7 @@ const TrustWorthyMLProjectPage = () => {
         const checkRefAndDisableForm = () => {
             const isDisabled = webSocketManager.queue.CrossCheckRef(socketPageRef);
             setIsFormDisabled(isDisabled);
+            setIsFormRunning(isDisabled);
         };
 
         checkRefAndDisableForm();
@@ -226,6 +243,10 @@ const TrustWorthyMLProjectPage = () => {
                 setFinalAccuracy(msg.data.accuracy);
                 setShowBarGraph(true);
             }
+            if (msg.type === 'subscriber_info') {
+                setFormQueuePosition(msg.data.queue_position);
+                setFormQueueTimeStart(msg.data.enqueued_at);
+            }
         };
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
@@ -293,7 +314,7 @@ const TrustWorthyMLProjectPage = () => {
         });
     }, [epochAccuracyData, epochLossData, lineColor]);
 
-    const handleFormSubmit = useCallback((formData) => {
+    const handleFormSubmit = useCallback(async (formData) => {
         setAccuracy(null);
         setFinalAccuracy(null);
         setAccuracyData([]);
@@ -320,9 +341,10 @@ const TrustWorthyMLProjectPage = () => {
         setCategories([]);
         setCategoryPercentages([]);
         setShowBarGraph(false);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+        setIsFormRunning(true);
 
-        newTask.taskInitData = {
+        const job_id = await TMLinit({
+            job_type: "tml",
             model: formData.model,
             dataset: formData.dataset,
             epochs: formData.epochs,
@@ -337,13 +359,19 @@ const TrustWorthyMLProjectPage = () => {
             alpha: formData.alphaValue,
             niter: formData.numberOfIterations,
             randomstart: formData.randomInitializer
+        });
+
+        const newTask = new WebSocketTask(`ws://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+        newTask.taskInitData = {
+            job_id: job_id
         };
-        if (newTask.taskInitData.attack === true) {
+        if (formData.attackEvaluation === true) {
             setWillAttack(true);
         }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
     }, [webSocketManager, currentPath]);
+
 
     return (
         <React.Fragment>
@@ -419,7 +447,7 @@ const TrustWorthyMLProjectPage = () => {
                             </Container>
                         </Grid>
                         <Grid item xs={12} lg={6} xl={6}>
-                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} isActive={isFormRunning} timeStart={formQueueTimeStart} queuePosition={ formQueuePosition } />
                         </Grid>
                     </Grid>
 

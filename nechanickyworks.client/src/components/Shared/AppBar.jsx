@@ -10,6 +10,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DaneLogo from "../../assets/imgs/DaneLogo.png";
+import AccountMenu from '../OAuth/AccountMenu';
 
 const drawerWidth = 240;
 
@@ -253,37 +254,40 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 Contact Me
                             </Button>
                         </Box>
-                        <IconButton
-                            disableFocusRipple={true}
-                            color="inherit"
-                            aria-label="open settings"
-                            aria-haspopup="true"
-                            onClick={handleSettingsClick}>
-                            <SettingsIcon />
-                        </IconButton>
-                        <Menu
-                            disableScrollLock={true}
-                            marginThreshold={null}
-                            id="menu-appbar"
-                            anchorEl={settingsAnchorEl}
-                            anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={settingsOpen}
-                            onClose={handleSettingsClose}
-                        >
-                            <MenuItem>
-                                <FormGroup>
-                                    <FormControlLabel control={<Switch checked={isDarkMode} onChange={handleOnThemeToggle} />} label="Dark Mode" />
-                                </FormGroup>
-                            </MenuItem>
-                        </Menu>
+                        <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
+                            <AccountMenu/>
+                            <IconButton
+                                disableFocusRipple={true}
+                                color="inherit"
+                                aria-label="open settings"
+                                aria-haspopup="true"
+                                onClick={handleSettingsClick}>
+                                <SettingsIcon />
+                            </IconButton>
+                            <Menu
+                                disableScrollLock={true}
+                                marginThreshold={null}
+                                id="menu-appbar"
+                                anchorEl={settingsAnchorEl}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                keepMounted
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'right',
+                                }}
+                                open={settingsOpen}
+                                onClose={handleSettingsClose}
+                            >
+                                <MenuItem>
+                                    <FormGroup>
+                                        <FormControlLabel control={<Switch checked={isDarkMode} onChange={handleOnThemeToggle} />} label="Dark Mode" />
+                                    </FormGroup>
+                                </MenuItem>
+                            </Menu>
+                        </Box>
                     </Toolbar>
                 </Container>
             </AppBar>
