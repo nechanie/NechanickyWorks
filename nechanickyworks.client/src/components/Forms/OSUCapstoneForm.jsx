@@ -52,7 +52,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled, queuePosition, timeStart, isAct
 
     const fetchProfiles = async () => {
         try {
-            const response = await fetch('https://access.nechanickyworks.com/api/profilesrandom');
+            const response = await fetch(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/profilesrandom`);
             const data = await response.json();
             setProfiles(data.data); // Update to match the response structure
         } catch (error) {

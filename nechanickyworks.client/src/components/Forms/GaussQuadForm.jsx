@@ -26,7 +26,7 @@ const GaussQuadForm = ({ onSubmit, isDisabled }) => {
     useEffect(() => {
         const checkBackendHealth = async () => {
             try {
-                const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
+                const response = await axios.get(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/healthcheck/health`);
                 if (response.status === 200 && response.data.status === 'healthy') {
                     setIsBackendHealthy(true);
                     setIsAltDisabled(false);
