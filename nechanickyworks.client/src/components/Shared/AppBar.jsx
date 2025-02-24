@@ -255,7 +255,7 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             </Button>
                         </Box>
                         <Box sx={{ display: 'flex', alignItems: 'center', ml: 2 }}>
-                            <AccountMenu/>
+                            {/*<AccountMenu/>*/} { /*uncomment when implementing single sign on accounts.*/ }
                             <IconButton
                                 disableFocusRipple={true}
                                 color="inherit"

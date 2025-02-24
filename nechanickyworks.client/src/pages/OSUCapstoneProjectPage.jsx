@@ -51,7 +51,7 @@ const OSUCapstoneProjectPage = () => {
 
     async function CapstoneInit(payload) {
         try {
-            const response = await axios.post(`http://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/GPUJobRequestV1`, payload);
+            const response = await axios.post(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/GPUJobRequestV1`, payload);
             if (response.status === 200) {
                 return response.data.status;
             } else {
@@ -236,7 +236,7 @@ const OSUCapstoneProjectPage = () => {
             resultsCount: formData.numSimilarResults
         });
 
-        const newTask = new WebSocketTask(`ws://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
+        const newTask = new WebSocketTask(`wss://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
         newTask.taskInitData = {
             job_id: job_id
         }
