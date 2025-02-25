@@ -71,7 +71,7 @@ const TrustWorthyMLProjectPage = () => {
 
     async function TMLinit(payload) {
         try {
-            const response = await axios.post(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/GPUJobRequestV1`, payload);
+            const response = await axios.get(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/GPUJobRequestV1`, payload);
             if (response.status === 200) {
                 return response.data.status;
             } else {
