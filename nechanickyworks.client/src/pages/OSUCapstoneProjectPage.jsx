@@ -11,7 +11,7 @@ import Cover from '../components/Display/Cover';
 import OSUCapstoneBackgroundImage from "../assets/imgs/backgrounds/OSUCapstone/OSUCapstoneBackground.webp";
 import OSUCapstoneBackgroundImageDark from "../assets/imgs/backgrounds/OSUCapstone/OSUCapstoneBackgroundDark.webp";
 import CapstoneResTable from '../components/Display/data/CapstoneResTable';
-
+import axios from 'axios';
 
 const OSUCapstoneProjectPage = () => {
     const currentPath = useLocation();
@@ -39,12 +39,28 @@ const OSUCapstoneProjectPage = () => {
     const [results, setResults] = useState([]);
     const [selectedProfile, setSelectedProfile] = useState(null);
     const [showTable, setShowTable] = useState(false);
+    const [isFormRunning, setIsFormRunning] = useState(false);
+    const [formQueueTimeStart, setFormQueueTimeStart] = useState(null);
+    const [formQueuePosition, setFormQueuePosition] = useState(null);
     const theme = useTheme();
 
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
     const webSocketRef = useRef(null);
     const demoRunningRef = useRef(null);
+
+    async function CapstoneInit(payload) {
+        try {
+            const response = await axios.post(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/nwapi/GPUJobRequestV1`, payload);
+            if (response.status === 200) {
+                return response.data.status;
+            } else {
+                console.log("api did not respond with status 200");
+            }
+        } catch (error) {
+            console.log("error in api response");
+        }
+    }
 
     React.useEffect(() => {
         demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
@@ -69,6 +85,7 @@ const OSUCapstoneProjectPage = () => {
         const checkRefAndDisableForm = () => {
             const isDisabled = webSocketManager.queue.CrossCheckRef(socketPageRef);
             setIsFormDisabled(isDisabled);
+            setIsFormRunning(isDisabled)
         };
 
         checkRefAndDisableForm();
@@ -165,6 +182,10 @@ const OSUCapstoneProjectPage = () => {
                 });
                 setLastChunkNum(msg.data.current);
             }
+            if (msg.ype === 'subscriber_info') {
+                setFormQueuePosition(msg.data.queue_position);
+                setFormQueueTimeStart(msg.data.enqueued_at);
+            }
         };
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
@@ -180,7 +201,7 @@ const OSUCapstoneProjectPage = () => {
         };
     }, [webSocketManager, socketPageRef, lastEmbedNum, statusMessage, lastChunkNum]);
 
-    const handleFormSubmit = useCallback((formData) => {
+    const handleFormSubmit = useCallback(async (formData) => {
         setIsFormDisabled(true);
         setShowLog(true);
         setLogMessages("");
@@ -203,16 +224,22 @@ const OSUCapstoneProjectPage = () => {
         setResults([]);
         setSelectedProfile(null);
         setShowTable(false);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/CapstoneV1", "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
+        setIsFormRunning(true);
 
-        newTask.taskInitData = {
+        const job_id = await CapstoneInit({
+            job_type: "capstone",
             profile: formData.selectedProfile,
             model: formData.selectedModel,
             dim: formData.embeddingDim,
             metric: formData.selectedMetric,
             embeddingCount: formData.numProfilesToGenerate,
             resultsCount: formData.numSimilarResults
-        };
+        });
+
+        const newTask = new WebSocketTask(`wss://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
+        newTask.taskInitData = {
+            job_id: job_id
+        }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
         console.log("> Request queued");
@@ -284,7 +311,7 @@ const OSUCapstoneProjectPage = () => {
                             </Container>
                         </Grid>
                         <Grid item xs={12} lg={6} xl={6}>
-                            <OSUCapstoneForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                            <OSUCapstoneForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} isActive={isFormRunning} timeStart={formQueueTimeStart} queuePosition={formQueuePosition} />
                         </Grid>
                     </Grid>
                     {showTable && (

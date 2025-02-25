@@ -11,8 +11,9 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import SearchIcon from '@mui/icons-material/Search';
 import DoubleRippleButton from '../Custom/DoubleRippleButton';
 import UnavailableServiceOverlay from '../Display/UnavailableServiceOverlay';
+import FormQueueDisplay from '../Shared/FormQueueDisplay';
 
-const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
+const OSUCapstoneForm = ({ onSubmit, isDisabled, queuePosition, timeStart, isActive }) => {
     const [numProfilesToGenerate, setNumProfilesToGenerate] = useState('');
     const [isBackendHealthy, setIsBackendHealthy] = useState(false);
     const [isAltDisabled, setIsAltDisabled] = useState(true);
@@ -32,7 +33,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
     useEffect(() => {
         const checkBackendHealth = async () => {
             try {
-                const response = await axios.get('https://access.nechanickyworks.com/healthcheck/health');
+                const response = await axios.get(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/healthcheck/health`);
                 if (response.status === 200 && response.data.status === 'healthy') {
                     setIsBackendHealthy(true);
                     setIsAltDisabled(false);
@@ -51,7 +52,7 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
 
     const fetchProfiles = async () => {
         try {
-            const response = await fetch('https://access.nechanickyworks.com/api/profilesrandom');
+            const response = await fetch(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/api/profilesrandom`);
             const data = await response.json();
             setProfiles(data.data); // Update to match the response structure
         } catch (error) {
@@ -154,112 +155,114 @@ const OSUCapstoneForm = ({ onSubmit, isDisabled }) => {
                 </Typography>
 
                 <UnavailableServiceOverlay isServiceAvailable={isBackendHealthy}>
-                    <form onSubmit={handleSubmit}>
-                        <Box sx={{ marginBottom: 2 }}>
-                            <Button variant="outlined" onClick={handleOpen} disabled={isDisabled || isAltDisabled}>
-                                Choose a Profile to Compare Against
-                            </Button>
-                            {selectedProfile && (
-                                <Typography variant="body1" sx={{ mt: 2 }}>
-                                    Selected Profile: {selectedProfile}
-                                </Typography>
-                            )}
-                            {errors.selectedProfile && <Typography color="error">{errors.selectedProfile}</Typography>}
-                        </Box>
-                        <Box sx={{ marginBottom: 2 }}>
-                            <FormControl fullWidth error={!!errors.selectedModel}>
-                                <InputLabel id="model-select-label">Choose Model</InputLabel>
-                                <Select
-                                    labelId="model-select-label"
-                                    id="model-select"
-                                    value={selectedModel}
-                                    label="Choose Model"
-                                    onChange={onSelectedModelChanged}
-                                    disabled={isDisabled || isAltDisabled}
-                                >
-                                    <MenuItem value="MiniLM">MiniLM</MenuItem>
-                                    <MenuItem value="Ember">Ember</MenuItem>
-                                    <MenuItem value="UAE">UAE</MenuItem>
-                                    <MenuItem value="Roberta">Roberta</MenuItem>
-                                </Select>
-                                {errors.selectedModel && <Typography color="error">{errors.selectedModel}</Typography>}
-                            </FormControl>
-                        </Box>
-                        <Box sx={{ marginBottom: 2 }}>
-                            <FormControl fullWidth error={!!errors.selectedMetric}>
-                                <InputLabel id="metric-select-label">Similarity Metric</InputLabel>
-                                <Select
-                                    labelId="metric-select-label"
-                                    id="metric-select"
-                                    value={selectedMetric}
-                                    label="Choose a Similarity Metric"
-                                    onChange={e => {
-                                        setSelectedMetric(e.target.value);
-                                        setErrors((prevErrors) => ({ ...prevErrors, selectedMetric: '' }));
-                                    }}
-                                    disabled={isDisabled || isAltDisabled}
-                                >
-                                    <MenuItem value="cosine">Cosine</MenuItem>
-                                    <MenuItem value="euclidean">Euclidean</MenuItem>
-                                    <MenuItem value="dotproduct">Dot Product</MenuItem>
-                                </Select>
-                                {errors.selectedMetric && <Typography color="error">{errors.selectedMetric}</Typography>}
-                            </FormControl>
-                        </Box>
-                        <Box sx={{ marginBottom: 2 }}>
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        checked={embedEntireDatabase}
+                    <FormQueueDisplay timeStart={timeStart} isActive={isActive} queuePosition={queuePosition}>
+                        <form onSubmit={handleSubmit}>
+                            <Box sx={{ marginBottom: 2 }}>
+                                <Button variant="outlined" onClick={handleOpen} disabled={isDisabled || isAltDisabled}>
+                                    Choose a Profile to Compare Against
+                                </Button>
+                                {selectedProfile && (
+                                    <Typography variant="body1" sx={{ mt: 2 }}>
+                                        Selected Profile: {selectedProfile}
+                                    </Typography>
+                                )}
+                                {errors.selectedProfile && <Typography color="error">{errors.selectedProfile}</Typography>}
+                            </Box>
+                            <Box sx={{ marginBottom: 2 }}>
+                                <FormControl fullWidth error={!!errors.selectedModel}>
+                                    <InputLabel id="model-select-label">Choose Model</InputLabel>
+                                    <Select
+                                        labelId="model-select-label"
+                                        id="model-select"
+                                        value={selectedModel}
+                                        label="Choose Model"
+                                        onChange={onSelectedModelChanged}
+                                        disabled={isDisabled || isAltDisabled}
+                                    >
+                                        <MenuItem value="MiniLM">MiniLM</MenuItem>
+                                        <MenuItem value="Ember">Ember</MenuItem>
+                                        <MenuItem value="UAE">UAE</MenuItem>
+                                        <MenuItem value="Roberta">Roberta</MenuItem>
+                                    </Select>
+                                    {errors.selectedModel && <Typography color="error">{errors.selectedModel}</Typography>}
+                                </FormControl>
+                            </Box>
+                            <Box sx={{ marginBottom: 2 }}>
+                                <FormControl fullWidth error={!!errors.selectedMetric}>
+                                    <InputLabel id="metric-select-label">Similarity Metric</InputLabel>
+                                    <Select
+                                        labelId="metric-select-label"
+                                        id="metric-select"
+                                        value={selectedMetric}
+                                        label="Choose a Similarity Metric"
                                         onChange={e => {
-                                            setEmbedEntireDatabase(e.target.checked);
+                                            setSelectedMetric(e.target.value);
+                                            setErrors((prevErrors) => ({ ...prevErrors, selectedMetric: '' }));
+                                        }}
+                                        disabled={isDisabled || isAltDisabled}
+                                    >
+                                        <MenuItem value="cosine">Cosine</MenuItem>
+                                        <MenuItem value="euclidean">Euclidean</MenuItem>
+                                        <MenuItem value="dotproduct">Dot Product</MenuItem>
+                                    </Select>
+                                    {errors.selectedMetric && <Typography color="error">{errors.selectedMetric}</Typography>}
+                                </FormControl>
+                            </Box>
+                            <Box sx={{ marginBottom: 2 }}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            checked={embedEntireDatabase}
+                                            onChange={e => {
+                                                setEmbedEntireDatabase(e.target.checked);
+                                                setErrors((prevErrors) => ({ ...prevErrors, numProfilesToGenerate: '' }));
+                                            }}
+                                            disabled={isDisabled || isAltDisabled}
+                                        />
+                                    }
+                                    label="Embed entire database"
+                                />
+                                {!embedEntireDatabase && (
+                                    <TextField
+                                        fullWidth
+                                        label="Number of Profiles to Generate Embeddings For"
+                                        type="number"
+                                        value={numProfilesToGenerate}
+                                        onChange={e => {
+                                            setNumProfilesToGenerate(e.target.value);
                                             setErrors((prevErrors) => ({ ...prevErrors, numProfilesToGenerate: '' }));
                                         }}
                                         disabled={isDisabled || isAltDisabled}
+                                        inputProps={{ min: 1000, max: 50000 }}
+                                        error={!!errors.numProfilesToGenerate}
+                                        helperText={errors.numProfilesToGenerate}
+                                        sx={{ marginTop: 2 }}
                                     />
-                                }
-                                label="Embed entire database"
-                            />
-                            {!embedEntireDatabase && (
+                                )}
+                            </Box>
+
+                            <Box sx={{ marginBottom: 2 }}>
                                 <TextField
                                     fullWidth
-                                    label="Number of Profiles to Generate Embeddings For"
+                                    label="Number of Similar Profiles to Return (1-100)"
                                     type="number"
-                                    value={numProfilesToGenerate}
+                                    value={numSimilarResults}
                                     onChange={e => {
-                                        setNumProfilesToGenerate(e.target.value);
-                                        setErrors((prevErrors) => ({ ...prevErrors, numProfilesToGenerate: '' }));
+                                        setNumSimilarResults(e.target.value);
+                                        setErrors((prevErrors) => ({ ...prevErrors, numSimilarResults: '' }));
                                     }}
                                     disabled={isDisabled || isAltDisabled}
-                                    inputProps={{ min: 1000, max: 50000 }}
-                                    error={!!errors.numProfilesToGenerate}
-                                    helperText={errors.numProfilesToGenerate}
-                                    sx={{ marginTop: 2 }}
+                                    inputProps={{ min: 1, max: 100 }}
+                                    error={!!errors.numSimilarResults}
+                                    helperText={errors.numSimilarResults}
                                 />
-                            )}
-                        </Box>
+                            </Box>
 
-                        <Box sx={{ marginBottom: 2 }}>
-                            <TextField
-                                fullWidth
-                                label="Number of Similar Profiles to Return (1-100)"
-                                type="number"
-                                value={numSimilarResults}
-                                onChange={e => {
-                                    setNumSimilarResults(e.target.value);
-                                    setErrors((prevErrors) => ({ ...prevErrors, numSimilarResults: '' }));
-                                }}
-                                disabled={isDisabled || isAltDisabled}
-                                inputProps={{ min: 1, max: 100 }}
-                                error={!!errors.numSimilarResults}
-                                helperText={errors.numSimilarResults}
-                            />
-                        </Box>
-
-                        <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={theme.palette.primary.main} type="submit" variant="contained" disabled={isDisabled || isAltDisabled}>
-                            Find Similar Profiles
-                        </DoubleRippleButton>
-                    </form>
+                            <DoubleRippleButton rippleColor={theme.palette.primary.dark} startingColor={theme.palette.primary.main} type="submit" variant="contained" disabled={isDisabled || isAltDisabled}>
+                                Find Similar Profiles
+                            </DoubleRippleButton>
+                        </form>
+                    </FormQueueDisplay>
                 </UnavailableServiceOverlay>
             </Paper>
 

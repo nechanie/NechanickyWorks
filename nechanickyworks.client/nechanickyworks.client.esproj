@@ -10,7 +10,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include=".vscode\" />
+    <Folder Include="src\components\Dedication\Data\" />
     <Folder Include="src\components\Demos\" />
+    <Folder Include="src\components\OAuth\" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".vscode\launch.json" />

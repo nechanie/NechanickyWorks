@@ -16,7 +16,8 @@ import SiteFooter from '../components/Shared/Footer';
 import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
 import PageTitle from '../components/Shared/PageTitle';
-
+import axios from 'axios';
+import ErrorBoundary from '../components/utils/ErrorBoundary';
 
 const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();
@@ -47,16 +48,39 @@ const TrustWorthyMLProjectPage = () => {
     const [categories, setCategories] = useState([]);
     const [categoryPercentages, setCategoryPercentages] = useState([]);
     const [showBarGraph, setShowBarGraph] = useState(false);
+    const [isFormRunning, setIsFormRunning] = useState(false);
+    const [formQueueTimeStart, setFormQueueTimeStart] = useState(null);
+    const [formQueuePosition, setFormQueuePosition] = useState(null);
     const theme = useTheme();
     const lineColor = cheerfulFiestaPalette(theme.palette.mode);
+    const [scrollElement, setScrollElement] = useState(null);
+
     // Use the `useWebSocket` hook to use shared websocket connection
     const { webSocketManager, queue } = useWebSocket();
-    const demoRunningRef = useRef(null);
     const [bannerOpen, setBannerOpen] = React.useState(true);
+    const demoRunningRef = useCallback((node) => {
+        setScrollElement(node);
+    }, []);
 
-    React.useEffect(() => {
-        demoRunningRef.current !== null ? demoRunningRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' }) : null;
-    }, [demoRunningRef.current])
+    
+    useEffect(() => {
+        if (scrollElement) {
+            scrollElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }, [scrollElement]);
+
+    async function TMLinit(payload) {
+        try {
+            const response = await axios.post(`https://${import.meta.env.VITE_API_ENDPOINT_HOST}/nwapi/GPUJobRequestV1`, payload);
+            if (response.status === 200) {
+                return response.data.status;
+            } else {
+                console.log("api did not respond with status 200");
+            }
+        } catch (error) {
+            console.log("error in api response");
+        }
+    }
 
 
     useEffect(() => {
@@ -78,6 +102,7 @@ const TrustWorthyMLProjectPage = () => {
         const checkRefAndDisableForm = () => {
             const isDisabled = webSocketManager.queue.CrossCheckRef(socketPageRef);
             setIsFormDisabled(isDisabled);
+            setIsFormRunning(isDisabled);
         };
 
         checkRefAndDisableForm();
@@ -87,146 +112,155 @@ const TrustWorthyMLProjectPage = () => {
         return () => clearInterval(intervalId);
     }, [webSocketManager.queue, socketPageRef]);
 
-    // Effect to handle received messages
-    useEffect(() => {
-        const handleMessage = (message) => {
-            const msg = JSON.parse(message);
-            setLogMessages(prev => prev + message + "\n");
-            if (msg.type === 'process_info') {
-                if (msg.data.message === "setup_start") {
-                    setShowSecondaryProgress(true);
-                    setStatusMessage("Setup Started.");
-                }
-                else if (msg.data.message === "setup_complete") {
-                    setShowSecondaryProgress(false);
-                    setStatusMessage("Waiting for turn in queue.");
-                }
-                else if (msg.data.message === "task_starting") {
-                    setStatusMessage("Starting...");
-                    setIsCircular(false);
-                    setShowSecondaryProgress(true);
-                    setShowPrimaryProgress(true);
-                }
-                else if (msg.data.message === "task_complete") {
-                    setStatusMessage("Finished.");
-                    setShowPrimaryProgress(false);
-                    setShowSecondaryProgress(false);
-                }
+
+    const handleMessage = useCallback((message) => {
+        const msg = JSON.parse(message);
+        setLogMessages(prev => prev + message + "\n");
+        if (msg.type === 'process_info') {
+            if (msg.data.message === "setup_start") {
+                setShowSecondaryProgress(true);
+                setStatusMessage("Setup Started.");
             }
-            if (msg.type === 'batch_info') {
-                if (showBatchGraph === false) {
-                    setStatusMessage("Training Model...");
-                    setShowBatchGraph(true);
-                }
-                setSecondaryProgress((prevState) => {
-                    const result = 100 * msg.data.batch_num / msg.data.total_batches;
-                    return result;
-                });
-                setPrimaryProgress((prevState) => {
-                    let multiplier = null;
-                    if (willAttack) {
-                        multiplier = 40;
-                    }
-                    else {
-                        multiplier = 80;
-                    }
-                    let addition = multiplier * ((msg.data.batch_num - lastBatchNum) / msg.data.total_batches) / msg.data.total_epochs;
-                    return prevState + addition;
-                });
-                setBatches((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseInt(msg.data.batch_num));
-                    return copy;
-                });
-                setAccuracyData((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.train_accuracy));
-                    return copy;
-                });
-                setLossData((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.train_loss));
-                    return copy;
-                });
-                if (msg.data.batch_num !== msg.data.total_batches) {
-                    setLastBatchNum(msg.data.batch_num);
+            else if (msg.data.message === "setup_complete") {
+                setShowSecondaryProgress(false);
+                setStatusMessage("Waiting for turn in queue.");
+            }
+            else if (msg.data.message === "task_starting") {
+                setStatusMessage("Starting...");
+                setIsCircular(false);
+                setShowSecondaryProgress(true);
+                setShowPrimaryProgress(true);
+            }
+            else if (msg.data.message === "task_complete") {
+                setStatusMessage("Finished.");
+                setShowPrimaryProgress(false);
+                setShowSecondaryProgress(false);
+            }
+        }
+        if (msg.type === 'batch_info') {
+            if (showBatchGraph === false) {
+                setStatusMessage("Training Model...");
+                setShowBatchGraph(true);
+            }
+            setSecondaryProgress((prevState) => {
+                const result = 100 * msg.data.batch_num / msg.data.total_batches;
+                return result;
+            });
+            setPrimaryProgress((prevState) => {
+                let multiplier = null;
+                if (willAttack) {
+                    multiplier = 40;
                 }
                 else {
-                    setLastBatchNum(0);
+                    multiplier = 80;
                 }
-            }
-            if (msg.type === "epoch_info") { //if for epoch
-                if (msg.data.epoch_num === msg.data.total_epochs) { // if is now finished
-                    setShowPoints(true); //show points
-                    setIsCircular(true); //set circular secondar progress to prep for eval
-                    setStatusMessage("Evaluating."); // set message to evaluating
-                    setSecondaryProgress(0);
-                }
-                else {
-                    setAccuracyData([]);
-                    setLossData([]);
-                    setBatches([]);
-                    setSecondaryProgress(0);
-                }
-                if (showEpochGraph === false) {
-                    setShowEpochGraph(true);
-                }
-                setEpochs((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseInt(msg.data.epoch_num));
-                    return copy;
-                });
-                setEpochAccuracyData((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.train_accuracy));
-                    return copy;
-                });
-                setEpochLossData((prevState) => {
-                    const copy = [...prevState];
-                    copy.push(parseFloat(msg.data.train_loss));
-                    return copy;
-                });
-            }
-            if (msg.type === 'attack_batch_info') {
-                if (statusMessage !== "Generating Attacks..."){
-                    setStatusMessage("Generating Attacks...");
-                }
-                setSecondaryProgress((prevState) => {
-                    const result = 100 * msg.data.batch_num / msg.data.total_batches;
-                    return result;
-                });
-                setPrimaryProgress((prevState) => {
-                    let batch_diff = msg.data.batch_num - lastBatchNum;
-                    const result = prevState + (40 * batch_diff / msg.data.total_batches);
-                    return result;
-                });
+                let addition = multiplier * ((msg.data.batch_num - lastBatchNum) / msg.data.total_batches) / msg.data.total_epochs;
+                return prevState + addition;
+            });
+            setBatches((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseInt(msg.data.batch_num));
+                return copy;
+            });
+            setAccuracyData((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseFloat(msg.data.train_accuracy));
+                return copy;
+            });
+            setLossData((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseFloat(msg.data.train_loss));
+                return copy;
+            });
+            if (msg.data.batch_num !== msg.data.total_batches) {
                 setLastBatchNum(msg.data.batch_num);
             }
-            if (msg.type === 'evaluation_info') {
-                setPrimaryProgress((prevState) => {
-                    let addition = null;
-                    if (willAttack === true) {
-                        addition = 10;
-                    }
-                    else {
-                        addition = 20;
-                    }
-                    const result = prevState + addition;
-                    return result;
-                });
-                setAccuracy(msg.data.accuracy);
+            else {
+                setLastBatchNum(0);
             }
-            if (msg.type === 'attack_evaluation_info') {
-                setPrimaryProgress((prevState) => {
-                    const result = prevState + 10;
-                    return result;
-                });
-                setCategories(msg.data.categories);
-                setCategoryPercentages(msg.data.breakdown);
-                setFinalAccuracy(msg.data.accuracy);
-                setShowBarGraph(true);
+        }
+        if (msg.type === "epoch_info") { //if for epoch
+            if (msg.data.epoch_num === msg.data.total_epochs) { // if is now finished
+                setShowPoints(true); //show points
+                setIsCircular(true); //set circular secondar progress to prep for eval
+                setStatusMessage("Evaluating."); // set message to evaluating
+                setSecondaryProgress(0);
             }
-        };
+            else {
+                setAccuracyData([]);
+                setLossData([]);
+                setBatches([]);
+                setBatchGraphData([]);
+                setSecondaryProgress(0);
+            }
+            if (showEpochGraph === false) {
+                setShowEpochGraph(true);
+            }
+            setEpochs((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseInt(msg.data.epoch_num));
+                return copy;
+            });
+            setEpochAccuracyData((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseFloat(msg.data.train_accuracy));
+                return copy;
+            });
+            setEpochLossData((prevState) => {
+                const copy = [...prevState];
+                copy.push(parseFloat(msg.data.train_loss));
+                return copy;
+            });
+        }
+        if (msg.type === 'attack_batch_info') {
+            if (statusMessage !== "Generating Attacks...") {
+                setStatusMessage("Generating Attacks...");
+            }
+            setSecondaryProgress((prevState) => {
+                const result = 100 * msg.data.batch_num / msg.data.total_batches;
+                return result;
+            });
+            setPrimaryProgress((prevState) => {
+                let batch_diff = msg.data.batch_num - lastBatchNum;
+                const result = prevState + (40 * batch_diff / msg.data.total_batches);
+                return result;
+            });
+            setLastBatchNum(msg.data.batch_num);
+        }
+        if (msg.type === 'evaluation_info') {
+            setPrimaryProgress((prevState) => {
+                let addition = null;
+                if (willAttack === true) {
+                    addition = 10;
+                }
+                else {
+                    addition = 20;
+                }
+                const result = prevState + addition;
+                return result;
+            });
+            setAccuracy(msg.data.accuracy);
+        }
+        if (msg.type === 'attack_evaluation_info') {
+            setPrimaryProgress((prevState) => {
+                const result = prevState + 10;
+                return result;
+            });
+            setCategories(msg.data.categories);
+            setCategoryPercentages(msg.data.breakdown);
+            setFinalAccuracy(msg.data.accuracy);
+            setShowBarGraph(true);
+        }
+        if (msg.type === 'subscriber_info') {
+            setFormQueuePosition(msg.data.queue_position);
+            setFormQueueTimeStart(msg.data.enqueued_at);
+        }
+    }, [lastBatchNum, showBatchGraph, showEpochGraph, statusMessage, willAttack]);
+
+
+    // Effect to handle received messages
+    useEffect(() => {
+
 
         const originalOnLogMessage = webSocketManager.onLogMessage;
 
@@ -239,7 +273,7 @@ const TrustWorthyMLProjectPage = () => {
         return () => {
             webSocketManager.onLogMessage = originalOnLogMessage;
         };
-    }, [webSocketManager, socketPageRef, showEpochGraph, showBatchGraph, showPoints, willAttack, lastBatchNum]);
+    }, [webSocketManager, socketPageRef, handleMessage]);
 
     useEffect(() => {
         
@@ -293,7 +327,7 @@ const TrustWorthyMLProjectPage = () => {
         });
     }, [epochAccuracyData, epochLossData, lineColor]);
 
-    const handleFormSubmit = useCallback((formData) => {
+    const handleFormSubmit = useCallback(async (formData) => {
         setAccuracy(null);
         setFinalAccuracy(null);
         setAccuracyData([]);
@@ -320,9 +354,10 @@ const TrustWorthyMLProjectPage = () => {
         setCategories([]);
         setCategoryPercentages([]);
         setShowBarGraph(false);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/trustworthyMLV1", "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+        setIsFormRunning(true);
 
-        newTask.taskInitData = {
+        const job_id = await TMLinit({
+            job_type: "tml",
             model: formData.model,
             dataset: formData.dataset,
             epochs: formData.epochs,
@@ -337,13 +372,19 @@ const TrustWorthyMLProjectPage = () => {
             alpha: formData.alphaValue,
             niter: formData.numberOfIterations,
             randomstart: formData.randomInitializer
+        });
+
+        const newTask = new WebSocketTask(`wss://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Trustworthy ML", new TaskPage("Trustworthy ML", PageRef.TML, window.location.origin + currentPath.pathname));
+        newTask.taskInitData = {
+            job_id: job_id
         };
-        if (newTask.taskInitData.attack === true) {
+        if (formData.attackEvaluation === true) {
             setWillAttack(true);
         }
         newTask.taskStatus = "waiting";
         webSocketManager.newTask(newTask);
     }, [webSocketManager, currentPath]);
+
 
     return (
         <React.Fragment>
@@ -419,7 +460,7 @@ const TrustWorthyMLProjectPage = () => {
                             </Container>
                         </Grid>
                         <Grid item xs={12} lg={6} xl={6}>
-                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} />
+                            <TrustworthyMLForm onSubmit={handleFormSubmit} isDisabled={isFormDisabled} isActive={isFormRunning} timeStart={formQueueTimeStart} queuePosition={ formQueuePosition } />
                         </Grid>
                     </Grid>
 

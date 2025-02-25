@@ -177,7 +177,7 @@ const GaussianQuadraturePage = () => {
         setStatusMessage(null);
         setShowNodeGraph(false);
         setIsFormDisabled(true);
-        const newTask = new WebSocketTask("wss://access.nechanickyworks.com/ws/GaussianQuadratureV1", "Gaussian Quadrature", new TaskPage("Gaussian Quadrature", socketPageRef, window.location.origin + currentPath.pathname));
+        const newTask = new WebSocketTask(`wss://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GaussianQuadratureV1`, "Gaussian Quadrature", new TaskPage("Gaussian Quadrature", socketPageRef, window.location.origin + currentPath.pathname));
 
         newTask.taskInitData = formData;
         newTask.taskStatus = "waiting";

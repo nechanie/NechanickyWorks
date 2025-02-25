@@ -27,6 +27,9 @@ import Artega from './assets/fonts/Artega.otf';
 import Easy from './assets/fonts/Easy.otf';
 import ScrollToTopButton from './components/utils/ScrollToTopButton';
 import ConsultingPricePage from './pages/ConsultingPricePage';
+import BransenNechanickyPage from './pages/BransenNechanickyPage';
+import TokenHandler from './components/OAuth/TokenHandler';
+import HashHandler from './components/OAuth/HashHandler';
 
 const getDesignTokens = (mode) => ({
     "palette": {
@@ -237,32 +240,34 @@ function App() {
         <ThemeProvider theme={theme}>
             {globalThemeStyles}
             <CssBaseline />
-                <WebSocketProvider>
-                    <GradientBox>
-                        <BrowserRouter>
-                            <ScrollToTop/>
-                            <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
-                            <Routes>
-                                <Route path="/" element={<HomePageReImagined />} />
-                                <Route path="/projects" element={ <ProjectPage/> }/>
-                                <Route path="/about-me" element={<AboutMePage />} />
-                                <Route path="/about-this-site" element={<AboutThisSitePage />} />
-                                <Route path="/Contact" element={<ContactPage />} />
-                                <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
-                                <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
-                                <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
-                                <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
-                                <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
-                                <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
+            <WebSocketProvider>
+                <GradientBox>
+                    <BrowserRouter>
+                        <TokenHandler />
+                        <HashHandler />
+                        <ScrollToTop/>
+                        <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
+                        <Routes>
+                            <Route path="/" element={<HomePageReImagined />} />
+                            <Route path="/projects" element={ <ProjectPage/> }/>
+                            <Route path="/about-me" element={<AboutMePage />} />
+                            <Route path="/about-this-site" element={<AboutThisSitePage />} />
+                            <Route path="/Contact" element={<ContactPage />} />
+                            <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
+                            <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
+                            <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
+                            <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
+                            <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
+                            <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
                             <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
                             <Route path="/Pricing" element={<ConsultingPricePage />} />
-
-                            </Routes>
+                            <Route path='/NechanickyWorks-Dedication' element={<BransenNechanickyPage />} />
+                        </Routes>
                         {/*<TaskWindow/>*/}
-                            <ScrollToTopButton/>
-                        </BrowserRouter>
-                    </GradientBox>
-                </WebSocketProvider>
+                        <ScrollToTopButton/>
+                    </BrowserRouter>
+                </GradientBox>
+            </WebSocketProvider>
         </ThemeProvider>
     );
 }
