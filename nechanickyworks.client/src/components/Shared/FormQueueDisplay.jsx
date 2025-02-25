@@ -10,7 +10,7 @@ const FormQueueDisplay = ({ children, queuePosition, timeStart, isActive, estima
             {children}
 
             {/* Conditional rendering of the overlay based on the service availability */}
-            {(isActive && queuePosition !== 1) && (
+            {(isActive && queuePosition !== null) && (
                 <Box
                     position="absolute"
                     top={0}
@@ -25,7 +25,7 @@ const FormQueueDisplay = ({ children, queuePosition, timeStart, isActive, estima
                     zIndex={99}
                 >
                     {
-                        queuePosition === null ? (
+                        queuePosition === 1 ? (
 
                             <CircularProgress color='secondary' />
                         ) : (
