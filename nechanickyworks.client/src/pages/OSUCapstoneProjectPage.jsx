@@ -232,8 +232,8 @@ const OSUCapstoneProjectPage = () => {
             model: formData.selectedModel,
             dim: formData.embeddingDim,
             metric: formData.selectedMetric,
-            embeddingCount: formData.numProfilesToGenerate,
-            resultsCount: formData.numSimilarResults
+            embeddingcount: formData.numProfilesToGenerate,
+            resultscount: formData.numSimilarResults
         });
 
         const newTask = new WebSocketTask(`wss://${import.meta.env.VITE_API_ENDPOINT_HOST}/ws/GPUJobWebsocketV1`, "Capstone", new TaskPage("Capstone", PageRef.CAPSTONE, window.location.origin + currentPath.pathname));
