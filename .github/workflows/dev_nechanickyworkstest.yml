@@ -12,7 +12,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-
+    env:
+      VITE_GOOGLE_MAPS_API_KEY: ${{ secrets.VITE_GOOGLE_MAPS_API_KEY }}
+      VITE_API_ENDPOINT_HOST: ${{ secrets.VITE_API_ENDPOINT_HOST }}
     steps:
       - uses: actions/checkout@v4
 
