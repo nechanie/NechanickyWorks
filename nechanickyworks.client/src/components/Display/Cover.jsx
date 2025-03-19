@@ -1,6 +1,5 @@
-import React, {  useEffect, useState } from 'react';
-import { Paper, Card, CardHeader, CardContent, Typography, Box, Button, CardActions, useTheme } from '@mui/material';
-import { Link } from 'react-router-dom';
+import React, {  useState } from 'react';
+import { Box, useTheme } from '@mui/material';
 import { styled } from '@mui/system';
 
 const Cover = ({ light, dark, children, dynaColor = true, sx = {}, ...props }) => {

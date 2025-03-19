@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Card, CardActionArea, Collapse, CardContent, Typography, useMediaQuery, Grid, Paper } from '@mui/material';
+import { Card, CardActionArea, Collapse, Grid, Paper } from '@mui/material';
 import useCurrentBreakpoint from '../utils/BreakpointTracker';
 import { useEffect } from 'react';
 

@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Container, Grid, Typography, Box, CardContent, CardMedia, IconButton, Button, Paper, Stack, useTheme, Card, CardActionArea, Divider } from '@mui/material';
+import React from 'react';
+import { Container, Grid, Typography, Box, IconButton, Stack, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { styled } from '@mui/system';
 import GitHubIcon from '@mui/icons-material/GitHub';

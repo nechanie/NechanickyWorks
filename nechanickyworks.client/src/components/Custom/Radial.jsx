@@ -1,6 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useTheme } from '@mui/material';
-import { motion } from 'framer-motion';
 import ExpandingCard from '../Display/ExpandingCard';
 
 export const RadialContentItem = ({ title, children, ...props }) => (

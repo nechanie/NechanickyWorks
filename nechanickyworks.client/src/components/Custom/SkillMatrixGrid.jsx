@@ -3,11 +3,10 @@ import { styled } from '@mui/system';
 import { Box, Grid, Typography, Tooltip, Popover, Card, CardContent, IconButton, Container, useTheme } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import SkillMatrixItem from './SkillMatrixItem';
-import { faGithub, faWindows } from '@fortawesome/free-brands-svg-icons';
-import { faCode, faNetworkWired, faDatabase, faChartColumn, faServer, faCodeBranch, faMobileScreen, faCloud, faShieldVirus, faGlobe, faBrain, faPaintBrush, faSitemap, faTasks, faUsers, faBullhorn, faClock, faTools } from '@fortawesome/free-solid-svg-icons';
+import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { faCode, faCloud, faShieldVirus, faBrain, faPaintBrush, faSitemap, faTasks, faUsers, faBullhorn, faClock, faTools } from '@fortawesome/free-solid-svg-icons';
 import FontAwesomeSvgIcon from '../utils/FontAwesomeSvgIcon';
-import WebIcon from '@mui/icons-material/Web';
-import { NodeIcon, AdIcon, PythonIcon, CSharpIcon, TensorFlowIcon, PyTorchIcon, CppIcon, FastApiIcon, SqlIcon, KotlinIcon, MariaDbIcon, DevOpsIcon, ReactIcon, LinuxIcon, HTML5Icon, JsIcon, AndroidIcon } from '../MatrixIcons';
+import { NodeIcon, PythonIcon, CSharpIcon, TensorFlowIcon, PyTorchIcon, CppIcon, SqlIcon, KotlinIcon, MariaDbIcon, DevOpsIcon, ReactIcon, LinuxIcon, JsIcon, AndroidIcon } from '../MatrixIcons';
 import { useCurrentBreakpointInverse } from '../utils/BreakpointTracker';
 import DoubleRippleButton from './DoubleRippleButton';
 

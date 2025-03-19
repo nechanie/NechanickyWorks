@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Popover, Fab, Paper, List, ListItem } from '@mui/material';
+import { Popover, Fab } from '@mui/material';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import TaskList from './TaskList';
 

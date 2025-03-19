@@ -31,12 +31,7 @@ import PlaceholderLight from "../assets/imgs/backgrounds/AboutThisSite/Sections/
 import PlaceholderDark from "../assets/imgs/backgrounds/AboutThisSite/Sections/PlaceholderDark.webp";
 
 import SiteFooter from '../components/Shared/Footer';
-import TocSpeedDial from '../components/utils/TocSpeedDial';
-import TableOfContents from '../components/utils/Toc';
-import AnimatedCodeBlock from '../components/Demos/CodeWriter';
-import MotionSection from '../components/MotionSection';
 import AboutThisSiteSection, { AboutThisSiteSectionContentItem } from '../components/ContentSection';
-import { AboutThisSiteActions, AboutThisSiteCodePrimary, AboutThisSiteTocContent } from '../components/Shared/Data/AboutThisSiteData';
 import ChallengesTabs from '../components/Display/ChallengeTabs';
 import Radial, { RadialContentItem } from '../components/Custom/Radial';
 

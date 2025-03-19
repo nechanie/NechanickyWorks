@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, useTheme, Box, Grid, Paper, Typography, TablePagination } from "@mui/material"
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Skeleton, useTheme, Grid, Paper, Typography, TablePagination } from "@mui/material"
 
 const CapstoneResTable = ({ setupTime, modelTime, upsertTime, queryTime, systemTime, kMin, kMax, kAvg, rows, selectedProfile }) => {
     const [page, setPage] = React.useState(0);

@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PageTitle from '../components/Shared/PageTitle';
-import PythonMLWebSocketTest from '../components/Demos/PythonMLWebsocketTest';
-import ProjectBrowser from '../components/Display/ProjectBrowser';
-import { Container, Paper, Typography, useTheme, Stack, Divider } from '@mui/material';
+import { Container, Paper, Typography, useTheme, Stack } from '@mui/material';
 import CardTable from '../components/Display/CardTable';
 import SiteFooter from '../components/Shared/Footer';
 import BackgroundDark from '../assets/imgs/backgrounds/ProjectPage/ProjectPageBackground.webp';

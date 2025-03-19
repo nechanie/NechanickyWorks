@@ -1,5 +1,5 @@
 ﻿import * as React from 'react';
-import { LinePlot, LineChart, ResponsiveChartContainer, ChartsYAxis, ChartsXAxis, ChartsLegend, MarkPlot, ChartsTooltip, LineHighlightPlot } from '@mui/x-charts';
+import { LineChart } from '@mui/x-charts';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 
 const GQLineGraph = ({ dataRefs, dataVals, xLabel }) => {

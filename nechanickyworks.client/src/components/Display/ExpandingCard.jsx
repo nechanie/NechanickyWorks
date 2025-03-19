@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Typography, CardContent, IconButton, Box, CardHeader, CardActionArea } from '@mui/material';
+import { Card, Typography, CardContent, IconButton, CardHeader, CardActionArea } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 
