@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { TextField, Container, Grid, Typography, Box, Button, Link, Paper, Stack, useTheme, CircularProgress, LinearProgress, Fade } from '@mui/material';
-import { styled } from '@mui/system';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Container, Grid, Typography, Box, Paper, Stack, useTheme, CircularProgress, LinearProgress, Fade } from '@mui/material';
 import TrustworthyMLForm from '../components/Forms/TrustworthyMLForm';
 import { useWebSocket } from '../components/Shared/WebsocketContext';
 import PageRef from '../components/Shared/Data/PageRefs';
@@ -17,7 +16,6 @@ import GraphDescription from '../components/Display/GraphDescription';
 import Glossary from '../components/Glossary';
 import PageTitle from '../components/Shared/PageTitle';
 import axios from 'axios';
-import ErrorBoundary from '../components/utils/ErrorBoundary';
 
 const TrustWorthyMLProjectPage = () => {
     const currentPath = useLocation();

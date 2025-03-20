@@ -2,32 +2,29 @@ import * as React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider, createTheme, styled, responsiveFontSizes } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import HomePageReImagined from './pages/HomePageReImagined'; // Adjust the path as necessary
-import HomePage from './pages/HomePage'; // Adjust the path as necessary
-import AboutMePage from './pages/AboutMePage'; // Adjust the path as necessary
-import ProjectPage from './pages/ProjectPage'; // Adjust the path as necessary
+import HomePage from './pages/HomePage';
+import AboutMePage from './pages/AboutMePage';
+import ProjectPage from './pages/ProjectPage';
 import './App.css';
 import CustomAppBar from './components/Shared/AppBar';
 import { Box, useMediaQuery } from '@mui/material';
 import GaussianQuadratureProjectPage from './pages/GaussianQuadraturePage';
 import OSUCapstoneProjectPage from './pages/OSUCapstoneProjectPage';
-import DiffusionDenoisedRobustificationProjectPage from './pages/DiffusionDenoisedRobustificationPage';
-import WarehouseRequestFormProjectPage from './pages/WarehouseRequestFormPage';
-import RecruitmentRequestFormProjectPage from './pages/RecruitmentRequestFormPage';
-import MyFridgeAndroidAppProjectPage from './pages/MyFridgeAndroidAppPage';
+//import DiffusionDenoisedRobustificationProjectPage from './pages/DiffusionDenoisedRobustificationPage';
+//import WarehouseRequestFormProjectPage from './pages/WarehouseRequestFormPage';
+//import RecruitmentRequestFormProjectPage from './pages/RecruitmentRequestFormPage';
+//import MyFridgeAndroidAppProjectPage from './pages/MyFridgeAndroidAppPage';
 import ContactPage from './pages/ContactPage';
 import AboutThisSitePage from './pages/AboutThisSitePage';
 import TrustWorthyMLProjectPage from './pages/TrustworthyMLPage';
 import { WebSocketProvider } from './components/Shared/WebsocketContext';
-import TaskWindow from './components/Display/TaskWindow';
+//import TaskWindow from './components/Display/TaskWindow';
 import { GlobalStyles } from '@mui/material';
 import ScrollToTop from './components/utils/useScrollToTop';
-import Klotee from './assets/fonts/Klotee.otf';
-import Artega from './assets/fonts/Artega.otf';
-import Easy from './assets/fonts/Easy.otf';
+//import Klotee from './assets/fonts/Klotee.otf';
+//import Artega from './assets/fonts/Artega.otf';
+//import Easy from './assets/fonts/Easy.otf';
 import ScrollToTopButton from './components/utils/ScrollToTopButton';
-import ConsultingPricePage from './pages/ConsultingPricePage';
-import BransenNechanickyPage from './pages/BransenNechanickyPage';
 import TokenHandler from './components/OAuth/TokenHandler';
 import HashHandler from './components/OAuth/HashHandler';
 
@@ -248,7 +245,7 @@ function App() {
                         <ScrollToTop/>
                         <CustomAppBar onThemeToggle={colorMode.toggleColorMode} />
                         <Routes>
-                            <Route path="/" element={<HomePageReImagined />} />
+                            <Route path="/" element={<HomePage />} />
                             <Route path="/projects" element={ <ProjectPage/> }/>
                             <Route path="/about-me" element={<AboutMePage />} />
                             <Route path="/about-this-site" element={<AboutThisSitePage />} />
@@ -256,12 +253,10 @@ function App() {
                             <Route path="/projects/TrustworthyMachineLearning" element={<TrustWorthyMLProjectPage />} />
                             <Route path="/projects/GaussianQuadrature" element={<GaussianQuadratureProjectPage />} />
                             <Route path="/projects/OSUCapstoneProject" element={<OSUCapstoneProjectPage />} />
-                            <Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />
-                            <Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />
-                            <Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />
-                            <Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />
-                            <Route path="/Pricing" element={<ConsultingPricePage />} />
-                            <Route path='/NechanickyWorks-Dedication' element={<BransenNechanickyPage />} />
+                            {/*<Route path="/projects/DiffusionDenoisedRobustification" element={<DiffusionDenoisedRobustificationProjectPage />} />*/}
+                            {/*<Route path="/projects/WarehouseRequestForm" element={<WarehouseRequestFormProjectPage />} />*/}
+                            {/*<Route path="/projects/RecruitmentRequestForm" element={<RecruitmentRequestFormProjectPage />} />*/}
+                            {/*<Route path="/projects/MyFridgeApp" element={<MyFridgeAndroidAppProjectPage />} />*/}
                         </Routes>
                         {/*<TaskWindow/>*/}
                         <ScrollToTopButton/>

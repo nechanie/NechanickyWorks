@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, useTheme, Typography, Stack } from '@mui/material';
+import { Box, useTheme, Typography } from '@mui/material';
 
 const InteractiveCardMedia = ({ text = 'Learn More', comingSoon=false, ...props }) => {
     const theme = useTheme();

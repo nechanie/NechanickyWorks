@@ -10,7 +10,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DaneLogo from "../../assets/imgs/DaneLogo.png";
-import AccountMenu from '../OAuth/AccountMenu';
+//import AccountMenu from '../OAuth/AccountMenu';
 
 const drawerWidth = 240;
 
@@ -124,18 +124,18 @@ const CustomAppBar = ({ onThemeToggle }) => {
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/projects/OSUCapstoneProject" onClick={handleDrawerToggle}>
                                 <ListItemText primary='OSU Senior Capstone' />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>
-                                <ListItemText primary='Diffusion Denoised Robustification (Coming Soon)' />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/WarehouseRequestForm" onClick={handleDrawerToggle}>
-                                <ListItemText primary='Warehouse Order Form (Coming Soon)' />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/RecruitmentRequestForm" onClick={handleDrawerToggle}>
-                                <ListItemText primary='New Hire Request Form (Coming Soon)' />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/MyFridgeApp" onClick={handleDrawerToggle}>
-                                <ListItemText primary='MyFridge Android App (Coming Soon)' />
-                            </ListItemButton>
+                            {/*<ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification" onClick={handleDrawerToggle}>*/}
+                            {/*    <ListItemText primary='Diffusion Denoised Robustification (Coming Soon)' />*/}
+                            {/*</ListItemButton>*/}
+                            {/*<ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/WarehouseRequestForm" onClick={handleDrawerToggle}>*/}
+                            {/*    <ListItemText primary='Warehouse Order Form (Coming Soon)' />*/}
+                            {/*</ListItemButton>*/}
+                            {/*<ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/RecruitmentRequestForm" onClick={handleDrawerToggle}>*/}
+                            {/*    <ListItemText primary='New Hire Request Form (Coming Soon)' />*/}
+                            {/*</ListItemButton>*/}
+                            {/*<ListItemButton sx={{ pl: 4 }} component={Link} disabled={true} to="/projects/MyFridgeApp" onClick={handleDrawerToggle}>*/}
+                            {/*    <ListItemText primary='MyFridge Android App (Coming Soon)' />*/}
+                            {/*</ListItemButton>*/}
                         </List>
                     </Collapse>
                 </ListItem>
@@ -219,10 +219,10 @@ const CustomAppBar = ({ onThemeToggle }) => {
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/TrustWorthyMachineLearning">Trustworthy Machine Learning</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/GaussianQuadrature">Gaussian Quadrature</MenuItem>
                                 <MenuItem onClick={handleClose} component={Link} to="/projects/OSUCapstoneProject">OSU Senior Capstone</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification (Coming Soon)</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/WarehouseRequestForm">Warehouse Order Form (Coming Soon)</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/RecruitmentRequestForm">New Hire Request Form (Coming Soon)</MenuItem>
-                                <MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/MyFridgeApp">MyFridge Android App (Coming Soon)</MenuItem>
+                                {/*<MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/DiffusionDenoisedRobustification">Diffusion Denoised Robustification (Coming Soon)</MenuItem>*/}
+                                {/*<MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/WarehouseRequestForm">Warehouse Order Form (Coming Soon)</MenuItem>*/}
+                                {/*<MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/RecruitmentRequestForm">New Hire Request Form (Coming Soon)</MenuItem>*/}
+                                {/*<MenuItem onClick={handleClose} component={Link} disabled={true} to="/projects/MyFridgeApp">MyFridge Android App (Coming Soon)</MenuItem>*/}
                             </Menu>
 
 

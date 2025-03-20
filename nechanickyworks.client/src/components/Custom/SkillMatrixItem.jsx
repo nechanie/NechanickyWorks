@@ -1,7 +1,5 @@
 import React from 'react';
 import { Box, Typography, Rating } from '@mui/material';
-import { faCircle as fasCircle } from '@fortawesome/free-solid-svg-icons';
-import { faCircle as farCircle } from '@fortawesome/free-regular-svg-icons';
 import { styled } from '@mui/system';
 import FontAwesomeSvgIcon from '../utils/FontAwesomeSvgIcon';
 import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { List, ListItemButton, ListSubheader, ListItem, Stack, IconButton, ListItemAvatar, ListItemText, Typography, Avatar, Divider } from '@mui/material';
 import { useWebSocket } from '../Shared/WebsocketContext';
-import DeleteIcon from '@mui/icons-material/Delete';
-import WebSocketTask from '../Shared/Data/WebSocketTask';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CancelIcon from '@mui/icons-material/Cancel';

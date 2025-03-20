@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useTheme} from '@mui/material';
-import { BarChart, ResponsiveChartContainer, ChartsYAxis, ChartsXAxis, ChartsGrid, ChartsTooltip, ChartsAxisHighlight } from '@mui/x-charts';
+import { BarChart } from '@mui/x-charts';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
 
 

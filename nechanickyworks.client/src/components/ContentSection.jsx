@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Typography, Box, Stack, useTheme, Button, Card, CardHeader, CardContent, IconButton, CardActionArea, CardMedia } from '@mui/material';
+import { Grid, Typography, Box, Stack, useTheme, Card, CardHeader, CardContent, IconButton, CardActionArea, CardMedia } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import AboutThisSiteAnimationItemProvider, { useSelectedItem } from './AboutThisSiteAnimationIdContext';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';

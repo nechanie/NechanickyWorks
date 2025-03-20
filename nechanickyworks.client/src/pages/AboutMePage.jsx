@@ -1,11 +1,6 @@
 import React from 'react';
-import { Box, Container, Typography, Grid, Avatar, Button, CardContent, Card, Paper, Stack, useTheme } from '@mui/material';
-import { Timeline, TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent, TimelineOppositeContent, TimelineDot } from '@mui/lab';
+import { Box, Container, Typography, Avatar, Paper, Stack, useTheme } from '@mui/material';
 import MyPic from "../assets/imgs/me/MyPic.jpg";
-import SchoolIcon from '@mui/icons-material/School';
-import CodeIcon from '@mui/icons-material/Code';
-import WorkIcon from '@mui/icons-material/Work';
-import HorizontalTimeline from '../components/Display/HorizontalTimeline';
 import VerticalTimeline from '../components/Display/VerticalTimeline';
 import useCurrentBreakpoint from '../components/utils/BreakpointTracker';
 import SkillMatrixGrid from '../components/Custom/SkillMatrixGrid';
@@ -149,12 +144,10 @@ const AboutMePage = () => {
                 {/*        A Bit More About Me*/}
                 {/*    </Typography>*/}
                 {/*    <Typography variant="body1" align='center'>*/}
-                {/*        Share something personal here: hobbies, interests, or fun facts. This helps humanize your profile*/}
+                {/*        Share hobbies, interests, or fun facts. This helps humanize profile*/}
                 {/*        and connect with the reader on a personal level.*/}
                 {/*    </Typography>*/}
                 {/*</Box>*/}
-
-                {/* You might also include a section for testimonials or endorsements if you have them. */}
 
             <SiteFooter />
         </React.Fragment>
