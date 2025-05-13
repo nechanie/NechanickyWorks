@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
+<<<<<<< HEAD
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NechanickyWorks.Server", "NechanickyWorks.Server\NechanickyWorks.Server.csproj", "{8C0D00BB-93A7-45E6-A3A9-14D0DC32D3C4}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "nechanickyworks.client", "nechanickyworks.client\nechanickyworks.client.esproj", "{4F7EB660-8082-4712-AA7B-F46596588A90}"
+=======
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "NechanickyWorks", "NechanickyWorks.esproj", "{B5A35ECF-A815-4057-8074-8913F86DDA26}"
+>>>>>>> source/master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +17,7 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
 		{8C0D00BB-93A7-45E6-A3A9-14D0DC32D3C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8C0D00BB-93A7-45E6-A3A9-14D0DC32D3C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C0D00BB-93A7-45E6-A3A9-14D0DC32D3C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -23,11 +28,23 @@ Global
 		{4F7EB660-8082-4712-AA7B-F46596588A90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F7EB660-8082-4712-AA7B-F46596588A90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4F7EB660-8082-4712-AA7B-F46596588A90}.Release|Any CPU.Deploy.0 = Release|Any CPU
+=======
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5A35ECF-A815-4057-8074-8913F86DDA26}.Release|Any CPU.Deploy.0 = Release|Any CPU
+>>>>>>> source/master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
+<<<<<<< HEAD
 		SolutionGuid = {ABCCB1C3-52A6-4370-8C7E-40175AFAFA32}
+=======
+		SolutionGuid = {346D9472-08C2-4FF5-898E-465C6DDBC12D}
+>>>>>>> source/master
 	EndGlobalSection
 EndGlobal
