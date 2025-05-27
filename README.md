@@ -21,7 +21,6 @@ The dynamic functionality—such as WebSocket and REST API communications—is p
 ## Project Structure
 
 .\
-├── .github/workflows&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# GitHub Actions for CI/CD and deployment\
 ├── public&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# Public source files\
 ├── src&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;# React front end source files\
 ├── .gitattributes\
